@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "172177405887",
+    "project_id": "my-dj-app-25003",
+    "storage_bucket": "my-dj-app-25003.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:172177405887:android:0daaca90fbbb3f911e530a",
+        "android_client_info": {
+          "package_name": "com.example.my_dj_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "172177405887-usqe4m45lsk5uf0c04av1se1vmmpr5pp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJThnGqkzOqWAYIfjC5hPG11d71m5LAbI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "172177405887-usqe4m45lsk5uf0c04av1se1vmmpr5pp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
