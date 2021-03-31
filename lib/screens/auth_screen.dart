@@ -102,10 +102,13 @@ class _AuthScreenState extends State<AuthScreen> {
     return Container(
       decoration: BoxDecoration(
           gradient: LinearGradient(
-        begin: Alignment.topRight,
-        end: Alignment.bottomLeft,
-        colors: [Colors.deepPurple, Colors.black12],
-      )),
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [
+            Colors.deepPurple,
+            Colors.blue,
+            Colors.pink.shade300,
+          ])),
       child: Scaffold(
         body: GestureDetector(
           onTap: () {
