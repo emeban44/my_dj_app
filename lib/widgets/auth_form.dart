@@ -44,11 +44,14 @@ class _AuthFormState extends State<AuthForm> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+      child: Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(15),
+          gradient: LinearGradient(
+            colors: [Colors.pink.shade100, Colors.deepPurple.shade100],
+          ),
         ),
-        color: Colors.teal,
         margin: const EdgeInsets.all(50),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -128,15 +131,16 @@ class _AuthFormState extends State<AuthForm> {
                     Container(
                       width: 120,
                       height: 40,
-                      margin: EdgeInsets.only(top: 10),
+                      margin: EdgeInsets.only(top: 30, bottom: 1),
                       child: ElevatedButton(
                         onPressed: _trySubmit,
                         child: Text(_isLogin ? 'LOGIN' : 'SIGN UP'),
                         style: ElevatedButton.styleFrom(
                           elevation: 3,
+                          primary: Color.fromRGBO(59, 3, 97, 0.9),
                           side: BorderSide(width: 0.5),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(7),
                           ),
                         ),
                       ),
@@ -153,7 +157,9 @@ class _AuthFormState extends State<AuthForm> {
                           FocusScope.of(context).unfocus();
                         },
                         style: TextButton.styleFrom(
-                            tapTargetSize: MaterialTapTargetSize.shrinkWrap),
+                          primary: Color.fromRGBO(59, 3, 97, 0.9),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
                         child: Text(
                           _isLogin
                               ? 'Click to sign up first'

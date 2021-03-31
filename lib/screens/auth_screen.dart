@@ -82,8 +82,11 @@ class _AuthScreenState extends State<AuthScreen> {
       print('errrrrrrrrrrrrrrrrror');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(message),
-          backgroundColor: Colors.deepOrange,
+          content: Text(
+            message,
+            textAlign: TextAlign.center,
+          ),
+          backgroundColor: Colors.red.shade700,
         ),
       );
       setState(
@@ -96,45 +99,55 @@ class _AuthScreenState extends State<AuthScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        child: SingleChildScrollView(
-          child: Container(
-            margin: EdgeInsets.only(top: 90),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'WELCOME',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 30,
-                    fontFamily: 'Doctor',
-                  ),
-                ),
-                Center(child: AuthForm(_submitAuthForm)),
-                Container(
-                  height: 45,
-                  width: 185,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    child: Text('SIGN IN AS ADMIN'),
-                    style: ElevatedButton.styleFrom(
-                      elevation: 3,
-                      primary: Colors.white70,
-                      onPrimary: Colors.black87,
-                      side: BorderSide(width: 0.5),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+    return Container(
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+        begin: Alignment.topRight,
+        end: Alignment.bottomLeft,
+        colors: [Colors.deepPurple, Colors.black12],
+      )),
+      child: Scaffold(
+        body: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: Center(
+            child: SingleChildScrollView(
+              child: Container(
+                //         margin: EdgeInsets.only(top: 1),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'WELCOME',
+                      style: TextStyle(
+                        color: Colors.pink.shade100,
+                        fontSize: 35,
+                        fontFamily: 'Doctor',
                       ),
                     ),
-                  ),
+                    Center(child: AuthForm(_submitAuthForm)),
+                    Container(
+                      height: 45,
+                      width: 185,
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        child: Text('SIGN IN AS ADMIN'),
+                        style: ElevatedButton.styleFrom(
+                          elevation: 3,
+                          primary: Colors.white70,
+                          onPrimary: Colors.black87,
+                          side: BorderSide(width: 0.5),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),
