@@ -1,11 +1,18 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import './models/sharedPrefs.dart';
+import './screens/admin_screen.dart';
 
+import './screens/user_screen.dart';
 import './screens/auth_screen.dart';
 import './screens/splash_screen.dart';
 
-void main() {
+final sharedPrefs = SharedPrefs();
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await sharedPrefs.init();
   runApp(MyApp());
 }
 
@@ -35,10 +42,18 @@ class MyApp extends StatelessWidget {
                           return SplashScreen();
                         }
                         if (userSnapshot.hasData) {
-                          return AuthScreen();
+                          if (sharedPrefs.adminStatus == null)
+                            return UserScreen();
+                          else if (sharedPrefs.adminStatus)
+                            return AdminScreen();
+                          else
+                            return UserScreen();
                         }
                         return AuthScreen();
-                      }));
+                      }),
+              routes: {
+                SplashScreen.routeName: (ctx) => SplashScreen(),
+              });
         });
   }
 }
