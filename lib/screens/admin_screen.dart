@@ -32,34 +32,67 @@ class _AdminScreenState extends State<AdminScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.blueAccent,
-      appBar: AppBar(
-        title: Center(
-            child: Text(
-          _titles[_selectedPageIndex],
-          style: TextStyle(fontFamily: 'Raleway'),
-        )),
-        backgroundColor: Colors.deepPurple.shade900,
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+          colors: [
+            Color.fromRGBO(10, 5, 27, 0.9),
+            Color.fromRGBO(33, 98, 131, 0.9),
+            //    Colors.pink.shade300,
+          ],
+        ),
       ),
-      body: _pages[_selectedPageIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: _selectPage,
-        backgroundColor: Color.fromRGBO(10, 5, 27, 0.9),
-        unselectedItemColor: Colors.white,
-        selectedItemColor: Colors.pink,
-        currentIndex: _selectedPageIndex,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard),
-            label: 'DESHBORD',
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          title: Center(
+              child: Text(
+            _titles[_selectedPageIndex],
+            style: TextStyle(fontFamily: 'Raleway'),
+          )),
+          backgroundColor: Colors.transparent,
+        ), //Colors.transparent.withOpacity(0.8)),
+        body: _pages[_selectedPageIndex],
+        bottomNavigationBar: BottomNavigationBar(
+          onTap: _selectPage,
+          backgroundColor: Color.fromRGBO(10, 5, 27, 0.9),
+          unselectedItemColor: Colors.white,
+          selectedItemColor: Colors.pink,
+          currentIndex: _selectedPageIndex,
+          selectedLabelStyle: TextStyle(
+            fontFamily: 'Lexend',
+            fontWeight: FontWeight.bold,
+            fontSize: 10,
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.people), label: 'YEE YEAA'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.music_note),
-            label: 'SONGS',
+          unselectedLabelStyle: TextStyle(
+            fontFamily: 'Raleway',
+            fontSize: 11,
           ),
-        ],
+          items: [
+            BottomNavigationBarItem(
+              icon: Container(
+                margin: EdgeInsets.only(bottom: 2),
+                child: Icon(Icons.dashboard),
+              ),
+              label: 'DASHBOARD',
+            ),
+            BottomNavigationBarItem(
+                icon: Container(
+                  child: Icon(Icons.people),
+                  margin: EdgeInsets.only(bottom: 2),
+                ),
+                label: 'LOBBY'),
+            BottomNavigationBarItem(
+              icon: Container(
+                margin: EdgeInsets.only(bottom: 2),
+                child: Icon(Icons.music_note),
+              ),
+              label: 'SONGS',
+            ),
+          ],
+        ),
       ),
     );
   }

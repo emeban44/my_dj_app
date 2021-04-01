@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 class AuthForm extends StatefulWidget {
   final void Function(String email, String password, String userName,
       bool isLogin, bool isAdmin) submitFn;
+  final bool isLoading;
 
-  AuthForm(this.submitFn);
+  AuthForm(this.submitFn, this.isLoading);
 
   @override
   _AuthFormState createState() => _AuthFormState();
@@ -96,9 +97,10 @@ class _AuthFormState extends State<AuthForm> {
                           }
                           return null;
                         },
+                        style: TextStyle(fontFamily: 'Lexend'),
                         decoration: InputDecoration(
-                          labelText: 'Email',
-                        ),
+                            labelText: 'Email',
+                            labelStyle: TextStyle(fontFamily: 'Raleway')),
                         keyboardType: TextInputType.emailAddress,
                         onSaved: (value) {
                           _userEmail = value;
@@ -106,6 +108,7 @@ class _AuthFormState extends State<AuthForm> {
                       ),
                       if (!_isLogin)
                         TextFormField(
+                          style: TextStyle(fontFamily: 'Lexend'),
                           validator: (value) {
                             if (value.length < 4 || value.isEmpty)
                               return "Username should be at least 4 characters long";
@@ -113,8 +116,8 @@ class _AuthFormState extends State<AuthForm> {
                           },
                           key: ValueKey('username'),
                           decoration: InputDecoration(
-                            labelText: 'Username',
-                          ),
+                              labelText: 'Username',
+                              labelStyle: TextStyle(fontFamily: 'Raleway')),
                           onSaved: (value) {
                             _userName = value;
                           },
@@ -138,7 +141,11 @@ class _AuthFormState extends State<AuthForm> {
                       ),
                       if (_isLogin && _isAdmin)
                         TextFormField(
-                          decoration: InputDecoration(labelText: 'Admin Code'),
+                          style: TextStyle(fontFamily: 'Lexend'),
+                          decoration: InputDecoration(
+                            labelText: 'Admin Code',
+                            labelStyle: TextStyle(fontFamily: 'Raleway'),
+                          ),
                           controller: _adminCodeController,
                           onSaved: (value) {
                             _adminCode = value;
@@ -162,41 +169,46 @@ class _AuthFormState extends State<AuthForm> {
                         width: 120,
                         height: 40,
                         margin: EdgeInsets.only(top: 30, bottom: 1),
-                        child: ElevatedButton(
-                          onPressed: _trySubmit,
-                          child: Text(_isLogin ? 'LOGIN' : 'SIGN UP'),
-                          style: ElevatedButton.styleFrom(
-                            elevation: 3,
-                            primary: Color.fromRGBO(59, 3, 97, 0.9),
-                            side: BorderSide(width: 0.5),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(7),
-                            ),
-                          ),
-                        ),
+                        child: widget.isLoading
+                            ? CircularProgressIndicator.adaptive()
+                            : ElevatedButton(
+                                onPressed: _trySubmit,
+                                child: Text(_isLogin ? 'LOGIN' : 'SIGN UP'),
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 3,
+                                  primary: Color.fromRGBO(59, 3, 97, 0.9),
+                                  side: BorderSide(width: 0.5),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(7),
+                                  ),
+                                ),
+                              ),
                       ),
                       Container(
                         margin: EdgeInsets.all(5),
-                        child: TextButton(
-                          onPressed: () {
-                            setState(() {
-                              _isLogin = !_isLogin;
-                            });
-                            _userFormKey.currentState.reset();
-                            _passController.clear();
-                            FocusScope.of(context).unfocus();
-                          },
-                          style: TextButton.styleFrom(
-                            primary: Color.fromRGBO(59, 3, 97, 0.9),
-                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          ),
-                          child: Text(
-                            _isLogin
-                                ? 'Click to sign up first'
-                                : 'I already have an account',
-                            style: TextStyle(fontSize: 15),
-                          ),
-                        ),
+                        child: widget.isLoading
+                            ? Text('Loading...')
+                            : TextButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _isLogin = !_isLogin;
+                                  });
+                                  _userFormKey.currentState.reset();
+                                  _passController.clear();
+                                  FocusScope.of(context).unfocus();
+                                },
+                                style: TextButton.styleFrom(
+                                  primary: Color.fromRGBO(59, 3, 97, 0.9),
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                ),
+                                child: Text(
+                                  _isLogin
+                                      ? 'Click to sign up first'
+                                      : 'I already have an account',
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                              ),
                       ),
                     ],
                   ),

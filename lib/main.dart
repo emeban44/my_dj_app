@@ -31,6 +31,7 @@ class MyApp extends StatelessWidget {
               theme: ThemeData(
                 fontFamily: 'Raleway',
                 primarySwatch: Colors.deepPurple,
+                accentColor: Colors.pink.shade100,
                 canvasColor: Color.fromRGBO(10, 5, 27, 0.9),
               ),
               home: appSnapshot.connectionState != ConnectionState.done

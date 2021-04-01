@@ -9,7 +9,10 @@ class LobbyStatusScreen extends StatelessWidget {
           onPressed: () {
             FirebaseAuth.instance.signOut();
           },
-          child: Text('LOGOUT MATE')),
+          child: Text(
+            'LOGOUT MATE',
+            style: TextStyle(color: Colors.grey.shade100),
+          )),
     );
   }
 }

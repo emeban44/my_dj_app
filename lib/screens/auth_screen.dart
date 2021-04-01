@@ -84,12 +84,13 @@ class _AuthScreenState extends State<AuthScreen> {
           backgroundColor: Colors.red.shade700,
         ),
       );
-      setState(
-        () {
-          _isLoading = false;
-        },
-      );
+      setState(() {
+        _isLoading = false;
+      });
     }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -127,7 +128,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         fontFamily: 'Doctor',
                       ),
                     ),
-                    AuthForm(_submitAuthForm),
+                    AuthForm(_submitAuthForm, _isLoading),
                   ],
                 ),
               ),

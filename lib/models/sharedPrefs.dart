@@ -14,15 +14,12 @@ class SharedPrefs {
     _sharedPrefs.setBool('admin', value);
   }
 
-  bool get isAdminInit {
-    if (_sharedPrefs.get('admin') == null) {
-      return false;
-    }
+  void toggleLoadingStatus(bool value) {
+    _sharedPrefs.setBool('loading', value);
   }
 
-  void initializeAdmin() {
-    _sharedPrefs.setBool('admin', false);
-    _sharedPrefs.setBool('init', true);
+  bool get loadingStatus {
+    return _sharedPrefs.getBool('loading');
   }
 
   bool get adminStatus {

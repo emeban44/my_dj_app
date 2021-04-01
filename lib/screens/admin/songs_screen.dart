@@ -4,7 +4,10 @@ class SongsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text('NO SONGS CURRENTLY SORRY'),
+      child: Text(
+        'NO SONGS CURRENTLY SORRY',
+        style: TextStyle(color: Colors.grey.shade100),
+      ),
     );
   }
 }
