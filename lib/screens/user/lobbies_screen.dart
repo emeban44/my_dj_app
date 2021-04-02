@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class LobbiesScreen extends StatefulWidget {
@@ -9,7 +10,12 @@ class _LobbiesScreenState extends State<LobbiesScreen> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text('No lobbies available currently mate...'),
+      child: OutlinedButton(
+        onPressed: () {
+          FirebaseAuth.instance.signOut();
+        },
+        child: Text('Log out for now'),
+      ),
     );
   }
 }
