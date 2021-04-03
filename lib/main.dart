@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:my_dj_app/widgets/admin/songs_by_genre.dart';
+import './screens/admin/add_song_screen.dart';
 import './models/sharedPrefs.dart';
 import './screens/admin_screen.dart';
 
@@ -56,6 +56,7 @@ class MyApp extends StatelessWidget {
                       }),
               routes: {
                 SplashScreen.routeName: (ctx) => SplashScreen(),
+                AddSongScreen.routeName: (ctx) => AddSongScreen(),
               });
         });
   }
