@@ -30,6 +30,7 @@ class SharedPrefs {
     if (_sharedPrefs.getBool('songsInit') == null) {
       _sharedPrefs.setBool('songsInit', true);
     }
+    _sharedPrefs.setBool('songsInit', true);
   }
 
   bool get didSongsInit {
