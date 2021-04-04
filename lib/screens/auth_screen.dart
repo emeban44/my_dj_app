@@ -41,6 +41,7 @@ class _AuthScreenState extends State<AuthScreen> {
           email: email,
           password: password,
         );
+
         await FirebaseFirestore.instance
             .collection('users')
             .doc(authResult.user.uid)
@@ -53,6 +54,7 @@ class _AuthScreenState extends State<AuthScreen> {
         );
       }
       SharedPrefs().toggleAdminStatus(isAdmin);
+      SharedPrefs().setUserId(authResult.user.uid);
     } on PlatformException catch (error) {
       var message = 'An error ocurred, please check your credentials!';
       if (error.message != null) {

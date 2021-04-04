@@ -25,4 +25,23 @@ class SharedPrefs {
   bool get adminStatus {
     return _sharedPrefs.getBool('admin');
   }
+
+  void initalizeSongs() {
+    if (_sharedPrefs.getBool('songsInit') == null) {
+      _sharedPrefs.setBool('songsInit', true);
+    }
+  }
+
+  bool get didSongsInit {
+    if (_sharedPrefs.getBool('songsInit') == null) return false;
+    return _sharedPrefs.getBool('songsInit');
+  }
+
+  void setUserId(value) {
+    _sharedPrefs.setString('userId', value);
+  }
+
+  String get userId {
+    return _sharedPrefs.getString('userId');
+  }
 }
