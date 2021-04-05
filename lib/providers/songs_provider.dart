@@ -5,8 +5,12 @@ import 'package:my_dj_app/models/sharedPrefs.dart';
 
 import '../models/song.dart';
 
-class Songs {
-  static final List<Song> _songs = [];
+class Songs with ChangeNotifier {
+  static List<Song> _songs = [];
+
+  List<Song> get songs {
+    return [..._songs];
+  }
 
   static Future<void> initSongs() async {
     try {
@@ -41,7 +45,7 @@ class Songs {
     }
   }
 
-  static Future<List<Song>> get getSongs async {
+  Future<void> fetchAndSetSongs() async {
     final userId = SharedPrefs().userId;
     final songs = await FirebaseFirestore.instance
         .collection('adminSongs')
@@ -56,6 +60,8 @@ class Songs {
         (doc['songGenres'] as List)?.map((item) => item as String)?.toList(),
       ));
     });
-    return songsToReturn;
+    _songs = songsToReturn;
+    notifyListeners();
+    //   return songsToReturn;
   }
 }

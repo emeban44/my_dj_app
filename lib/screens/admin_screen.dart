@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:my_dj_app/providers/songs_provider.dart';
+import 'package:provider/provider.dart';
 import '../screens/admin/songs_screen.dart';
 import 'admin/dashboard_screen.dart';
 import 'admin/lobby_status_screen.dart';
@@ -28,6 +30,12 @@ class _AdminScreenState extends State<AdminScreen> {
     setState(() {
       _selectedPageIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    Provider.of<Songs>(context, listen: false).fetchAndSetSongs();
+    super.initState();
   }
 
   @override

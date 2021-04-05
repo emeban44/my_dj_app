@@ -38,7 +38,7 @@ class SongsByGenre extends StatelessWidget {
                   ],
                 ),
               ),
-              SongsFutureBuilder(),
+              Expanded(child: SongsFutureBuilder()),
             ],
           );
   }
