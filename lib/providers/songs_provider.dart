@@ -12,6 +12,13 @@ class Songs with ChangeNotifier {
     return [..._songs];
   }
 
+  List<Song> getSongsByGenre(String genre) {
+    List<Song> songsByGenre =
+        _songs.where((song) => song.genres.contains(genre)).toList();
+    songsByGenre.sort((a, b) => a.artist.compareTo(b.artist));
+    return songsByGenre;
+  }
+
   static Future<void> initSongs() async {
     try {
       final songs =

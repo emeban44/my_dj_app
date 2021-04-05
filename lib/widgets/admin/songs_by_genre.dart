@@ -17,7 +17,7 @@ class SongsByGenre extends StatelessWidget {
               if (snapShot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator.adaptive());
               } else
-                return SongsFutureBuilder();
+                return SongsFutureBuilder(genre);
             })
         : Column(
             mainAxisSize: MainAxisSize.min,
@@ -29,16 +29,21 @@ class SongsByGenre extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     IconButton(
-                        icon: Icon(Icons.arrow_back_rounded),
-                        onPressed: goBack),
+                      icon: Icon(Icons.arrow_back_rounded),
+                      onPressed: goBack,
+                      color: Colors.grey.shade400,
+                    ),
                     Text(
-                      genre + 'Songs',
+                      genre + ' Songs',
                       textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.grey.shade400,
+                      ),
                     ),
                   ],
                 ),
               ),
-              Expanded(child: SongsFutureBuilder()),
+              Expanded(child: SongsFutureBuilder(genre)),
             ],
           );
   }

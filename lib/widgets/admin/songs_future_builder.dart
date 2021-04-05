@@ -3,16 +3,20 @@ import 'package:provider/provider.dart';
 import '../../providers/songs_provider.dart';
 
 class SongsFutureBuilder extends StatefulWidget {
+  final String genre;
+
+  SongsFutureBuilder(this.genre);
   @override
   _SongsFutureBuilderState createState() => _SongsFutureBuilderState();
 }
 
 class _SongsFutureBuilderState extends State<SongsFutureBuilder> {
+  /*
   Future _songsFuture;
 
   Future _obtainSongsFuture() {
     return Provider.of<Songs>(context, listen: false).fetchAndSetSongs();
-  }
+  } */
 
   Future<void> _refreshSongs(BuildContext context) async {
     await Provider.of<Songs>(context, listen: false).fetchAndSetSongs();
@@ -20,7 +24,7 @@ class _SongsFutureBuilderState extends State<SongsFutureBuilder> {
 
   @override
   void initState() {
-    _obtainSongsFuture();
+    //  _obtainSongsFuture();
     super.initState();
   }
 
@@ -37,7 +41,7 @@ class _SongsFutureBuilderState extends State<SongsFutureBuilder> {
       onRefresh: () => _refreshSongs(context),
       child: Consumer<Songs>(
         builder: (ctx, songsData, child) => ListView.builder(
-            itemCount: songsData.songs.length,
+            itemCount: songsData.getSongsByGenre(widget.genre).length,
             shrinkWrap: true,
             itemBuilder: (ctx, i) {
               return Container(
@@ -56,7 +60,9 @@ class _SongsFutureBuilderState extends State<SongsFutureBuilder> {
                     child: Icon(Icons.music_note),
                   ),
                   title: Text(
-                    songsData.songs[i].artist + ' - ' + songsData.songs[i].name,
+                    songsData.getSongsByGenre(widget.genre)[i].artist +
+                        ' - ' +
+                        songsData.getSongsByGenre(widget.genre)[i].name,
                     style: TextStyle(
                       color: Colors.grey.shade300,
                       fontSize: 14,
