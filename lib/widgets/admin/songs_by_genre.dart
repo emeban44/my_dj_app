@@ -12,7 +12,7 @@ class SongsByGenre extends StatelessWidget {
   Widget build(BuildContext context) {
     return !SharedPrefs().didSongsInit
         ? FutureBuilder(
-            future: Songs.initSongs(),
+            future: Provider.of<Songs>(context).initSongs(),
             builder: (context, snapShot) {
               if (snapShot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator.adaptive());
@@ -23,21 +23,30 @@ class SongsByGenre extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
+                decoration: BoxDecoration(color: Colors.black38),
+                padding: EdgeInsets.only(left: 10),
                 width: double.infinity,
                 child: Row(
                   //      mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
                   children: [
                     IconButton(
                       icon: Icon(Icons.arrow_back_rounded),
                       onPressed: goBack,
-                      color: Colors.grey.shade400,
+                      color: Colors.pink,
                     ),
-                    Text(
-                      genre + ' Songs',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.grey.shade400,
+                    Container(
+                      margin: EdgeInsets.only(left: 15),
+                      child: Text(
+                        'Your ' + genre + ' Songs Collection:',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.pink.shade700,
+                          fontFamily: 'Lexend',
+                          fontSize: 15,
+                        ),
                       ),
                     ),
                   ],

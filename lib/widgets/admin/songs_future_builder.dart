@@ -57,7 +57,10 @@ class _SongsFutureBuilderState extends State<SongsFutureBuilder> {
                 child: ListTile(
                   leading: CircleAvatar(
                     backgroundColor: Colors.black26,
-                    child: Icon(Icons.music_note),
+                    child: Icon(
+                      Icons.music_note,
+                      color: Colors.pink,
+                    ),
                   ),
                   title: Text(
                     songsData.getSongsByGenre(widget.genre)[i].artist +
@@ -66,6 +69,7 @@ class _SongsFutureBuilderState extends State<SongsFutureBuilder> {
                     style: TextStyle(
                       color: Colors.grey.shade300,
                       fontSize: 14,
+                      fontFamily: 'Lexend',
                     ),
                   ),
                   trailing: Row(
@@ -73,7 +77,7 @@ class _SongsFutureBuilderState extends State<SongsFutureBuilder> {
                     children: [
                       IconButton(
                         icon:
-                            Icon(Icons.add_circle_outline, color: Colors.blue),
+                            Icon(Icons.add_circle_outline, color: Colors.pink),
                         onPressed: () {},
                       ),
                     ],

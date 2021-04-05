@@ -19,7 +19,7 @@ class Songs with ChangeNotifier {
     return songsByGenre;
   }
 
-  static Future<void> initSongs() async {
+  Future<void> initSongs() async {
     try {
       final songs =
           await FirebaseFirestore.instance.collection('songsStarterPack').get();
@@ -46,6 +46,7 @@ class Songs with ChangeNotifier {
         //    print(songsToReturn[0].genres.runtimeType);
       });
       SharedPrefs().initalizeSongs();
+      notifyListeners();
     } catch (error) {
       print('An error ocurred while initialising');
       throw error;
