@@ -11,32 +11,81 @@ class SongsFutureBuilder extends StatefulWidget {
 }
 
 class _SongsFutureBuilderState extends State<SongsFutureBuilder> {
-  /*
-  Future _songsFuture;
-
-  Future _obtainSongsFuture() {
-    return Provider.of<Songs>(context, listen: false).fetchAndSetSongs();
-  } */
-
   Future<void> _refreshSongs(BuildContext context) async {
     await Provider.of<Songs>(context, listen: false).fetchAndSetSongs();
   }
 
-  @override
-  void initState() {
-    //  _obtainSongsFuture();
-    super.initState();
+  Future<void> _showMyDialog(String name, String artist) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete song:',
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.red,
+                fontFamily: 'Lexend',
+              )),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(
+                  artist + ' - ' + name + '\n',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontFamily: 'Lexend',
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  'Are you sure you want to delete this song?',
+                  style: TextStyle(
+                    fontFamily: 'Lexend',
+                    //        fontWeight: FontWeight.bold,
+                  ),
+                ),
+                //            Text('Would you like to approve of this message?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Provider.of<Songs>(context, listen: false).deleteSong(
+                  name,
+                  artist,
+                );
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'Yes',
+                style: TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            TextButton(
+              child: Text(
+                'No',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    /* return FutureBuilder(
-        future: _songsFuture,
-        builder: (ctx, snapShot) {
-          if (snapShot.connectionState == ConnectionState.waiting) {
-            print('čekamo');
-            return Center(child: CircularProgressIndicator.adaptive());
-          } else */
     return RefreshIndicator(
       onRefresh: () => _refreshSongs(context),
       child: Consumer<Songs>(
@@ -56,10 +105,14 @@ class _SongsFutureBuilderState extends State<SongsFutureBuilder> {
                 ),
                 child: InkWell(
                   onLongPress: () {
-                    Provider.of<Songs>(context, listen: false).deleteSong(
+                    _showMyDialog(
                       songsData.getSongsByGenre(widget.genre)[i].name,
                       songsData.getSongsByGenre(widget.genre)[i].artist,
                     );
+                    /*        Provider.of<Songs>(context, listen: false).deleteSong(
+                      songsData.getSongsByGenre(widget.genre)[i].name,
+                      songsData.getSongsByGenre(widget.genre)[i].artist, 
+                    ) */
                   },
                   child: ListTile(
                     key: ValueKey(
