@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:my_dj_app/models/song.dart';
+import 'package:my_dj_app/providers/songs_provider.dart';
 import 'package:my_dj_app/widgets/admin/genre_check_box.dart';
+import 'package:provider/provider.dart';
 import '../../widgets/admin/song_text_input.dart';
 import '../../models/genres.dart';
 
 class AddSongScreen extends StatelessWidget {
   static const routeName = '/add-song';
+  final _songFormKey = GlobalKey<FormState>();
   static final List<bool> isChecked = [
     false,
     false,
@@ -16,9 +20,20 @@ class AddSongScreen extends StatelessWidget {
     false,
     false,
   ];
+  String finalSongName;
+  String finalSongArtist;
+  bool isValid = false;
 
   void toggleChecked(int index) {
     isChecked[index] = !isChecked[index];
+  }
+
+  void _trySongSubmit(String songName, String songArtist) {}
+
+  void setSongValues(String value, String hint) {
+    if (hint == 'Song Name')
+      finalSongName = value;
+    else if (hint == 'Song Artist') finalSongArtist = value;
   }
 
   @override
@@ -52,12 +67,13 @@ class AddSongScreen extends StatelessWidget {
           ),
           body: SingleChildScrollView(
             child: Form(
+              key: _songFormKey,
               child: Padding(
                 padding: EdgeInsets.all(10),
                 child: Column(
                   children: [
-                    SongTextInput('Song Name'),
-                    SongTextInput('Song Artist'),
+                    SongTextInput('Song Name', setSongValues),
+                    SongTextInput('Song Artist', setSongValues),
                     Text(
                       'Song Name & Artist',
                       style: TextStyle(color: Colors.grey.shade300),
@@ -119,7 +135,26 @@ class AddSongScreen extends StatelessWidget {
                         padding: const EdgeInsets.all(8.0),
                         child: ElevatedButton.icon(
                           onPressed: () {
-                            print(isChecked);
+                            isValid = _songFormKey.currentState.validate();
+                            if (isValid) {
+                              _songFormKey.currentState.save();
+                              List<String> songGenres = [];
+                              for (int i = 0; i < isChecked.length; i++) {
+                                if (isChecked[i] == true)
+                                  songGenres.add(Genres.genres[i]);
+                              }
+                              try {
+                                Provider.of<Songs>(context, listen: false)
+                                    .addSong(Song(
+                                  finalSongName,
+                                  finalSongArtist,
+                                  songGenres,
+                                ));
+                                Navigator.of(context).pop();
+                              } catch (error) {
+                                print('error while adding');
+                              }
+                            }
                           },
                           icon: Icon(
                             Icons.add,

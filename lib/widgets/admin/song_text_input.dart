@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class SongTextInput extends StatelessWidget {
   final String inputHint;
+  final Function(String valueToBeSet, String valueHint) setValue;
 
-  SongTextInput(this.inputHint);
+  SongTextInput(this.inputHint, this.setValue);
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +42,15 @@ class SongTextInput extends StatelessWidget {
           ),
           focusColor: Colors.white,
         ),
+        validator: (value) {
+          if (value.isEmpty) {
+            return inputHint.toString() + ' cannot be empty!';
+          }
+          return null;
+        },
+        onSaved: (value) {
+          setValue(value, inputHint);
+        },
       ),
     );
   }

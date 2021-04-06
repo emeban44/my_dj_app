@@ -72,4 +72,24 @@ class Songs with ChangeNotifier {
     notifyListeners();
     //   return songsToReturn;
   }
+
+  Future<void> addSong(Song song) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('adminSongs')
+          .doc(SharedPrefs().userId)
+          .collection('songsList')
+          .doc()
+          .set({
+        'songName': song.name,
+        'songArtist': song.artist,
+        'songGenres': song.genres,
+      });
+    } catch (error) {
+      print('error while adding');
+      throw error;
+    }
+    _songs.add(song);
+    notifyListeners();
+  }
 }

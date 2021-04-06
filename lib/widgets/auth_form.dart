@@ -2,8 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class AuthForm extends StatefulWidget {
-  final void Function(String email, String password, String userName,
-      bool isLogin, bool isAdmin) submitFn;
+  final void Function(
+    String email,
+    String password,
+    String userName,
+    bool isLogin,
+    bool isAdmin,
+  ) submitFn;
   final bool isLoading;
 
   AuthForm(this.submitFn, this.isLoading);
