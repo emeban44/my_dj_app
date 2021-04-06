@@ -54,33 +54,46 @@ class _SongsFutureBuilderState extends State<SongsFutureBuilder> {
                   shape: BoxShape.rectangle,
                   borderRadius: BorderRadius.circular(3),
                 ),
-                child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.black26,
-                    child: Icon(
-                      Icons.music_note,
-                      color: Colors.pink,
+                child: InkWell(
+                  onLongPress: () {
+                    Provider.of<Songs>(context, listen: false).deleteSong(
+                      songsData.getSongsByGenre(widget.genre)[i].name,
+                      songsData.getSongsByGenre(widget.genre)[i].artist,
+                    );
+                  },
+                  child: ListTile(
+                    key: ValueKey(
+                      songsData.getSongsByGenre(widget.genre)[i].artist +
+                          ' - ' +
+                          songsData.getSongsByGenre(widget.genre)[i].name,
                     ),
-                  ),
-                  title: Text(
-                    songsData.getSongsByGenre(widget.genre)[i].artist +
-                        ' - ' +
-                        songsData.getSongsByGenre(widget.genre)[i].name,
-                    style: TextStyle(
-                      color: Colors.grey.shade300,
-                      fontSize: 14,
-                      fontFamily: 'Lexend',
-                    ),
-                  ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        icon:
-                            Icon(Icons.add_circle_outline, color: Colors.pink),
-                        onPressed: () {},
+                    leading: CircleAvatar(
+                      backgroundColor: Colors.black26,
+                      child: Icon(
+                        Icons.music_note,
+                        color: Colors.pink,
                       ),
-                    ],
+                    ),
+                    title: Text(
+                      songsData.getSongsByGenre(widget.genre)[i].artist +
+                          ' - ' +
+                          songsData.getSongsByGenre(widget.genre)[i].name,
+                      style: TextStyle(
+                        color: Colors.grey.shade300,
+                        fontSize: 14,
+                        fontFamily: 'Lexend',
+                      ),
+                    ),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.add_circle_outline,
+                              color: Colors.pink),
+                          onPressed: () {},
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );

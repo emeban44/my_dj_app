@@ -12,12 +12,20 @@ class SongsByGenre extends StatelessWidget {
   Widget build(BuildContext context) {
     return !SharedPrefs().didSongsInit
         ? FutureBuilder(
-            future: Provider.of<Songs>(context).initSongs(),
+            future: Provider.of<Songs>(context, listen: false).initSongs(),
             builder: (context, snapShot) {
               if (snapShot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator.adaptive());
               } else
-                return SongsFutureBuilder(genre);
+                return Center(
+                  child: Text(
+                    'Songs Starter Pack was initialized.\nPlease restart the app.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                );
             })
         : Column(
             mainAxisSize: MainAxisSize.min,

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:my_dj_app/models/sharedPrefs.dart';
 import 'package:my_dj_app/providers/songs_provider.dart';
 import 'package:provider/provider.dart';
 import '../screens/admin/songs_screen.dart';
@@ -34,7 +35,8 @@ class _AdminScreenState extends State<AdminScreen> {
 
   @override
   void initState() {
-    Provider.of<Songs>(context, listen: false).fetchAndSetSongs();
+    if (SharedPrefs().didSongsInit)
+      Provider.of<Songs>(context, listen: false).fetchAndSetSongs();
     super.initState();
   }
 
