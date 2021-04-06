@@ -6,10 +6,15 @@ import 'package:provider/provider.dart';
 import '../../widgets/admin/song_text_input.dart';
 import '../../models/genres.dart';
 
-class AddSongScreen extends StatelessWidget {
+class AddSongScreen extends StatefulWidget {
   static const routeName = '/add-song';
-  final _songFormKey = GlobalKey<FormState>();
-  static final List<bool> isChecked = [
+
+  @override
+  _AddSongScreenState createState() => _AddSongScreenState();
+}
+
+class _AddSongScreenState extends State<AddSongScreen> {
+  final List<bool> isChecked = [
     false,
     false,
     false,
@@ -20,12 +25,18 @@ class AddSongScreen extends StatelessWidget {
     false,
     false,
   ];
+  final _songFormKey = GlobalKey<FormState>();
+
   String finalSongName;
+
   String finalSongArtist;
+
   bool isValid = false;
 
   void toggleChecked(int index) {
-    isChecked[index] = !isChecked[index];
+    setState(() {
+      isChecked[index] = !isChecked[index];
+    });
   }
 
   void _trySongSubmit(String songName, String songArtist) {}
@@ -143,6 +154,7 @@ class AddSongScreen extends StatelessWidget {
                                 if (isChecked[i] == true)
                                   songGenres.add(Genres.genres[i]);
                               }
+
                               try {
                                 Provider.of<Songs>(context, listen: false)
                                     .addSong(Song(
@@ -150,10 +162,37 @@ class AddSongScreen extends StatelessWidget {
                                   finalSongArtist,
                                   songGenres,
                                 ));
+                                isChecked.forEach((element) {
+                                  element = false;
+                                });
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  content: Text(
+                                    'Song added!',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  backgroundColor: Colors.green,
+                                  duration: Duration(seconds: 1),
+                                ));
                                 Navigator.of(context).pop();
                               } catch (error) {
                                 print('error while adding');
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  content: Text(
+                                    'Error while adding!',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  backgroundColor: Colors.red,
+                                ));
                               }
+                              setState(() {
+                                isChecked.forEach((element) {
+                                  element = false;
+                                });
+                              });
+                              print(finalSongName + finalSongArtist);
+                              print(isChecked);
                             }
                           },
                           icon: Icon(
