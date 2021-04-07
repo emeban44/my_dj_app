@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:my_dj_app/models/sharedPrefs.dart';
+import 'package:my_dj_app/providers/songs_provider.dart';
 import 'package:my_dj_app/widgets/admin/search_box.dart';
 import 'package:my_dj_app/widgets/admin/songs_search_builder.dart';
+import 'package:provider/provider.dart';
 
 import '../../widgets/admin/songs_by_genre.dart';
 import '../../widgets/admin/genre_item.dart';
@@ -34,7 +36,6 @@ class _SongsScreenState extends State<SongsScreen> {
 
   void searchSongs() {
     if (_searchController.text.isEmpty) return;
-
     setState(() {
       searching = true;
     });
@@ -54,18 +55,28 @@ class _SongsScreenState extends State<SongsScreen> {
                       child: SongsSearchBuilder(_searchController.text))),
               Flexible(
                 flex: 1,
-                child: ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      searching = false;
-                    });
-                    _searchController.clear();
-                    //      SharedPrefs().toggleCanvasColor(false);
-                  },
-                  child: Text('Exit Search'),
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.black26,
-                    elevation: 10,
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 10),
+                  width: (Provider.of<Songs>(context, listen: false)
+                              .getSongsBySearch(_searchController.text)
+                              .length ==
+                          0)
+                      ? 170
+                      : double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        searching = false;
+                      });
+                      _searchController.clear();
+                      //      SharedPrefs().toggleCanvasColor(false);
+                    },
+                    child: Text('Exit Search'),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.black26,
+                      elevation: 10,
+                      //             shadowColor: Colors.blue,
+                    ),
                   ),
                 ),
               )
