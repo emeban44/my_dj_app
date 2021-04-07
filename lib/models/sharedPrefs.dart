@@ -42,6 +42,15 @@ class SharedPrefs {
     _sharedPrefs.setString('userId', value);
   }
 
+  void toggleCanvasColor(value) {
+    _sharedPrefs.setBool('canvasColor', value);
+  }
+
+  bool get canvasColor {
+    if (_sharedPrefs.getBool('canvasColor') == null) return false;
+    return _sharedPrefs.getBool('canvasColor');
+  }
+
   String get userId {
     return _sharedPrefs.getString('userId');
   }

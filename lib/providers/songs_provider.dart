@@ -20,6 +20,17 @@ class Songs with ChangeNotifier {
     return songsByGenre;
   }
 
+  List<Song> getSongsBySearch(String searchInput) {
+    List<Song> songsBySearch = _songs
+        .where((song) =>
+            (song.artist.toLowerCase().contains(searchInput.toLowerCase()) ||
+                song.name.toLowerCase().contains(searchInput.toLowerCase())))
+        .toList();
+    if (songsBySearch.isEmpty) return [];
+    songsBySearch.sort((a, b) => a.artist.compareTo(b.artist));
+    return songsBySearch;
+  }
+
   Future<void> initSongs() async {
     try {
       final songs =
@@ -104,41 +115,6 @@ class Songs with ChangeNotifier {
           .doc(songArtist + ' - ' + songName)
           .delete();
       print('succes');
-      /*
-      print('trying');
-      /*     final songs  = */ await FirebaseFirestore.instance
-          .collection('adminSongs')
-          .doc(SharedPrefs().userId)
-          .collection('songsList')
-          .where('songName', isEqualTo: songName)
-          //     .where('songArtist', isEqualTo: 'songArtist')
-          .get()
-          .then((value) {
-        print('what');
-        value.docs.forEach((element) {
-          print(element.id);
-          FirebaseFirestore.instance
-              .collection('adminSongs')
-              .doc(SharedPrefs().userId)
-              .collection('songsList')
-              .doc(element.id)
-              .delete()
-              .then((value) => print('success'));
-        }); 
-      });
-
-      /*
-      final index = songs.docs.indexWhere((doc) =>
-          (doc['songName'] == songName && doc['songArtist'] == songArtist));
-      final docId = songs.docs[index].id;
-      print(index);
-      print(docId); 
-      await FirebaseFirestore.instance
-          .collection('adminSongs')
-          .doc(SharedPrefs().userId)
-          .collection('songslist')
-          .doc('2I7V5tBEQdZAG7U1J8RR')
-          .delete(); */ */
     } catch (error) {
       print(error.message);
       throw error;

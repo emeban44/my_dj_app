@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:my_dj_app/models/sharedPrefs.dart';
+import 'package:my_dj_app/widgets/admin/search_box.dart';
+import 'package:my_dj_app/widgets/admin/songs_search_builder.dart';
 
 import '../../widgets/admin/songs_by_genre.dart';
 import '../../widgets/admin/genre_item.dart';
@@ -31,81 +34,69 @@ class _SongsScreenState extends State<SongsScreen> {
 
   void searchSongs() {
     if (_searchController.text.isEmpty) return;
+
+    setState(() {
+      searching = true;
+    });
+    //  SharedPrefs().toggleCanvasColor(true);
+    FocusScope.of(context).unfocus();
   }
 
   @override
   Widget build(BuildContext context) {
-    return showByGenre
-        ? SongsByGenre(genre, goBack)
-        : Column(
-            mainAxisSize: MainAxisSize.min,
+    return searching
+        ? Column(
             children: [
-              Container(
-                padding: EdgeInsets.only(left: 10),
-                margin:
-                    EdgeInsets.only(top: 15, right: 25, left: 25, bottom: 5),
-                //    color: Colors.purple,
-                height: 40,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [Colors.blue.shade100, Colors.pink.shade200],
-                    )),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Flexible(
-                      flex: 4,
-                      child: TextFormField(
-                        controller: _searchController,
-                        keyboardType: TextInputType.text,
-                        textCapitalization: TextCapitalization.words,
-                        style: TextStyle(
-                          fontFamily: 'Lexend',
-                          //    fontWeight: FontWeight.w600,
-                        ),
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Search',
-                          hintStyle: TextStyle(fontWeight: FontWeight.normal),
-                        ),
-                      ),
-                    ),
-                    Flexible(
-                      flex: 1,
-                      child: Container(
-                        padding: EdgeInsets.only(bottom: 5),
-                        child: IconButton(
-                            icon: Icon(Icons.search), onPressed: () {}),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Expanded(
-                child: GridView(
-                  padding: const EdgeInsets.only(
-                      right: 25, left: 25, bottom: 25, top: 15),
-                  children: Genres.genres
-                      .map((genreData) => GenreItem(
-                            genreData,
-                            Colors.pink,
-                            toggleGenres,
-                          ))
-                      .toList(),
-                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 200,
-                    childAspectRatio: 3 / 2,
-                    crossAxisSpacing: 20,
-                    mainAxisSpacing: 20,
+              SearchBox(_searchController, searchSongs),
+              Flexible(
+                  flex: 10,
+                  child: SizedBox(
+                      child: SongsSearchBuilder(_searchController.text))),
+              Flexible(
+                flex: 1,
+                child: ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      searching = false;
+                    });
+                    _searchController.clear();
+                    //      SharedPrefs().toggleCanvasColor(false);
+                  },
+                  child: Text('Exit Search'),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.black26,
+                    elevation: 10,
                   ),
                 ),
-              ),
+              )
             ],
-          );
+          )
+        : showByGenre
+            ? SongsByGenre(genre, goBack)
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SearchBox(_searchController, searchSongs),
+                  Expanded(
+                    child: GridView(
+                      padding: const EdgeInsets.only(
+                          right: 25, left: 25, bottom: 25, top: 15),
+                      children: Genres.genres
+                          .map((genreData) => GenreItem(
+                                genreData,
+                                Colors.pink,
+                                toggleGenres,
+                              ))
+                          .toList(),
+                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                        maxCrossAxisExtent: 200,
+                        childAspectRatio: 3 / 2,
+                        crossAxisSpacing: 20,
+                        mainAxisSpacing: 20,
+                      ),
+                    ),
+                  ),
+                ],
+              );
   }
 }
