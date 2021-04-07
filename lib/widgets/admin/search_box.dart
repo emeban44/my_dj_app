@@ -27,6 +27,9 @@ class SearchBox extends StatelessWidget {
             flex: 4,
             child: TextFormField(
               controller: _controller,
+              onFieldSubmitted: (value) {
+                search();
+              },
               keyboardType: TextInputType.text,
               textCapitalization: TextCapitalization.words,
               style: TextStyle(

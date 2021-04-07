@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:my_dj_app/widgets/admin/songs_by_genre.dart';
 
 class GenreItem extends StatelessWidget {
   final String title;

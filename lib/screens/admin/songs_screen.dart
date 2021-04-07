@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:my_dj_app/models/sharedPrefs.dart';
 import 'package:my_dj_app/providers/songs_provider.dart';
 import 'package:my_dj_app/widgets/admin/search_box.dart';
 import 'package:my_dj_app/widgets/admin/songs_search_builder.dart';
@@ -71,7 +69,7 @@ class _SongsScreenState extends State<SongsScreen> {
                       _searchController.clear();
                       //      SharedPrefs().toggleCanvasColor(false);
                     },
-                    child: Text('Exit Search'),
+                    child: const Text('Exit Search'),
                     style: ElevatedButton.styleFrom(
                       primary: Colors.black26,
                       elevation: 10,
@@ -84,30 +82,35 @@ class _SongsScreenState extends State<SongsScreen> {
           )
         : showByGenre
             ? SongsByGenre(genre, goBack)
-            : Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SearchBox(_searchController, searchSongs),
-                  Expanded(
-                    child: GridView(
-                      padding: const EdgeInsets.only(
-                          right: 25, left: 25, bottom: 25, top: 15),
-                      children: Genres.genres
-                          .map((genreData) => GenreItem(
-                                genreData,
-                                Colors.pink,
-                                toggleGenres,
-                              ))
-                          .toList(),
-                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                        maxCrossAxisExtent: 200,
-                        childAspectRatio: 3 / 2,
-                        crossAxisSpacing: 20,
-                        mainAxisSpacing: 20,
+            : GestureDetector(
+                onTap: () {
+                  FocusScope.of(context).unfocus();
+                },
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SearchBox(_searchController, searchSongs),
+                    Expanded(
+                      child: GridView(
+                        padding: const EdgeInsets.only(
+                            right: 25, left: 25, bottom: 25, top: 15),
+                        children: Genres.genres
+                            .map((genreData) => GenreItem(
+                                  genreData,
+                                  Colors.pink,
+                                  toggleGenres,
+                                ))
+                            .toList(),
+                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: 200,
+                          childAspectRatio: 3 / 2,
+                          crossAxisSpacing: 20,
+                          mainAxisSpacing: 20,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               );
   }
 }

@@ -1,7 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_dj_app/models/sharedPrefs.dart';
 import 'package:my_dj_app/providers/songs_provider.dart';
+import 'package:my_dj_app/screens/admin/add_song_screen.dart';
+import 'package:my_dj_app/widgets/app_drawer.dart';
 import 'package:provider/provider.dart';
 import '../screens/admin/songs_screen.dart';
 import 'admin/dashboard_screen.dart';
@@ -14,19 +15,20 @@ class AdminScreen extends StatefulWidget {
 
 class _AdminScreenState extends State<AdminScreen> {
   final List<Widget> _pages = [
-    DashboardScreen(),
+    //  DashboardScreen(),
     LobbyStatusScreen(),
     SongsScreen(),
   ];
 
   final List<String> _titles = [
-    'Dashboard',
+    //  'Dashboard',
     'Lobby Status',
     'Songs Library',
   ];
 
   int _selectedPageIndex = 0;
   bool changeCanvas = false;
+  bool isLoading = false;
 
   void _selectPage(int index) {
     setState(() {
@@ -36,9 +38,29 @@ class _AdminScreenState extends State<AdminScreen> {
 
   @override
   void initState() {
-    if (SharedPrefs().didSongsInit)
-      Provider.of<Songs>(context, listen: false).fetchAndSetSongs();
+    //   if (SharedPrefs().didSongsInit)
+    //     Provider.of<Songs>(context, listen: false).fetchAndSetSongs();
+
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (this.mounted) {
+      setState(() {
+        isLoading = true;
+      });
+      if (SharedPrefs().didSongsInit)
+        Provider.of<Songs>(context, listen: false)
+            .fetchAndSetSongs()
+            .then((value) {
+          if (this.mounted)
+            setState(() {
+              isLoading = false;
+            });
+        });
+    }
+    super.didChangeDependencies();
   }
 
   @override
@@ -57,15 +79,41 @@ class _AdminScreenState extends State<AdminScreen> {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
+        drawer: AppDrawer(),
         appBar: AppBar(
-          title: Center(
-              child: Text(
+          actions: [
+            if (_selectedPageIndex == 1)
+              Padding(
+                padding: const EdgeInsets.only(right: 18.0),
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(AddSongScreen.routeName);
+                  },
+                  /*        label: Text(
+                    'Add Song',
+                    style: TextStyle(
+                      color: Colors.grey.shade400,
+                      fontFamily: 'Lexend',
+                    ),
+                  ), */
+                  icon: Icon(
+                    Icons.add,
+                    color: Colors.grey.shade400,
+                  ),
+                ),
+              ),
+          ],
+          title: Text(
             _titles[_selectedPageIndex],
             style: TextStyle(fontFamily: 'Raleway'),
-          )),
+          ),
           backgroundColor: Colors.transparent,
         ), //Colors.transparent.withOpacity(0.8)),
-        body: _pages[_selectedPageIndex],
+        body: isLoading
+            ? Center(
+                child: CircularProgressIndicator.adaptive(),
+              )
+            : _pages[_selectedPageIndex],
         bottomNavigationBar: BottomNavigationBar(
           onTap: _selectPage,
           backgroundColor: Color.fromRGBO(10, 5, 27, 0.9),
@@ -82,13 +130,13 @@ class _AdminScreenState extends State<AdminScreen> {
             fontSize: 11,
           ),
           items: [
-            BottomNavigationBarItem(
+            /*   BottomNavigationBarItem(
               icon: Container(
                 margin: EdgeInsets.only(bottom: 2),
                 child: Icon(Icons.dashboard),
               ),
               label: 'DASHBOARD',
-            ),
+            ), */
             BottomNavigationBarItem(
                 icon: Container(
                   child: Icon(Icons.people),

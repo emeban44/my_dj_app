@@ -39,8 +39,6 @@ class _AddSongScreenState extends State<AddSongScreen> {
     });
   }
 
-  void _trySongSubmit(String songName, String songArtist) {}
-
   void setSongValues(String value, String hint) {
     if (hint == 'Song Name')
       finalSongName = value;
