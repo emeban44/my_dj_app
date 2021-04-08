@@ -85,6 +85,27 @@ flutter:
     - family: Raleway
       fonts:
         - asset: lib/fonts/Raleway-Regular.ttf
+    - family: GlitchCity
+      fonts:
+        - asset: lib/fonts/CFGlitchCity-Regular.ttf  
+    - family: Erosion
+      fonts:
+        - asset: lib/fonts/ExamplesOfErosion.ttf
+    - family: FastForward
+      fonts:
+        - asset: lib/fonts/FastForward.ttf   
+    - family: FluoGums
+      fonts:
+        - asset: lib/fonts/FluoGums.ttf   
+    - family: Grobold
+      fonts:
+        - asset: lib/fonts/GROBOLD.ttf
+    - family: Infected
+      fonts:
+        - asset: lib/fonts/INFECTED.ttf
+    - family: Urban
+      fonts:
+        - asset: lib/fonts/UrbanJungleDEMO.otf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

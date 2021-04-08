@@ -1,10 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:my_dj_app/models/lobby.dart';
+import 'package:provider/provider.dart';
 
 import 'package:my_dj_app/models/song.dart';
 import 'package:my_dj_app/providers/songs_provider.dart';
+import 'package:my_dj_app/providers/lobbies_provider.dart';
 import 'package:my_dj_app/screens/admin/create_lobby_screen.dart';
-import 'package:provider/provider.dart';
 
 class LobbyStatusScreen extends StatefulWidget {
   @override
@@ -16,7 +17,8 @@ class _LobbyStatusScreenState extends State<LobbyStatusScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return !_lobbyCreated
+    Lobby currentLobby = Provider.of<Lobbies>(context).getCurrentLobby;
+    return currentLobby.name == 'Non-existent'
         ? Center(
             child: Container(
               height: 75,
@@ -35,17 +37,79 @@ class _LobbyStatusScreenState extends State<LobbyStatusScreen> {
             ),
           )
         : Container(
-            margin: EdgeInsets.all(10),
             width: double.infinity,
-            height: double.infinity,
+            padding: EdgeInsets.only(top: 10),
             child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                Stack(
+                  children: <Widget>[
+                    // Stroked text as border.
+                    Text(
+                      currentLobby.name,
+                      style: TextStyle(
+                        letterSpacing: 0.5,
+                        shadows: [
+                          Shadow(
+                            color: Colors.black,
+                            offset: Offset(3.5, 2.0),
+                            blurRadius: 1.0,
+                          ),
+                        ],
+                        fontFamily: 'Doctor',
+                        fontSize: 26,
+                        foreground: Paint()
+                          ..style = PaintingStyle.stroke
+                          ..strokeWidth = 3
+                          ..color = Colors.black,
+                      ),
+                    ),
+                    // Solid text as fill.
+                    Text(
+                      currentLobby.name,
+                      style: TextStyle(
+                        letterSpacing: 0.5,
+                        shadows: [
+                          Shadow(
+                            color: Colors.black,
+                            offset: Offset(3.5, 2.0),
+                            blurRadius: 1.0,
+                          ),
+                        ],
+                        fontSize: 26,
+                        fontFamily: 'Doctor',
+                        color: Colors.pink,
+                      ),
+                    ),
+                  ],
+                ),
+                /* Text(
+                  currentLobby.name,
+                  style: TextStyle(
+                    fontSize: 26,
+                    color: Colors.pink, // Colors.grey.shade300,
+                    fontFamily: 'Doctor',
+                    decoration: TextDecoration.underline,
+
+                    letterSpacing: 1,
+                    shadows: [
+                      Shadow(
+                        color: Colors.black,
+                        offset: Offset(3.5, 2.0),
+                        blurRadius: 1.0,
+                      ),
+                    ],
+                  ),
+                ),
+                
                 Text(
                   'Number of users currently: ',
                   style: TextStyle(
                     color: Colors.grey.shade400,
                   ),
-                )
+                ),*/
               ],
             ),
           );

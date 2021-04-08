@@ -29,4 +29,14 @@ class Lobbies with ChangeNotifier {
     _lobby = lobby;
     notifyListeners();
   }
+
+  Lobby get getCurrentLobby {
+    Lobby currentLobby = Lobby(
+      name: _lobby.name,
+      capacity: _lobby.capacity,
+      duration: _lobby.duration,
+      songsPerPoll: _lobby.songsPerPoll,
+    );
+    return currentLobby;
+  }
 }
