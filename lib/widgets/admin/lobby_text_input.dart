@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class SongTextInput extends StatelessWidget {
+class LobbyTextInput extends StatelessWidget {
   final String inputHint;
   final Function(String valueToBeSet, String valueHint) setValue;
 
-  SongTextInput(this.inputHint, this.setValue);
+  LobbyTextInput(this.inputHint, this.setValue);
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +21,14 @@ class SongTextInput extends StatelessWidget {
           end: Alignment.bottomCenter,
           colors: [
             Colors.blue.shade200,
-            Colors.pink.shade200,
+            Colors.purple.shade200,
           ],
         ),
       ),
       child: TextFormField(
+        keyboardType: inputHint == 'Lobby Capacity'
+            ? TextInputType.number
+            : TextInputType.name,
         style: TextStyle(
           fontFamily: 'Lexend',
           fontWeight: FontWeight.bold,
@@ -48,8 +51,17 @@ class SongTextInput extends StatelessWidget {
         ),
         validator: (value) {
           if (value.isEmpty) {
-            return inputHint.toString() + ' cannot be empty!';
+            return inputHint + ' cannot be empty!';
           }
+          if (inputHint == 'Lobby Capacity') {
+            try {
+              int lobbyCapacity = int.parse(value);
+              if (lobbyCapacity < 3) return 'Capacity should be greater than 3';
+            } catch (error) {
+              return 'Capacity must be a number!';
+            }
+          }
+
           return null;
         },
         onSaved: (value) {

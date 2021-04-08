@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:my_dj_app/models/song.dart';
 import 'package:my_dj_app/providers/songs_provider.dart';
+import 'package:my_dj_app/screens/admin/create_lobby_screen.dart';
 import 'package:provider/provider.dart';
 
 class LobbyStatusScreen extends StatefulWidget {
@@ -25,7 +26,10 @@ class _LobbyStatusScreenState extends State<LobbyStatusScreen> {
                     elevation: 10,
                     primary: Colors.pink,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context)
+                        .pushNamed(CreateLobbyScreen.routeName);
+                  },
                   icon: Icon(Icons.library_add),
                   label: Text('CREATE A LOBBY')),
             ),
