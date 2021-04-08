@@ -36,6 +36,7 @@ class _LobbyDurationRadioButtonRow extends State<LobbyDurationRadioButtonRow> {
               : null,
           child: TextButton.icon(
             onPressed: () {
+              FocusScope.of(context).unfocus();
               setState(() {
                 is60Selected = !is60Selected;
                 if (is60Selected) {
@@ -80,6 +81,7 @@ class _LobbyDurationRadioButtonRow extends State<LobbyDurationRadioButtonRow> {
               : null,
           child: TextButton.icon(
             onPressed: () {
+              FocusScope.of(context).unfocus();
               setState(() {
                 is90Selected = !is90Selected;
                 if (is90Selected) {
@@ -124,6 +126,7 @@ class _LobbyDurationRadioButtonRow extends State<LobbyDurationRadioButtonRow> {
               : null,
           child: TextButton.icon(
             onPressed: () {
+              FocusScope.of(context).unfocus();
               setState(() {
                 is120Selected = !is120Selected;
                 if (is120Selected) {

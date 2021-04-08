@@ -36,6 +36,7 @@ class _LobbySongNumberRowState extends State<LobbySongNumberRow> {
           child: TextButton.icon(
             onPressed: () {
               setState(() {
+                FocusScope.of(context).unfocus();
                 is4Selected = !is4Selected;
                 if (is4Selected) {
                   is5Selected = false;
@@ -79,6 +80,7 @@ class _LobbySongNumberRowState extends State<LobbySongNumberRow> {
               : null,
           child: TextButton.icon(
             onPressed: () {
+              FocusScope.of(context).unfocus();
               setState(() {
                 is5Selected = !is5Selected;
                 if (is5Selected) {
@@ -123,6 +125,7 @@ class _LobbySongNumberRowState extends State<LobbySongNumberRow> {
               : null,
           child: TextButton.icon(
             onPressed: () {
+              FocusScope.of(context).unfocus();
               setState(() {
                 is6Selected = !is6Selected;
                 if (is6Selected) {

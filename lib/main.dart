@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:my_dj_app/providers/lobbies_provider.dart';
 import 'package:my_dj_app/screens/admin/create_lobby_screen.dart';
 import 'package:provider/provider.dart';
 import './screens/admin/add_song_screen.dart';
@@ -29,8 +30,15 @@ class MyApp extends StatelessWidget {
         // Initialize FlutterFire:
         future: _initialization,
         builder: (context, appSnapshot) {
-          return ChangeNotifierProvider(
-            create: (ctx) => Songs(),
+          return MultiProvider(
+            providers: [
+              ChangeNotifierProvider(
+                create: (ctx) => Songs(),
+              ),
+              ChangeNotifierProvider(
+                create: (ctx) => Lobbies(),
+              )
+            ],
             child: MaterialApp(
                 debugShowCheckedModeBanner: false,
                 title: 'Flutter Demo',

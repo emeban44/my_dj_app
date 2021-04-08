@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:my_dj_app/models/lobby.dart';
+import 'package:my_dj_app/providers/lobbies_provider.dart';
 import 'package:my_dj_app/widgets/admin/lobby_duration_radio_row.dart';
 import 'package:my_dj_app/widgets/admin/lobby_song_number.dart';
 import 'package:my_dj_app/widgets/admin/lobby_text_input.dart';
+import 'package:provider/provider.dart';
 
 class CreateLobbyScreen extends StatefulWidget {
   static const routeName = '/create-lobby';
@@ -22,6 +25,8 @@ class _CreateLobbyScreenState extends State<CreateLobbyScreen> {
   int lobbyDuration = 0;
 
   int lobbySongsTotal = 0;
+
+  bool isLoading = false;
 
   void setLobbyInfo(String value, String hint) {
     if (hint == 'Lobby Name')
@@ -53,8 +58,34 @@ class _CreateLobbyScreenState extends State<CreateLobbyScreen> {
           duration: Duration(seconds: 1),
         ),
       );
-    } else {
+    } else if (isValid) {
       _lobbyCreationFormKey.currentState.save();
+      setState(() {
+        isLoading = true;
+      });
+      Provider.of<Lobbies>(context, listen: false)
+          .createLobby(Lobby(
+        name: finalLobbyName,
+        capacity: finalLobbyCapacity,
+        duration: lobbyDuration,
+        songsPerPoll: lobbySongsTotal,
+      ))
+          .whenComplete(() {
+        setState(() {
+          isLoading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Lobby Created!',
+              textAlign: TextAlign.center,
+            ),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 1),
+          ),
+        );
+        Navigator.of(context).pop();
+      });
       print(finalLobbyName);
       print(finalLobbyCapacity);
       print(lobbyDuration);
@@ -151,23 +182,27 @@ class _CreateLobbyScreenState extends State<CreateLobbyScreen> {
                           ],
                         ),
                       ),
-                      child: TextButton.icon(
-                        onPressed: _tryLobbyCreate,
-                        icon: Icon(
-                          Icons.add,
-                          color: Colors.black,
-                        ),
-                        label: Text(
-                          'CREATE LOBBY',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontFamily: 'Lexend',
-                            fontSize: 17,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
+                      child: isLoading
+                          ? Center(
+                              child: CircularProgressIndicator.adaptive(),
+                            )
+                          : TextButton.icon(
+                              onPressed: _tryLobbyCreate,
+                              icon: Icon(
+                                Icons.add,
+                                color: Colors.black,
+                              ),
+                              label: Text(
+                                'CREATE LOBBY',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontFamily: 'Lexend',
+                                  fontSize: 17,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
                     ),
                   ],
                 ),
