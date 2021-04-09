@@ -19,4 +19,8 @@ class Polls with ChangeNotifier {
   List<Song> get getCurrentPollSongs {
     return [..._currentPoll];
   }
+
+  int get getCurrentPollSize {
+    return _currentPoll.length;
+  }
 }

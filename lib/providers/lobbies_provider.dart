@@ -43,4 +43,8 @@ class Lobbies with ChangeNotifier {
   int get getLobbyDuration {
     return _lobby.duration;
   }
+
+  int get getLobbySongsPerPoll {
+    return _lobby.songsPerPoll;
+  }
 }

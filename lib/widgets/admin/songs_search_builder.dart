@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_dj_app/providers/lobbies_provider.dart';
 import 'package:my_dj_app/providers/poll_provider.dart';
 import 'package:my_dj_app/providers/songs_provider.dart';
 import 'package:provider/provider.dart';
@@ -168,9 +169,49 @@ class _SongsSearchBuilderState extends State<SongsSearchBuilder> {
                               icon: Icon(Icons.add_circle_outline,
                                   color: Colors.pink),
                               onPressed: () {
-                                Provider.of<Polls>(context, listen: false)
-                                    .addToPoll(songsData.getSongsBySearch(
-                                        widget.searchInput)[i]);
+                                if (Provider.of<Lobbies>(context, listen: false)
+                                        .getLobbySongsPerPoll ==
+                                    0) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        'Create a lobby first!',
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      backgroundColor: Colors.red,
+                                      duration: Duration(seconds: 1),
+                                    ),
+                                  );
+                                } else if (Provider.of<Lobbies>(context,
+                                            listen: false)
+                                        .getLobbySongsPerPoll ==
+                                    Provider.of<Polls>(context, listen: false)
+                                        .getCurrentPollSize) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        'Poll size is full!',
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      backgroundColor: Colors.red,
+                                      duration: Duration(seconds: 1),
+                                    ),
+                                  );
+                                } else {
+                                  Provider.of<Polls>(context, listen: false)
+                                      .addToPoll(songsData.getSongsBySearch(
+                                          widget.searchInput)[i]);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        'Song added to poll!',
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      backgroundColor: Colors.green,
+                                      duration: Duration(seconds: 1),
+                                    ),
+                                  );
+                                }
                               },
                             ),
                           ],
