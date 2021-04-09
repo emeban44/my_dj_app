@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_dj_app/models/sharedPrefs.dart';
 import 'package:my_dj_app/providers/songs_provider.dart';
 import 'package:my_dj_app/screens/admin/add_song_screen.dart';
+import 'package:my_dj_app/screens/admin/poll_creation_screen.dart';
 import 'package:my_dj_app/widgets/app_drawer.dart';
 import 'package:provider/provider.dart';
 import '../screens/admin/songs_screen.dart';
@@ -17,12 +18,14 @@ class _AdminScreenState extends State<AdminScreen> {
   final List<Widget> _pages = [
     //  DashboardScreen(),
     LobbyStatusScreen(),
+    PollCreationScreen(),
     SongsScreen(),
   ];
 
   final List<String> _titles = [
     //  'Dashboard',
     'Lobby Status',
+    'Poll Creation',
     'Songs Library',
   ];
 
@@ -82,7 +85,7 @@ class _AdminScreenState extends State<AdminScreen> {
         drawer: AppDrawer(),
         appBar: AppBar(
           actions: [
-            if (_selectedPageIndex == 1)
+            if (_selectedPageIndex == 2)
               Padding(
                 padding: const EdgeInsets.only(right: 18.0),
                 child: IconButton(
@@ -143,6 +146,13 @@ class _AdminScreenState extends State<AdminScreen> {
                   margin: EdgeInsets.only(bottom: 2),
                 ),
                 label: 'LOBBY'),
+            BottomNavigationBarItem(
+              icon: Container(
+                margin: EdgeInsets.only(bottom: 2),
+                child: Icon(Icons.poll),
+              ),
+              label: 'POLL',
+            ),
             BottomNavigationBarItem(
               icon: Container(
                 margin: EdgeInsets.only(bottom: 2),

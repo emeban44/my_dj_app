@@ -39,4 +39,8 @@ class Lobbies with ChangeNotifier {
     );
     return currentLobby;
   }
+
+  int get getLobbyDuration {
+    return _lobby.duration;
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_dj_app/providers/poll_provider.dart';
 import 'package:my_dj_app/providers/songs_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -166,7 +167,11 @@ class _SongsSearchBuilderState extends State<SongsSearchBuilder> {
                             IconButton(
                               icon: Icon(Icons.add_circle_outline,
                                   color: Colors.pink),
-                              onPressed: () {},
+                              onPressed: () {
+                                Provider.of<Polls>(context, listen: false)
+                                    .addToPoll(songsData.getSongsBySearch(
+                                        widget.searchInput)[i]);
+                              },
                             ),
                           ],
                         ),

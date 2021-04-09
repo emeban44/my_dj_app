@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:my_dj_app/providers/lobbies_provider.dart';
+import 'package:my_dj_app/providers/timer_provider.dart';
 import 'package:my_dj_app/screens/admin/create_lobby_screen.dart';
 import 'package:provider/provider.dart';
 import './screens/admin/add_song_screen.dart';
@@ -11,6 +12,7 @@ import './screens/admin_screen.dart';
 import './screens/user_screen.dart';
 import './screens/auth_screen.dart';
 import './screens/splash_screen.dart';
+import 'providers/poll_provider.dart';
 import 'providers/songs_provider.dart';
 
 final sharedPrefs = SharedPrefs();
@@ -37,7 +39,13 @@ class MyApp extends StatelessWidget {
               ),
               ChangeNotifierProvider(
                 create: (ctx) => Lobbies(),
-              )
+              ),
+              ChangeNotifierProvider(
+                create: (ctx) => LobbyTimer(),
+              ),
+              ChangeNotifierProvider(
+                create: (ctx) => Polls(),
+              ),
             ],
             child: MaterialApp(
                 debugShowCheckedModeBanner: false,

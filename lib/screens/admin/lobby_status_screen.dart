@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:my_dj_app/models/lobby.dart';
+import 'package:my_dj_app/providers/timer_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_countdown_timer/index.dart';
 
 import 'package:my_dj_app/models/song.dart';
 import 'package:my_dj_app/providers/songs_provider.dart';
@@ -14,6 +18,13 @@ class LobbyStatusScreen extends StatefulWidget {
 
 class _LobbyStatusScreenState extends State<LobbyStatusScreen> {
   bool _lobbyCreated = false;
+  int timeRemaining = 0;
+  //CountdownTimerController _timerController;
+  //
+
+  void timer() {
+    Provider.of<LobbyTimer>(context, listen: false).timer();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +60,7 @@ class _LobbyStatusScreenState extends State<LobbyStatusScreen> {
                     // Stroked text as border.
                     Text(
                       currentLobby.name,
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                         letterSpacing: 0.5,
                         shadows: [
@@ -69,6 +81,7 @@ class _LobbyStatusScreenState extends State<LobbyStatusScreen> {
                     // Solid text as fill.
                     Text(
                       currentLobby.name,
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                         letterSpacing: 0.5,
                         shadows: [
@@ -85,7 +98,29 @@ class _LobbyStatusScreenState extends State<LobbyStatusScreen> {
                     ),
                   ],
                 ),
-                /* Text(
+                Consumer<LobbyTimer>(
+                    builder: (context, timeData, child) =>
+                        Text(timeData.timeLeft.toString())),
+                ElevatedButton(onPressed: timer, child: Text('click')),
+                /* Text(timeRemaining.toString()),
+                
+                CountdownTimer(
+                  endTime: ,
+                  controller: widget._timerController,
+                  widgetBuilder: (ctx, timeRemaining) {
+                    if (timeRemaining == null) return Text('END');
+
+                    return Text(
+                      timeRemaining.sec.toString(),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontFamily: 'Lexend',
+                      ),
+                    );
+                  },
+                ),
+                Text(
                   currentLobby.name,
                   style: TextStyle(
                     fontSize: 26,
