@@ -127,7 +127,9 @@ class _PollCreationScreenState extends State<PollCreationScreen> {
             ),
             width: 150,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Provider.of<Polls>(context, listen: false).createPoll();
+              },
               child: Text('Create Poll'),
               style: ElevatedButton.styleFrom(
                 primary: Colors.black54,

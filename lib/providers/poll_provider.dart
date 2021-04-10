@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:my_dj_app/models/poll.dart';
+import 'package:my_dj_app/models/sharedPrefs.dart';
+
 import 'package:my_dj_app/models/song.dart';
 import 'package:my_dj_app/providers/lobbies_provider.dart';
 
@@ -22,5 +24,53 @@ class Polls with ChangeNotifier {
 
   int get getCurrentPollSize {
     return _currentPoll.length;
+  }
+
+  Future<void> createPoll() async {
+    if (getCurrentPollSize == 4)
+      await FirebaseFirestore.instance
+          .collection('lobbies')
+          .doc(SharedPrefs().userId)
+          .update(
+        {
+          'poll': {
+            'song0': _currentPoll[0].artist + ' - ' + _currentPoll[0].name,
+            'song1': _currentPoll[1].artist + ' - ' + _currentPoll[1].name,
+            'song2': _currentPoll[2].artist + ' - ' + _currentPoll[2].name,
+            'song3': _currentPoll[3].artist + ' - ' + _currentPoll[3].name,
+          }
+        },
+      );
+    else if (getCurrentPollSize == 5)
+      await FirebaseFirestore.instance
+          .collection('lobbies')
+          .doc(SharedPrefs().userId)
+          .update(
+        {
+          'poll': {
+            'song0': _currentPoll[0].artist + ' - ' + _currentPoll[0].name,
+            'song1': _currentPoll[1].artist + ' - ' + _currentPoll[1].name,
+            'song2': _currentPoll[2].artist + ' - ' + _currentPoll[2].name,
+            'song3': _currentPoll[3].artist + ' - ' + _currentPoll[3].name,
+            'song4': _currentPoll[4].artist + ' - ' + _currentPoll[4].name,
+          }
+        },
+      );
+    else if (getCurrentPollSize == 6)
+      await FirebaseFirestore.instance
+          .collection('lobbies')
+          .doc(SharedPrefs().userId)
+          .update(
+        {
+          'poll': {
+            'song0': _currentPoll[0].artist + ' - ' + _currentPoll[0].name,
+            'song1': _currentPoll[1].artist + ' - ' + _currentPoll[1].name,
+            'song2': _currentPoll[2].artist + ' - ' + _currentPoll[2].name,
+            'song3': _currentPoll[3].artist + ' - ' + _currentPoll[3].name,
+            'song4': _currentPoll[4].artist + ' - ' + _currentPoll[4].name,
+            'song5': _currentPoll[5].artist + ' - ' + _currentPoll[5].name,
+          }
+        },
+      );
   }
 }

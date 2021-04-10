@@ -16,11 +16,19 @@ class Lobbies with ChangeNotifier {
       await FirebaseFirestore.instance
           .collection('lobbies')
           .doc(SharedPrefs().userId)
+          .collection('polls')
+          .doc()
+          .delete();
+
+      await FirebaseFirestore.instance
+          .collection('lobbies')
+          .doc(SharedPrefs().userId)
           .set({
         'lobbyName': lobby.name,
         'lobbyCapacity': lobby.capacity,
         'lobbyDuration': lobby.duration,
         'lobbySongsPerPoll': lobby.songsPerPoll,
+        'poll': {},
       });
     } catch (error) {
       print(error.message);

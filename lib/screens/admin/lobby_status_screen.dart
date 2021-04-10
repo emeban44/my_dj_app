@@ -1,7 +1,10 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_dj_app/models/lobby.dart';
+import 'package:my_dj_app/models/sharedPrefs.dart';
 import 'package:my_dj_app/providers/timer_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_countdown_timer/index.dart';
@@ -31,25 +34,29 @@ class _LobbyStatusScreenState extends State<LobbyStatusScreen> {
     Lobby currentLobby = Provider.of<Lobbies>(context).getCurrentLobby;
     return currentLobby.name == 'Non-existent'
         ? Center(
-            child: Container(
-              height: 75,
-              width: 200,
-              child: ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    elevation: 10,
-                    primary: Colors.pink,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context)
-                        .pushNamed(CreateLobbyScreen.routeName);
-                  },
-                  icon: Icon(Icons.library_add),
-                  label: Text('CREATE A LOBBY')),
+            child: Column(
+              children: [
+                Container(
+                  height: 75,
+                  width: 200,
+                  child: ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        elevation: 10,
+                        primary: Colors.pink,
+                      ),
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed(CreateLobbyScreen.routeName);
+                      },
+                      icon: Icon(Icons.library_add),
+                      label: Text('CREATE A LOBBY')),
+                ),
+              ],
             ),
           )
         : Container(
             width: double.infinity,
-            padding: EdgeInsets.only(top: 10),
+            padding: EdgeInsets.only(top: 10, bottom: 10),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -99,8 +106,85 @@ class _LobbyStatusScreenState extends State<LobbyStatusScreen> {
                   ],
                 ),
                 Consumer<LobbyTimer>(
-                    builder: (context, timeData, child) =>
-                        Text(timeData.timeLeft.toString())),
+                    builder: (context, timeData, child) => Text(
+                          timeData.timeLeft.toString() + ' seconds left',
+                          style: TextStyle(
+                            color: Colors.grey.shade200,
+                            fontFamily: 'Grobold',
+                            fontSize: 20,
+                          ),
+                        )),
+                StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection('lobbies')
+                      .doc(SharedPrefs().userId)
+                      .snapshots(),
+                  builder: (ctx, AsyncSnapshot<DocumentSnapshot> pollSnapshot) {
+                    if (pollSnapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    final pollSongs = pollSnapshot.data;
+                    return Flexible(
+                      child: Container(
+                        height:
+                            double.parse(pollSongs['poll'].length.toString()) *
+                                58,
+                        margin: EdgeInsets.symmetric(
+                          vertical: 15,
+                          horizontal: 20,
+                        ),
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.blueGrey,
+                              offset: (Offset.zero),
+                              blurRadius: 5.0,
+                              spreadRadius: 5.0,
+                            )
+                          ],
+                          borderRadius: BorderRadius.circular(10),
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.blue.shade100,
+                              Colors.purple.shade100
+                            ],
+                          ),
+                        ),
+                        child: ListView.builder(
+                            itemCount: pollSongs['poll'].length,
+                            itemBuilder: (ctx, i) => Container(
+                                  decoration: BoxDecoration(
+                                    border: i == (pollSongs['poll'].length - 1)
+                                        ? null
+                                        : Border(
+                                            bottom: BorderSide(
+                                              color: Colors.black,
+                                              width: 0.1,
+                                            ),
+                                          ),
+                                  ),
+                                  child: ListTile(
+                                    leading: CircleAvatar(
+                                      backgroundColor: Colors.blueGrey,
+                                      child: Icon(
+                                        Icons.music_note_rounded,
+                                        color: Colors.pink.shade100,
+                                      ),
+                                    ),
+                                    title: Text(
+                                      pollSongs['poll']['song$i'],
+                                      style: TextStyle(fontFamily: 'Lexend'),
+                                    ),
+                                  ),
+                                )),
+                      ),
+                    );
+                  },
+                ),
+                TextButton(onPressed: () {}, child: Text('VOTE')),
                 ElevatedButton(onPressed: timer, child: Text('click')),
                 /* Text(timeRemaining.toString()),
                 
