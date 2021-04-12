@@ -9,17 +9,11 @@ class Lobbies with ChangeNotifier {
     capacity: 0,
     duration: 0,
     songsPerPoll: 0,
+    lobbyCode: '',
   );
 
   Future<void> createLobby(Lobby lobby) async {
     try {
-      await FirebaseFirestore.instance
-          .collection('lobbies')
-          .doc(SharedPrefs().userId)
-          .collection('polls')
-          .doc()
-          .delete();
-
       await FirebaseFirestore.instance
           .collection('lobbies')
           .doc(SharedPrefs().userId)
@@ -28,6 +22,7 @@ class Lobbies with ChangeNotifier {
         'lobbyCapacity': lobby.capacity,
         'lobbyDuration': lobby.duration,
         'lobbySongsPerPoll': lobby.songsPerPoll,
+        'lobbyCode': lobby.lobbyCode,
         'poll': {},
       });
     } catch (error) {
@@ -36,6 +31,26 @@ class Lobbies with ChangeNotifier {
     }
     _lobby = lobby;
     notifyListeners();
+  }
+
+  Future<void> fetchAndSetPreviousLobby() async {
+    try {
+      final previousLobby = await FirebaseFirestore.instance
+          .collection('lobbies')
+          .doc(SharedPrefs().userId)
+          .get();
+      final tmpLobby = Lobby(
+        name: previousLobby.data()['lobbyName'],
+        capacity: previousLobby.data()['lobbyCapacity'],
+        duration: previousLobby.data()['lobbyDuration'],
+        songsPerPoll: previousLobby.data()['lobbySongsPerPoll'],
+      );
+      _lobby = tmpLobby;
+      notifyListeners();
+    } catch (error) {
+      print(error.message);
+      throw error;
+    }
   }
 
   Lobby get getCurrentLobby {

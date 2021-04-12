@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_dj_app/providers/lobbies_provider.dart';
 import 'package:my_dj_app/providers/poll_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -8,6 +9,8 @@ class PollCreationScreen extends StatefulWidget {
 }
 
 class _PollCreationScreenState extends State<PollCreationScreen> {
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     double pollSize =
@@ -128,9 +131,55 @@ class _PollCreationScreenState extends State<PollCreationScreen> {
             width: 150,
             child: ElevatedButton(
               onPressed: () {
-                Provider.of<Polls>(context, listen: false).createPoll();
+                final int songsPerPoll =
+                    Provider.of<Lobbies>(context, listen: false)
+                        .getLobbySongsPerPoll;
+                if (Provider.of<Polls>(context, listen: false)
+                        .getCurrentPollSize !=
+                    songsPerPoll) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'Your lobby requires $songsPerPoll songs per poll!',
+                        textAlign: TextAlign.center,
+                      ),
+                      backgroundColor: Colors.red,
+                      duration: Duration(seconds: 1),
+                    ),
+                  );
+                  return;
+                }
+                try {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  Provider.of<Polls>(context, listen: false)
+                      .createPoll()
+                      .whenComplete(() {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'Poll Created!',
+                          textAlign: TextAlign.center,
+                        ),
+                        backgroundColor: Colors.green,
+                        duration: Duration(seconds: 1),
+                      ),
+                    );
+                    setState(() {
+                      isLoading = false;
+                    });
+                  });
+                } catch (error) {
+                  print(error.message);
+                  throw error;
+                }
               },
-              child: Text('Create Poll'),
+              child: isLoading
+                  ? CircularProgressIndicator.adaptive(
+                      strokeWidth: 1.0,
+                    )
+                  : Text('Create Poll'),
               style: ElevatedButton.styleFrom(
                 primary: Colors.black54,
               ),

@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:my_dj_app/models/lobby.dart';
+import 'package:my_dj_app/models/sharedPrefs.dart';
 import 'package:my_dj_app/providers/lobbies_provider.dart';
 import 'package:my_dj_app/widgets/admin/lobby_duration_radio_row.dart';
 import 'package:my_dj_app/widgets/admin/lobby_song_number.dart';
@@ -20,6 +22,8 @@ class _CreateLobbyScreenState extends State<CreateLobbyScreen> {
 
   int finalLobbyCapacity;
 
+  String finalLobbyCode;
+
   bool isValid;
 
   int lobbyDuration = 0;
@@ -31,10 +35,12 @@ class _CreateLobbyScreenState extends State<CreateLobbyScreen> {
   void setLobbyInfo(String value, String hint) {
     if (hint == 'Lobby Name')
       finalLobbyName = value;
-    else if (hint == 'Lobby Capacity') finalLobbyCapacity = int.parse(value);
+    else if (hint == 'Lobby Capacity')
+      finalLobbyCapacity = int.parse(value);
+    else if (hint == 'Lobby Code') finalLobbyCode = value;
   }
 
-  void _tryLobbyCreate() {
+  void _tryLobbyCreate() async {
     isValid = _lobbyCreationFormKey.currentState.validate();
     if (lobbyDuration == 0) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -63,12 +69,57 @@ class _CreateLobbyScreenState extends State<CreateLobbyScreen> {
       setState(() {
         isLoading = true;
       });
+      bool codeExists = false;
+      try {
+        await FirebaseFirestore.instance
+            .collection('lobbyCodes')
+            .get()
+            .then((query) => {
+                  query.docs.forEach((doc) {
+                    print(finalLobbyCode);
+                    print(doc.id);
+                    if (doc.id == finalLobbyCode) {
+                      codeExists = true;
+                    }
+                  })
+                })
+            .whenComplete(() async {
+          if (codeExists) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  'Entered lobby code already exits!',
+                  textAlign: TextAlign.center,
+                ),
+                backgroundColor: Colors.red,
+                duration: Duration(seconds: 2),
+              ),
+            );
+            setState(() {
+              isLoading = false;
+            });
+            return;
+          } else {
+            await FirebaseFirestore.instance
+                .collection('lobbyCodes')
+                .doc(finalLobbyCode)
+                .set({
+              'lobbyCodeAsAdminId': SharedPrefs().userId,
+            });
+          }
+        });
+      } catch (error) {
+        print(error.message);
+        throw error;
+      }
+      if (codeExists) return;
       Provider.of<Lobbies>(context, listen: false)
           .createLobby(Lobby(
         name: finalLobbyName,
         capacity: finalLobbyCapacity,
         duration: lobbyDuration,
         songsPerPoll: lobbySongsTotal,
+        lobbyCode: finalLobbyCode,
       ))
           .whenComplete(() {
         setState(() {
@@ -133,6 +184,7 @@ class _CreateLobbyScreenState extends State<CreateLobbyScreen> {
                   children: [
                     LobbyTextInput('Lobby Name', setLobbyInfo),
                     LobbyTextInput('Lobby Capacity', setLobbyInfo),
+                    LobbyTextInput('Lobby Code', setLobbyInfo),
                     Text(
                       'Lobby Name & Capacity',
                       style: TextStyle(color: Colors.grey.shade300),

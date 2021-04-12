@@ -33,26 +33,41 @@ class _LobbyStatusScreenState extends State<LobbyStatusScreen> {
   Widget build(BuildContext context) {
     Lobby currentLobby = Provider.of<Lobbies>(context).getCurrentLobby;
     return currentLobby.name == 'Non-existent'
-        ? Center(
-            child: Column(
-              children: [
-                Container(
-                  height: 75,
-                  width: 200,
-                  child: ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                        elevation: 10,
-                        primary: Colors.pink,
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                child: Column(
+                  children: [
+                    Container(
+                      height: 75,
+                      width: 200,
+                      child: ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          elevation: 10,
+                          primary: Colors.pink,
+                        ),
+                        onPressed: () {
+                          Navigator.of(context)
+                              .pushNamed(CreateLobbyScreen.routeName);
+                        },
+                        icon: Icon(Icons.library_add),
+                        label: Text('CREATE A LOBBY'),
                       ),
-                      onPressed: () {
-                        Navigator.of(context)
-                            .pushNamed(CreateLobbyScreen.routeName);
-                      },
-                      icon: Icon(Icons.library_add),
-                      label: Text('CREATE A LOBBY')),
+                    ),
+                    ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(primary: Colors.green),
+                        onPressed: () {
+                          Provider.of<Lobbies>(context, listen: false)
+                              .fetchAndSetPreviousLobby();
+                        },
+                        icon: Icon(Icons.restore_sharp),
+                        label: Text('RESTORE PREVIOUS')),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           )
         : Container(
             width: double.infinity,
@@ -127,61 +142,75 @@ class _LobbyStatusScreenState extends State<LobbyStatusScreen> {
                       );
                     }
                     final pollSongs = pollSnapshot.data;
-                    return Flexible(
-                      child: Container(
-                        height:
-                            double.parse(pollSongs['poll'].length.toString()) *
-                                58,
-                        margin: EdgeInsets.symmetric(
-                          vertical: 15,
-                          horizontal: 20,
-                        ),
-                        decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.blueGrey,
-                              offset: (Offset.zero),
-                              blurRadius: 5.0,
-                              spreadRadius: 5.0,
-                            )
-                          ],
-                          borderRadius: BorderRadius.circular(10),
-                          gradient: LinearGradient(
-                            colors: [
-                              Colors.blue.shade100,
-                              Colors.purple.shade100
-                            ],
-                          ),
-                        ),
-                        child: ListView.builder(
-                            itemCount: pollSongs['poll'].length,
-                            itemBuilder: (ctx, i) => Container(
-                                  decoration: BoxDecoration(
-                                    border: i == (pollSongs['poll'].length - 1)
-                                        ? null
-                                        : Border(
-                                            bottom: BorderSide(
-                                              color: Colors.black,
-                                              width: 0.1,
+                    return pollSongs['poll'].length == 0
+                        ? Container(
+                            margin: EdgeInsets.all(30),
+                            child: Text(
+                              'No poll created yet!',
+                              style: TextStyle(
+                                fontSize: 25,
+                                color: Colors.pink,
+                                fontFamily: 'PTSans',
+                              ),
+                            ),
+                          )
+                        : Flexible(
+                            child: Container(
+                              height: double.parse(
+                                      pollSongs['poll'].length.toString()) *
+                                  58,
+                              margin: EdgeInsets.symmetric(
+                                vertical: 15,
+                                horizontal: 20,
+                              ),
+                              decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.blueGrey,
+                                    offset: (Offset.zero),
+                                    blurRadius: 5.0,
+                                    spreadRadius: 5.0,
+                                  )
+                                ],
+                                borderRadius: BorderRadius.circular(10),
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Colors.blue.shade100,
+                                    Colors.purple.shade100
+                                  ],
+                                ),
+                              ),
+                              child: ListView.builder(
+                                  itemCount: pollSongs['poll'].length,
+                                  itemBuilder: (ctx, i) => Container(
+                                        decoration: BoxDecoration(
+                                          border: i ==
+                                                  (pollSongs['poll'].length - 1)
+                                              ? null
+                                              : Border(
+                                                  bottom: BorderSide(
+                                                    color: Colors.black,
+                                                    width: 0.1,
+                                                  ),
+                                                ),
+                                        ),
+                                        child: ListTile(
+                                          leading: CircleAvatar(
+                                            backgroundColor: Colors.blueGrey,
+                                            child: Icon(
+                                              Icons.music_note_rounded,
+                                              color: Colors.pink.shade100,
                                             ),
                                           ),
-                                  ),
-                                  child: ListTile(
-                                    leading: CircleAvatar(
-                                      backgroundColor: Colors.blueGrey,
-                                      child: Icon(
-                                        Icons.music_note_rounded,
-                                        color: Colors.pink.shade100,
-                                      ),
-                                    ),
-                                    title: Text(
-                                      pollSongs['poll']['song$i'],
-                                      style: TextStyle(fontFamily: 'Lexend'),
-                                    ),
-                                  ),
-                                )),
-                      ),
-                    );
+                                          title: Text(
+                                            pollSongs['poll']['song$i'],
+                                            style:
+                                                TextStyle(fontFamily: 'Lexend'),
+                                          ),
+                                        ),
+                                      )),
+                            ),
+                          );
                   },
                 ),
                 TextButton(onPressed: () {}, child: Text('VOTE')),

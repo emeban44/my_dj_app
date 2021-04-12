@@ -26,7 +26,7 @@ class LobbyTextInput extends StatelessWidget {
         ),
       ),
       child: TextFormField(
-        keyboardType: inputHint == 'Lobby Capacity'
+        keyboardType: (inputHint == 'Lobby Capacity')
             ? TextInputType.number
             : TextInputType.name,
         style: TextStyle(
@@ -59,6 +59,14 @@ class LobbyTextInput extends StatelessWidget {
               if (lobbyCapacity < 3) return 'Capacity should be greater than 3';
             } catch (error) {
               return 'Capacity must be a number!';
+            }
+          }
+          if (inputHint == 'Lobby Code') {
+            if (value.length < 7)
+              return 'Code must have more than 7 characters';
+            else if (!value.contains(RegExp(r'[A-z]')) ||
+                !value.contains(RegExp(r'[0-9]'))) {
+              return 'Code must be a mix of numbers and letters';
             }
           }
 
