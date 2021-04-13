@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:my_dj_app/providers/lobbies_provider.dart';
 import 'package:my_dj_app/providers/timer_provider.dart';
 import 'package:my_dj_app/screens/admin/create_lobby_screen.dart';
+import 'package:my_dj_app/screens/user/user_start_screen.dart';
 import 'package:provider/provider.dart';
 import './screens/admin/add_song_screen.dart';
 import './models/sharedPrefs.dart';
@@ -71,7 +72,7 @@ class MyApp extends StatelessWidget {
                             else if (sharedPrefs.adminStatus)
                               return AdminScreen();
                             else
-                              return UserScreen();
+                              return UserStartScreen();
                           }
                           return AuthScreen();
                         }),

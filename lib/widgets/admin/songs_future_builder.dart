@@ -178,6 +178,8 @@ class _SongsFutureBuilderState extends State<SongsFutureBuilder> {
                               Provider.of<Polls>(context, listen: false)
                                   .addToPoll(songsData
                                       .getSongsByGenre(widget.genre)[i]);
+                              ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar();
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(

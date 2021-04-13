@@ -201,6 +201,8 @@ class _SongsSearchBuilderState extends State<SongsSearchBuilder> {
                                   Provider.of<Polls>(context, listen: false)
                                       .addToPoll(songsData.getSongsBySearch(
                                           widget.searchInput)[i]);
+                                  ScaffoldMessenger.of(context)
+                                      .hideCurrentSnackBar();
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
@@ -208,7 +210,7 @@ class _SongsSearchBuilderState extends State<SongsSearchBuilder> {
                                         textAlign: TextAlign.center,
                                       ),
                                       backgroundColor: Colors.green,
-                                      duration: Duration(seconds: 1),
+                                      duration: Duration(milliseconds: 1),
                                     ),
                                   );
                                 }

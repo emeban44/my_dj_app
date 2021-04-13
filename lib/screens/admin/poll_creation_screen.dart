@@ -58,7 +58,7 @@ class _PollCreationScreenState extends State<PollCreationScreen> {
               child: pollSize == 0
                   ? Center(
                       child: Text(
-                        'Start adding songs to the poll',
+                        '- Start adding songs to the poll -',
                         style: TextStyle(
                           fontFamily: 'PTSans',
                           fontWeight: FontWeight.bold,
