@@ -24,6 +24,7 @@ class Lobbies with ChangeNotifier {
         'lobbySongsPerPoll': lobby.songsPerPoll,
         'lobbyCode': lobby.lobbyCode,
         'poll': {},
+        'users': {},
       });
     } catch (error) {
       print(error.message);
@@ -44,6 +45,33 @@ class Lobbies with ChangeNotifier {
         capacity: previousLobby.data()['lobbyCapacity'],
         duration: previousLobby.data()['lobbyDuration'],
         songsPerPoll: previousLobby.data()['lobbySongsPerPoll'],
+        lobbyCode: previousLobby.data()['lobbyCode'],
+      );
+      _lobby = tmpLobby;
+      notifyListeners();
+    } catch (error) {
+      print(error.message);
+      throw error;
+    }
+  }
+
+  Future<void> fetchAndSetUserLobby() async {
+    final adminId = await FirebaseFirestore.instance
+        .collection('lobbyCodes')
+        .doc(_lobby.lobbyCode)
+        .get();
+    print(adminId['lobbyCodeAsAdminId']);
+    try {
+      final lobbyFrom = await FirebaseFirestore.instance
+          .collection('lobbies')
+          .doc(adminId['lobbyCodeAsAdminId'])
+          .get();
+      final tmpLobby = Lobby(
+        name: lobbyFrom.data()['lobbyName'],
+        capacity: lobbyFrom.data()['lobbyCapacity'],
+        duration: lobbyFrom.data()['lobbyDuration'],
+        songsPerPoll: lobbyFrom.data()['lobbySongsPerPoll'],
+        lobbyCode: lobbyFrom.data()['lobbyCode'],
       );
       _lobby = tmpLobby;
       notifyListeners();
@@ -69,5 +97,9 @@ class Lobbies with ChangeNotifier {
 
   int get getLobbySongsPerPoll {
     return _lobby.songsPerPoll;
+  }
+
+  void setLobbyCode(String code) {
+    _lobby.lobbyCode = code;
   }
 }

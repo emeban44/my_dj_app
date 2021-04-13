@@ -1,21 +1,19 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:my_dj_app/providers/lobbies_provider.dart';
+import 'package:provider/provider.dart';
 
-class LobbiesScreen extends StatefulWidget {
+class LobbyScreen extends StatefulWidget {
   @override
-  _LobbiesScreenState createState() => _LobbiesScreenState();
+  _LobbyScreenState createState() => _LobbyScreenState();
 }
 
-class _LobbiesScreenState extends State<LobbiesScreen> {
+class _LobbyScreenState extends State<LobbyScreen> {
   @override
   Widget build(BuildContext context) {
+    final currentLobby = Provider.of<Lobbies>(context).getCurrentLobby;
     return Center(
-      child: OutlinedButton(
-        onPressed: () {
-          FirebaseAuth.instance.signOut();
-        },
-        child: Text('Log out for now'),
-      ),
+      child: Text(currentLobby.name),
     );
   }
 }

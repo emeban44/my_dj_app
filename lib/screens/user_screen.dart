@@ -1,22 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:my_dj_app/providers/lobbies_provider.dart';
+import 'package:my_dj_app/widgets/app_drawer.dart';
+import 'package:provider/provider.dart';
 import '../screens/user/lobbies_screen.dart';
 import '../screens/user/user_profile_screen.dart';
 
 class UserScreen extends StatefulWidget {
+  static const routeName = '/user-screen';
   @override
   _UserScreenState createState() => _UserScreenState();
 }
 
 class _UserScreenState extends State<UserScreen> {
+  @override
+  void initState() {
+    //  Provider.of<Lobbies>(context, listen: false).fetchAndSetUserLobby();
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    setState(() {
+      _isLoading = true;
+    });
+    Provider.of<Lobbies>(context, listen: false).fetchAndSetUserLobby();
+    setState(() {
+      _isLoading = false;
+    });
+    super.didChangeDependencies();
+  }
+
   final List<Widget> _pages = [
-    LobbiesScreen(),
+    LobbyScreen(),
     UserProfileScreen(),
   ];
 
   final List<String> _titles = [
-    'Find a Lobby',
-    'Your Profile',
+    'Lobby Status',
+    'Next Songs Suggestions',
   ];
+
+  bool _isLoading = false;
 
   int _selectedPageIndex = 0;
 
@@ -41,16 +65,20 @@ class _UserScreenState extends State<UserScreen> {
         ),
       ),
       child: Scaffold(
+        drawer: AppDrawer(),
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: Center(
-              child: Text(
+          title: Text(
             _titles[_selectedPageIndex],
             style: TextStyle(fontFamily: 'Raleway'),
-          )),
+          ),
           backgroundColor: Colors.transparent,
         ),
-        body: _pages[_selectedPageIndex],
+        body: _isLoading
+            ? Center(
+                child: CircularProgressIndicator.adaptive(),
+              )
+            : _pages[_selectedPageIndex],
         bottomNavigationBar: BottomNavigationBar(
           onTap: _selectPage,
           backgroundColor: Color.fromRGBO(10, 5, 27, 0.9),
@@ -72,14 +100,14 @@ class _UserScreenState extends State<UserScreen> {
                 margin: EdgeInsets.only(bottom: 2),
                 child: Icon(Icons.library_music),
               ),
-              label: 'LOBBIES',
+              label: 'LOBBY',
             ),
             BottomNavigationBarItem(
                 icon: Container(
-                  child: Icon(Icons.location_history),
+                  child: Icon(Icons.chat_rounded),
                   margin: EdgeInsets.only(bottom: 2),
                 ),
-                label: 'YOUR PROFILE'),
+                label: 'SUGGESTIONS'),
           ],
         ),
       ),

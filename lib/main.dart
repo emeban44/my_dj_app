@@ -15,6 +15,7 @@ import './screens/auth_screen.dart';
 import './screens/splash_screen.dart';
 import 'providers/poll_provider.dart';
 import 'providers/songs_provider.dart';
+import 'providers/users_provider.dart';
 
 final sharedPrefs = SharedPrefs();
 
@@ -47,10 +48,13 @@ class MyApp extends StatelessWidget {
               ChangeNotifierProvider(
                 create: (ctx) => Polls(),
               ),
+              ChangeNotifierProvider(
+                create: (ctx) => Users(),
+              ),
             ],
             child: MaterialApp(
                 debugShowCheckedModeBanner: false,
-                title: 'Flutter Demo',
+                title: 'MyDJ App',
                 theme: ThemeData(
                   fontFamily: 'Raleway',
                   primarySwatch: Colors.deepPurple,
@@ -68,7 +72,7 @@ class MyApp extends StatelessWidget {
                           }
                           if (userSnapshot.hasData) {
                             if (sharedPrefs.adminStatus == null)
-                              return UserScreen();
+                              return UserStartScreen();
                             else if (sharedPrefs.adminStatus)
                               return AdminScreen();
                             else
@@ -80,6 +84,7 @@ class MyApp extends StatelessWidget {
                   SplashScreen.routeName: (ctx) => SplashScreen(),
                   AddSongScreen.routeName: (ctx) => AddSongScreen(),
                   CreateLobbyScreen.routeName: (ctx) => CreateLobbyScreen(),
+                  UserScreen.routeName: (ctx) => UserScreen(),
                 }),
           );
         });

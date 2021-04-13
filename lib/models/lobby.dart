@@ -5,7 +5,7 @@ class Lobby {
   final int capacity;
   final int duration;
   final int songsPerPoll;
-  final String lobbyCode;
+   String lobbyCode;
 
   Lobby({
     @required this.name,
