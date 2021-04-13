@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_dj_app/providers/lobbies_provider.dart';
 import 'package:my_dj_app/widgets/app_drawer.dart';
 import 'package:provider/provider.dart';
-import '../screens/user/lobbies_screen.dart';
+import 'user/lobby_screen.dart';
 import '../screens/user/user_profile_screen.dart';
 
 class UserScreen extends StatefulWidget {

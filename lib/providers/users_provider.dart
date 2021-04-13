@@ -5,6 +5,12 @@ import 'package:my_dj_app/screens/user_screen.dart';
 import 'package:provider/provider.dart';
 
 class Users with ChangeNotifier {
+  String lobbyId = '';
+
+  String get getLobbyId {
+    return this.lobbyId;
+  }
+
   Future<void> addUserToLobby(
     String enteredCode,
     String userId,
@@ -15,6 +21,7 @@ class Users with ChangeNotifier {
           .collection('lobbyCodes')
           .doc(enteredCode)
           .get();
+      lobbyId = adminId['lobbyCodeAsAdminId'];
       print(adminId['lobbyCodeAsAdminId']);
     } catch (error) {
       print(error.message);
