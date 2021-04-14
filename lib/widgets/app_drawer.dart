@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:my_dj_app/screens/auth_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -23,6 +24,8 @@ class AppDrawer extends StatelessWidget {
                     ),
                     onPressed: () {
                       FirebaseAuth.instance.signOut();
+                      /*      Navigator.of(context)
+                          .pushReplacementNamed(AuthScreen.routeName); */
                     },
                     icon: Icon(Icons.logout),
                     label: Text('Logout')),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_dj_app/providers/lobbies_provider.dart';
+import 'package:my_dj_app/providers/timer_provider.dart';
 import 'package:my_dj_app/widgets/app_drawer.dart';
 import 'package:provider/provider.dart';
 import 'user/lobby_screen.dart';
@@ -14,16 +15,17 @@ class UserScreen extends StatefulWidget {
 class _UserScreenState extends State<UserScreen> {
   @override
   void initState() {
-    //  Provider.of<Lobbies>(context, listen: false).fetchAndSetUserLobby();
     super.initState();
   }
 
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() async {
     setState(() {
       _isLoading = true;
     });
     Provider.of<Lobbies>(context, listen: false).fetchAndSetUserLobby();
+    Provider.of<LobbyTimer>(context, listen: false).setTimeLeft(
+        Provider.of<Lobbies>(context, listen: false).getLobbyDuration);
     setState(() {
       _isLoading = false;
     });

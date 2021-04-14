@@ -197,7 +197,10 @@ class _LobbyScreenState extends State<LobbyScreen> {
               width: 150,
               margin: const EdgeInsets.only(bottom: 3),
               child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    print(Provider.of<Lobbies>(context, listen: false)
+                        .getLobbyDuration);
+                  },
                   child: Text(
                     'VOTE',
                     style: TextStyle(fontFamily: 'Lexend', fontSize: 15),

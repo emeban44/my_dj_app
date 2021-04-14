@@ -49,20 +49,21 @@ class _AdminScreenState extends State<AdminScreen> {
 
   @override
   void didChangeDependencies() {
-    if (this.mounted) {
-      setState(() {
-        isLoading = true;
-      });
-      if (SharedPrefs().didSongsInit)
-        Provider.of<Songs>(context, listen: false)
-            .fetchAndSetSongs()
-            .then((value) {
-          if (this.mounted)
-            setState(() {
-              isLoading = false;
-            });
+    setState(() {
+      isLoading = true;
+    });
+    if (SharedPrefs().didSongsInit)
+      Provider.of<Songs>(context, listen: false)
+          .fetchAndSetSongs()
+          .then((value) {
+        setState(() {
+          isLoading = false;
         });
-    }
+      });
+    else
+      setState(() {
+        isLoading = false;
+      });
     super.didChangeDependencies();
   }
 

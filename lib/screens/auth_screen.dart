@@ -9,6 +9,7 @@ import '../widgets/auth_form.dart';
 
 class AuthScreen extends StatefulWidget {
   static var isFinalAdmin;
+  static const routeName = '/auth';
 
   @override
   _AuthScreenState createState() => _AuthScreenState();
@@ -55,6 +56,9 @@ class _AuthScreenState extends State<AuthScreen> {
       }
       SharedPrefs().toggleAdminStatus(isAdmin);
       SharedPrefs().setUserId(authResult.user.uid);
+      setState(() {
+        _isLoading = false;
+      });
     } on PlatformException catch (error) {
       var message = 'An error ocurred, please check your credentials!';
       if (error.message != null) {
@@ -90,9 +94,9 @@ class _AuthScreenState extends State<AuthScreen> {
         _isLoading = false;
       });
     }
-    setState(() {
+    /* setState(() {
       _isLoading = false;
-    });
+    });   MOZDA VRATITI */
   }
 
   @override

@@ -85,6 +85,7 @@ class MyApp extends StatelessWidget {
                   AddSongScreen.routeName: (ctx) => AddSongScreen(),
                   CreateLobbyScreen.routeName: (ctx) => CreateLobbyScreen(),
                   UserScreen.routeName: (ctx) => UserScreen(),
+                  AuthScreen.routeName: (ctx) => AuthScreen(),
                 }),
           );
         });

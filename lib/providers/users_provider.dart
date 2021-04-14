@@ -53,7 +53,8 @@ class Users with ChangeNotifier {
         'users.$userId': userName['username'],
       });
       Provider.of<Lobbies>(context, listen: false).setLobbyCode(enteredCode);
-      Navigator.of(context).pushReplacementNamed(UserScreen.routeName);
+      notifyListeners();
+      Navigator.of(context).pushNamed(UserScreen.routeName);
     } catch (error) {
       print(error.message);
       throw error;

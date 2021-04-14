@@ -207,7 +207,7 @@ class _CreateLobbyScreenState extends State<CreateLobbyScreen> {
                       thickness: 1,
                     ),
                     Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         margin: EdgeInsets.only(top: 15, bottom: 25),
                         width: double.infinity,
                         child: LobbySongNumberRow(setSongsTotal)),
