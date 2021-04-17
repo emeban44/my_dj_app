@@ -24,6 +24,8 @@ class AppDrawer extends StatelessWidget {
                     ),
                     onPressed: () {
                       FirebaseAuth.instance.signOut();
+                      Navigator.of(context)
+                          .pushReplacementNamed(AuthScreen.routeName);
                       /*      Navigator.of(context)
                           .pushReplacementNamed(AuthScreen.routeName); */
                     },

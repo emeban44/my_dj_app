@@ -78,6 +78,7 @@ class MyApp extends StatelessWidget {
                             else
                               return UserStartScreen();
                           }
+                          //       Navigator.of(context).pop();
                           return AuthScreen();
                         }),
                 routes: {

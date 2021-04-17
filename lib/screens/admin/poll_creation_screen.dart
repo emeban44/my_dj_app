@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_dj_app/providers/lobbies_provider.dart';
 import 'package:my_dj_app/providers/poll_provider.dart';
+import 'package:my_dj_app/providers/timer_provider.dart';
 import 'package:provider/provider.dart';
 
 class PollCreationScreen extends StatefulWidget {
@@ -169,6 +170,10 @@ class _PollCreationScreenState extends State<PollCreationScreen> {
                     setState(() {
                       isLoading = false;
                     });
+                    Provider.of<LobbyTimer>(context, listen: false).setTimeLeft(
+                        Provider.of<Lobbies>(context, listen: false)
+                            .getLobbyDuration);
+                    Provider.of<LobbyTimer>(context, listen: false).timer();
                   });
                 } catch (error) {
                   print(error.message);
