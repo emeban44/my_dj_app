@@ -15,6 +15,15 @@ class _LobbyScreenState extends State<LobbyScreen> {
     Provider.of<LobbyTimer>(context, listen: false).timer();
   }
 
+  List<bool> _selection = [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ];
+
   @override
   Widget build(BuildContext context) {
     final currentLobby = Provider.of<Lobbies>(context).getCurrentLobby;
@@ -90,12 +99,12 @@ class _LobbyScreenState extends State<LobbyScreen> {
                           .doc(lobbyId)
                           .snapshots(),
                       builder: (ctx, usersLobbyInfo) {
-                        if (usersLobbyInfo.connectionState ==
+                        /*           if (usersLobbyInfo.connectionState ==
                             ConnectionState.waiting) {
                           return Center(
                             child: CircularProgressIndicator(),
                           );
-                        }
+                        } */
                         final usersData = usersLobbyInfo.data;
                         return Text(
                           usersData['users'].length.toString() +
@@ -115,11 +124,11 @@ class _LobbyScreenState extends State<LobbyScreen> {
                   .doc(lobbyId)
                   .snapshots(),
               builder: (ctx, AsyncSnapshot<DocumentSnapshot> pollSnapshot) {
-                if (pollSnapshot.connectionState == ConnectionState.waiting) {
+                /*      if (pollSnapshot.connectionState == ConnectionState.waiting) {
                   return Center(
                     child: CircularProgressIndicator(),
                   );
-                }
+                } */
                 final pollSongs = pollSnapshot.data;
                 return pollSongs['poll'].length == 0
                     ? Container(
@@ -165,6 +174,9 @@ class _LobbyScreenState extends State<LobbyScreen> {
                               itemCount: pollSongs['poll'].length,
                               itemBuilder: (ctx, i) => Container(
                                     decoration: BoxDecoration(
+                                      color: _selection[i]
+                                          ? Colors.black
+                                          : Colors.transparent,
                                       border:
                                           i == (pollSongs['poll'].length - 1)
                                               ? null
@@ -175,17 +187,25 @@ class _LobbyScreenState extends State<LobbyScreen> {
                                                   ),
                                                 ),
                                     ),
-                                    child: ListTile(
-                                      leading: CircleAvatar(
-                                        backgroundColor: Colors.blueGrey,
-                                        child: Icon(
-                                          Icons.music_note_rounded,
-                                          color: Colors.pink.shade100,
+                                    child: InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          _selection[i] = !_selection[i];
+                                        });
+                                      },
+                                      child: ListTile(
+                                        leading: CircleAvatar(
+                                          backgroundColor: Colors.blueGrey,
+                                          child: Icon(
+                                            Icons.music_note_rounded,
+                                            color: Colors.pink.shade100,
+                                          ),
                                         ),
-                                      ),
-                                      title: Text(
-                                        pollSongs['poll']['song$i'],
-                                        style: TextStyle(fontFamily: 'Lexend'),
+                                        title: Text(
+                                          pollSongs['poll']['song$i'],
+                                          style:
+                                              TextStyle(fontFamily: 'Lexend'),
+                                        ),
                                       ),
                                     ),
                                   )),
@@ -200,6 +220,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
                   onPressed: () {
                     print(Provider.of<LobbyTimer>(context, listen: false)
                         .timeRemaining);
+                    print(currentLobby.duration);
                   },
                   child: Text(
                     'VOTE',
