@@ -25,6 +25,7 @@ class Lobbies with ChangeNotifier {
         'lobbyCode': lobby.lobbyCode,
         'poll': {},
         'users': {},
+        'pollVotes': {},
       });
     } catch (error) {
       print(error.message);
@@ -87,6 +88,7 @@ class Lobbies with ChangeNotifier {
       capacity: _lobby.capacity,
       duration: _lobby.duration,
       songsPerPoll: _lobby.songsPerPoll,
+      lobbyCode: _lobby.lobbyCode,
     );
     return currentLobby;
   }

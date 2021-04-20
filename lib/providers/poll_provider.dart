@@ -26,6 +26,23 @@ class Polls with ChangeNotifier {
     return _currentPoll.length;
   }
 
+  Future<void> registerVote(
+      int songIndex, String lobbyId, String userId) async {
+    /*  print(songIndex.toString() + lobbyCode + userId);
+       final adminId = await FirebaseFirestore.instance
+        .collection('lobbyCodes')
+        .doc(lobbyCode)
+        .get();
+    final lobbyId = adminId['lobbyCodeAsAdminId']; */
+    await FirebaseFirestore.instance.collection('lobbies').doc(lobbyId).update({
+      'pollResults': {
+        'song$songIndex': {
+          '$userId': '$userId',
+        }
+      }
+    });
+  }
+
   Future<void> createPoll() async {
     if (getCurrentPollSize == 4)
       await FirebaseFirestore.instance

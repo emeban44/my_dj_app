@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:my_dj_app/models/sharedPrefs.dart';
 import 'package:my_dj_app/providers/lobbies_provider.dart';
+import 'package:my_dj_app/providers/poll_provider.dart';
 import 'package:my_dj_app/providers/timer_provider.dart';
 import 'package:my_dj_app/providers/users_provider.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +25,8 @@ class _LobbyScreenState extends State<LobbyScreen> {
     false,
     false,
   ];
+
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -234,9 +238,21 @@ class _LobbyScreenState extends State<LobbyScreen> {
               margin: const EdgeInsets.only(bottom: 3),
               child: ElevatedButton(
                   onPressed: () {
-                    print(Provider.of<LobbyTimer>(context, listen: false)
-                        .timeRemaining);
-                    print(currentLobby.duration);
+                    setState(() {
+                      _isLoading = true;
+                    });
+                    int songIndex;
+                    for (int i = 0; i < _selection.length; i++) {
+                      if (_selection[i]) songIndex = i;
+                    }
+                    if (songIndex == null) return;
+                    Provider.of<Polls>(context, listen: false)
+                        .registerVote(songIndex, lobbyId, SharedPrefs().userId)
+                        .then((_) {
+                      setState(() {
+                        _isLoading = false;
+                      });
+                    });
                   },
                   child: Text(
                     'VOTE',
