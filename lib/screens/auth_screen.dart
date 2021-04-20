@@ -81,15 +81,16 @@ class _AuthScreenState extends State<AuthScreen> {
         message = err.message;
       }
       print('errrrrrrrrrrrrrrrrror');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            message,
-            textAlign: TextAlign.center,
+      if (this.mounted)
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              message,
+              textAlign: TextAlign.center,
+            ),
+            backgroundColor: Colors.red.shade700,
           ),
-          backgroundColor: Colors.red.shade700,
-        ),
-      );
+        );
       setState(() {
         _isLoading = false;
       });

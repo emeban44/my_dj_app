@@ -175,7 +175,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
                               itemBuilder: (ctx, i) => Container(
                                     decoration: BoxDecoration(
                                       color: _selection[i]
-                                          ? Colors.black
+                                          ? Colors.black87
                                           : Colors.transparent,
                                       border:
                                           i == (pollSongs['poll'].length - 1)
@@ -190,21 +190,37 @@ class _LobbyScreenState extends State<LobbyScreen> {
                                     child: InkWell(
                                       onTap: () {
                                         setState(() {
+                                          for (int y = 0;
+                                              y < _selection.length;
+                                              y++) {
+                                            if (i == y)
+                                              continue;
+                                            else
+                                              _selection[y] = false;
+                                          }
                                           _selection[i] = !_selection[i];
                                         });
+                                        //   print(_selection);
                                       },
                                       child: ListTile(
                                         leading: CircleAvatar(
-                                          backgroundColor: Colors.blueGrey,
+                                          backgroundColor: _selection[i]
+                                              ? Colors.pink.shade100
+                                              : Colors.blueGrey,
                                           child: Icon(
                                             Icons.music_note_rounded,
-                                            color: Colors.pink.shade100,
+                                            color: _selection[i]
+                                                ? Colors.blueGrey
+                                                : Colors.pink.shade100,
                                           ),
                                         ),
                                         title: Text(
                                           pollSongs['poll']['song$i'],
-                                          style:
-                                              TextStyle(fontFamily: 'Lexend'),
+                                          style: TextStyle(
+                                              fontFamily: 'Lexend',
+                                              color: _selection[i]
+                                                  ? Colors.grey.shade200
+                                                  : Colors.black),
                                         ),
                                       ),
                                     ),
