@@ -35,10 +35,15 @@ class Polls with ChangeNotifier {
         .get();
     final lobbyId = adminId['lobbyCodeAsAdminId']; */
     await FirebaseFirestore.instance.collection('lobbies').doc(lobbyId).update({
-      'pollResults': {
+      'pollVotes': {
         'song$songIndex': {
           '$userId': '$userId',
         }
+      }
+    });
+    await FirebaseFirestore.instance.collection('lobbies').doc(lobbyId).update({
+      'pollVotesCounter': {
+        '$userId': '$songIndex',
       }
     });
   }

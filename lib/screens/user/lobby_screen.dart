@@ -5,6 +5,7 @@ import 'package:my_dj_app/providers/lobbies_provider.dart';
 import 'package:my_dj_app/providers/poll_provider.dart';
 import 'package:my_dj_app/providers/timer_provider.dart';
 import 'package:my_dj_app/providers/users_provider.dart';
+import 'package:my_dj_app/widgets/user/vote_percentage_stream.dart';
 import 'package:provider/provider.dart';
 
 class LobbyScreen extends StatefulWidget {
@@ -277,6 +278,8 @@ class _LobbyScreenState extends State<LobbyScreen> {
                                                       ? Colors.grey.shade200
                                                       : Colors.black),
                                             ),
+                                            trailing: VotePercentageStream(
+                                                lobbyId, i),
                                           ),
                                         ),
                                       ),

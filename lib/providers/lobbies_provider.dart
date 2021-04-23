@@ -26,6 +26,7 @@ class Lobbies with ChangeNotifier {
         'poll': {},
         'users': {},
         'pollVotes': {},
+        'pollVotesCounter': {},
       });
     } catch (error) {
       print(error.message);

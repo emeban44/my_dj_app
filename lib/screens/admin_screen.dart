@@ -6,7 +6,6 @@ import 'package:my_dj_app/screens/admin/poll_creation_screen.dart';
 import 'package:my_dj_app/widgets/app_drawer.dart';
 import 'package:provider/provider.dart';
 import '../screens/admin/songs_screen.dart';
-import 'admin/dashboard_screen.dart';
 import 'admin/lobby_status_screen.dart';
 
 class AdminScreen extends StatefulWidget {

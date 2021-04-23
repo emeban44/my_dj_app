@@ -9,7 +9,6 @@ import 'package:my_dj_app/providers/timer_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_countdown_timer/index.dart';
 
-import 'package:my_dj_app/models/song.dart';
 import 'package:my_dj_app/providers/songs_provider.dart';
 import 'package:my_dj_app/providers/lobbies_provider.dart';
 import 'package:my_dj_app/screens/admin/create_lobby_screen.dart';
@@ -113,7 +112,7 @@ class _LobbyStatusScreenState extends State<LobbyStatusScreen> {
                             blurRadius: 1.0,
                           ),
                         ],
-                        fontSize: 26,
+                        fontSize: 36,
                         fontFamily: 'Doctor',
                         color: Colors.pink,
                       ),
@@ -158,10 +157,10 @@ class _LobbyStatusScreenState extends State<LobbyStatusScreen> {
                             child: Container(
                               height: double.parse(
                                       pollSongs['poll'].length.toString()) *
-                                  58,
+                                  71,
                               margin: EdgeInsets.symmetric(
                                 vertical: 15,
-                                horizontal: 20,
+                                horizontal: 10,
                               ),
                               decoration: BoxDecoration(
                                 boxShadow: [
@@ -194,18 +193,25 @@ class _LobbyStatusScreenState extends State<LobbyStatusScreen> {
                                                   ),
                                                 ),
                                         ),
-                                        child: ListTile(
-                                          leading: CircleAvatar(
-                                            backgroundColor: Colors.blueGrey,
-                                            child: Icon(
-                                              Icons.music_note_rounded,
-                                              color: Colors.pink.shade100,
+                                        child: Container(
+                                          height: 70,
+                                          child: Center(
+                                            child: ListTile(
+                                              leading: CircleAvatar(
+                                                backgroundColor:
+                                                    Colors.blueGrey,
+                                                child: Icon(
+                                                  Icons.music_note_rounded,
+                                                  color: Colors.pink.shade100,
+                                                ),
+                                              ),
+                                              title: Text(
+                                                pollSongs['poll']['song$i'],
+                                                style: TextStyle(
+                                                    fontFamily: 'Lexend',
+                                                    fontSize: 18),
+                                              ),
                                             ),
-                                          ),
-                                          title: Text(
-                                            pollSongs['poll']['song$i'],
-                                            style:
-                                                TextStyle(fontFamily: 'Lexend'),
                                           ),
                                         ),
                                       )),
