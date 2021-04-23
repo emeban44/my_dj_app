@@ -14,6 +14,14 @@ class LobbyScreen extends StatefulWidget {
 
 class _LobbyScreenState extends State<LobbyScreen> {
   @override
+  void initState() {
+    setState(() {
+      _isLoading = true;
+    });
+    super.initState();
+  }
+
+  @override
   void didChangeDependencies() async {
     setState(() {
       _isLoading = true;
@@ -96,7 +104,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
                         blurRadius: 1.0,
                       ),
                     ],
-                    fontSize: 26,
+                    fontSize: 36,
                     fontFamily: 'Doctor',
                     color: Colors.pink,
                   ),
@@ -114,6 +122,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
                     style: TextStyle(
                       color: Colors.blue.shade200,
                       fontFamily: 'Lexend',
+                      fontSize: 20,
                     ),
                   ),
                   StreamBuilder(
@@ -136,11 +145,24 @@ class _LobbyScreenState extends State<LobbyScreen> {
                               '/' +
                               currentLobby.capacity.toString(),
                           style: TextStyle(
-                              color: Colors.blue.shade200,
-                              fontFamily: 'Lexend'),
+                            color: Colors.blue.shade200,
+                            fontFamily: 'Lexend',
+                            fontSize: 20,
+                          ),
                         );
                       })
                 ],
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(top: 50),
+              child: Text(
+                'Current poll:',
+                style: TextStyle(
+                  color: Colors.grey.shade300,
+                  fontSize: 25,
+                  fontFamily: 'Lexend',
+                ),
               ),
             ),
             StreamBuilder(
@@ -172,9 +194,9 @@ class _LobbyScreenState extends State<LobbyScreen> {
                         child: Container(
                           height: double.parse(
                                   pollSongs['poll'].length.toString()) *
-                              58,
+                              71,
                           margin: EdgeInsets.only(
-                            top: 25,
+                            top: 15,
                             left: 20,
                             right: 20,
                             bottom: 7,
@@ -228,25 +250,34 @@ class _LobbyScreenState extends State<LobbyScreen> {
                                         });
                                         //   print(_selection);
                                       },
-                                      child: ListTile(
-                                        leading: CircleAvatar(
-                                          backgroundColor: _selection[i]
-                                              ? Colors.pink.shade100
-                                              : Colors.blueGrey,
-                                          child: Icon(
-                                            Icons.music_note_rounded,
-                                            color: _selection[i]
-                                                ? Colors.blueGrey
-                                                : Colors.pink.shade100,
+                                      child: Container(
+                                        height: 70,
+                                        child: Center(
+                                          child: ListTile(
+                                            leading: Container(
+                                              //height: 200,
+                                              child: CircleAvatar(
+                                                backgroundColor: _selection[i]
+                                                    ? Colors.pink.shade100
+                                                    : Colors.blueGrey,
+                                                child: Icon(
+                                                  Icons.music_note_rounded,
+                                                  color: _selection[i]
+                                                      ? Colors.blueGrey
+                                                      : Colors.pink.shade100,
+                                                ),
+                                              ),
+                                            ),
+                                            title: Text(
+                                              pollSongs['poll']['song$i'],
+                                              style: TextStyle(
+                                                  fontFamily: 'Lexend',
+                                                  fontSize: 19,
+                                                  color: _selection[i]
+                                                      ? Colors.grey.shade200
+                                                      : Colors.black),
+                                            ),
                                           ),
-                                        ),
-                                        title: Text(
-                                          pollSongs['poll']['song$i'],
-                                          style: TextStyle(
-                                              fontFamily: 'Lexend',
-                                              color: _selection[i]
-                                                  ? Colors.grey.shade200
-                                                  : Colors.black),
                                         ),
                                       ),
                                     ),
@@ -257,7 +288,11 @@ class _LobbyScreenState extends State<LobbyScreen> {
             ),
             Container(
               width: 150,
-              margin: const EdgeInsets.only(bottom: 3),
+              height: 45,
+              margin: const EdgeInsets.only(
+                bottom: 13,
+                top: 5,
+              ),
               child: ElevatedButton(
                   onPressed: () {
                     setState(() {
@@ -280,7 +315,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
                       ? CircularProgressIndicator.adaptive()
                       : Text(
                           'VOTE',
-                          style: TextStyle(fontFamily: 'Lexend', fontSize: 15),
+                          style: TextStyle(fontFamily: 'Lexend', fontSize: 18),
                         ),
                   style: ElevatedButton.styleFrom(primary: Colors.black54)),
             ),
