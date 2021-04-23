@@ -60,6 +60,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
   Widget build(BuildContext context) {
     final currentLobby = Provider.of<Lobbies>(context).getCurrentLobby;
     final lobbyId = Provider.of<Users>(context).getLobbyId;
+
     return SingleChildScrollView(
       child: Container(
         width: double.infinity,
@@ -135,11 +136,11 @@ class _LobbyScreenState extends State<LobbyScreen> {
                         if (_isLoading)
                           return CircularProgressIndicator.adaptive();
                         /*           if (usersLobbyInfo.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        } */
+                                ConnectionState.waiting) {
+                              return Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            } */
                         final usersData = usersLobbyInfo.data;
                         return Text(
                           usersData['users'].length.toString() +
@@ -174,10 +175,10 @@ class _LobbyScreenState extends State<LobbyScreen> {
               builder: (ctx, AsyncSnapshot<DocumentSnapshot> pollSnapshot) {
                 if (_isLoading) return CircularProgressIndicator.adaptive();
                 /*      if (pollSnapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } */
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } */
                 final pollSongs = pollSnapshot.data;
                 return pollSongs['poll'].length == 0
                     ? Container(
@@ -196,6 +197,9 @@ class _LobbyScreenState extends State<LobbyScreen> {
                           height: double.parse(
                                   pollSongs['poll'].length.toString()) *
                               71,
+                          /*  height: double.parse(
+                                  (currentLobby.songsPerPoll).toString()) *
+                              71, */
                           margin: EdgeInsets.only(
                             top: 15,
                             left: 20,
@@ -220,6 +224,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
                             ),
                           ),
                           child: ListView.builder(
+                              shrinkWrap: true,
                               itemCount: pollSongs['poll'].length,
                               itemBuilder: (ctx, i) => Container(
                                     decoration: BoxDecoration(
@@ -278,8 +283,10 @@ class _LobbyScreenState extends State<LobbyScreen> {
                                                       ? Colors.grey.shade200
                                                       : Colors.black),
                                             ),
-                                            trailing: VotePercentageStream(
-                                                lobbyId, i),
+                                            trailing: _isLoading
+                                                ? null
+                                                : VotePercentageStream(
+                                                    lobbyId, i),
                                           ),
                                         ),
                                       ),
@@ -296,31 +303,38 @@ class _LobbyScreenState extends State<LobbyScreen> {
                 bottom: 13,
                 top: 5,
               ),
-              child: ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      _tryVote = true;
-                    });
-                    int songIndex;
-                    for (int i = 0; i < _selection.length; i++) {
-                      if (_selection[i]) songIndex = i;
-                    }
-                    if (songIndex == null) return;
-                    Provider.of<Polls>(context, listen: false)
-                        .registerVote(songIndex, lobbyId, SharedPrefs().userId)
-                        .then((_) {
-                      setState(() {
-                        _tryVote = false;
-                      });
-                    });
-                  },
-                  child: _tryVote
-                      ? CircularProgressIndicator.adaptive()
-                      : Text(
-                          'VOTE',
-                          style: TextStyle(fontFamily: 'Lexend', fontSize: 18),
-                        ),
-                  style: ElevatedButton.styleFrom(primary: Colors.black54)),
+              child: _tryVote
+                  ? Center(
+                      child: CircularProgressIndicator(
+                        backgroundColor: Colors.white,
+                        valueColor:
+                            new AlwaysStoppedAnimation<Color>(Colors.blue),
+                      ),
+                    )
+                  : ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          _tryVote = true;
+                        });
+                        int songIndex;
+                        for (int i = 0; i < _selection.length; i++) {
+                          if (_selection[i]) songIndex = i;
+                        }
+                        if (songIndex == null) return;
+                        Provider.of<Polls>(context, listen: false)
+                            .registerVote(
+                                songIndex, lobbyId, SharedPrefs().userId)
+                            .then((_) {
+                          setState(() {
+                            _tryVote = false;
+                          });
+                        });
+                      },
+                      child: Text(
+                        'VOTE',
+                        style: TextStyle(fontFamily: 'Lexend', fontSize: 18),
+                      ),
+                      style: ElevatedButton.styleFrom(primary: Colors.black54)),
             ),
             Consumer<LobbyTimer>(
               builder: (context, timeData, child) => Text(
@@ -333,48 +347,48 @@ class _LobbyScreenState extends State<LobbyScreen> {
               ),
             ),
             /* Text(timeRemaining.toString()),
-                  
-                  CountdownTimer(
-                    endTime: ,
-                    controller: widget._timerController,
-                    widgetBuilder: (ctx, timeRemaining) {
-                      if (timeRemaining == null) return Text('END');
+                      
+                      CountdownTimer(
+                        endTime: ,
+                        controller: widget._timerController,
+                        widgetBuilder: (ctx, timeRemaining) {
+                          if (timeRemaining == null) return Text('END');
 
-                      return Text(
-                        timeRemaining.sec.toString(),
+                          return Text(
+                            timeRemaining.sec.toString(),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontFamily: 'Lexend',
+                            ),
+                          );
+                        },
+                      ),
+                      Text(
+                        currentLobby.name,
                         style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontFamily: 'Lexend',
-                        ),
-                      );
-                    },
-                  ),
-                  Text(
-                    currentLobby.name,
-                    style: TextStyle(
-                      fontSize: 26,
-                      color: Colors.pink, // Colors.grey.shade300,
-                      fontFamily: 'Doctor',
-                      decoration: TextDecoration.underline,
+                          fontSize: 26,
+                          color: Colors.pink, // Colors.grey.shade300,
+                          fontFamily: 'Doctor',
+                          decoration: TextDecoration.underline,
 
-                      letterSpacing: 1,
-                      shadows: [
-                        Shadow(
-                          color: Colors.black,
-                          offset: Offset(3.5, 2.0),
-                          blurRadius: 1.0,
+                          letterSpacing: 1,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black,
+                              offset: Offset(3.5, 2.0),
+                              blurRadius: 1.0,
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                  
-                  Text(
-                    'Number of users currently: ',
-                    style: TextStyle(
-                      color: Colors.grey.shade400,
-                    ),
-                  ),*/
+                      ),
+                      
+                      Text(
+                        'Number of users currently: ',
+                        style: TextStyle(
+                          color: Colors.grey.shade400,
+                        ),
+                      ),*/
           ],
         ),
       ),

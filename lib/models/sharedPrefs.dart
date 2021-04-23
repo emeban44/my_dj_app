@@ -22,6 +22,14 @@ class SharedPrefs {
     return _sharedPrefs.getBool('loading');
   }
 
+  void toggleVotingStatus(bool value) {
+    _sharedPrefs.setBool('vote', value);
+  }
+
+  bool get votingStatus {
+    return _sharedPrefs.getBool('vote');
+  }
+
   bool get adminStatus {
     return _sharedPrefs.getBool('admin');
   }

@@ -33,10 +33,12 @@ class _AuthScreenState extends State<AuthScreen> {
         _isLoading = true;
       });
       if (isLogin) {
+        SharedPrefs().toggleAdminStatus(isAdmin);
         authResult = await _auth.signInWithEmailAndPassword(
           email: email,
           password: password,
         );
+        SharedPrefs().setUserId(authResult.user.uid);
       } else {
         authResult = await _auth.createUserWithEmailAndPassword(
           email: email,
@@ -56,9 +58,10 @@ class _AuthScreenState extends State<AuthScreen> {
       }
       SharedPrefs().toggleAdminStatus(isAdmin);
       SharedPrefs().setUserId(authResult.user.uid);
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted)
+        setState(() {
+          _isLoading = false;
+        });
     } on PlatformException catch (error) {
       var message = 'An error ocurred, please check your credentials!';
       if (error.message != null) {
