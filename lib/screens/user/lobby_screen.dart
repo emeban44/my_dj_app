@@ -13,6 +13,23 @@ class LobbyScreen extends StatefulWidget {
 }
 
 class _LobbyScreenState extends State<LobbyScreen> {
+  @override
+  void didChangeDependencies() async {
+    setState(() {
+      _isLoading = true;
+    });
+    await FirebaseFirestore.instance
+        .collection('lobbies')
+        .doc(Provider.of<Users>(context, listen: false).getLobbyId)
+        .get()
+        .then((value) {
+      setState(() {
+        _isLoading = false;
+      });
+    });
+    super.didChangeDependencies();
+  }
+
   void timer() {
     Provider.of<LobbyTimer>(context, listen: false).timer();
   }
@@ -27,6 +44,8 @@ class _LobbyScreenState extends State<LobbyScreen> {
   ];
 
   bool _isLoading = false;
+
+  bool _tryVote = false;
 
   @override
   Widget build(BuildContext context) {
@@ -103,6 +122,8 @@ class _LobbyScreenState extends State<LobbyScreen> {
                           .doc(lobbyId)
                           .snapshots(),
                       builder: (ctx, usersLobbyInfo) {
+                        if (_isLoading)
+                          return CircularProgressIndicator.adaptive();
                         /*           if (usersLobbyInfo.connectionState ==
                             ConnectionState.waiting) {
                           return Center(
@@ -128,6 +149,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
                   .doc(lobbyId)
                   .snapshots(),
               builder: (ctx, AsyncSnapshot<DocumentSnapshot> pollSnapshot) {
+                if (_isLoading) return CircularProgressIndicator.adaptive();
                 /*      if (pollSnapshot.connectionState == ConnectionState.waiting) {
                   return Center(
                     child: CircularProgressIndicator(),
@@ -239,7 +261,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
               child: ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      _isLoading = true;
+                      _tryVote = true;
                     });
                     int songIndex;
                     for (int i = 0; i < _selection.length; i++) {
@@ -250,14 +272,16 @@ class _LobbyScreenState extends State<LobbyScreen> {
                         .registerVote(songIndex, lobbyId, SharedPrefs().userId)
                         .then((_) {
                       setState(() {
-                        _isLoading = false;
+                        _tryVote = false;
                       });
                     });
                   },
-                  child: Text(
-                    'VOTE',
-                    style: TextStyle(fontFamily: 'Lexend', fontSize: 15),
-                  ),
+                  child: _tryVote
+                      ? CircularProgressIndicator.adaptive()
+                      : Text(
+                          'VOTE',
+                          style: TextStyle(fontFamily: 'Lexend', fontSize: 15),
+                        ),
                   style: ElevatedButton.styleFrom(primary: Colors.black54)),
             ),
             Consumer<LobbyTimer>(
