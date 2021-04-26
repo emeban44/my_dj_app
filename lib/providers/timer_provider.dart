@@ -13,6 +13,7 @@ class LobbyTimer with ChangeNotifier {
     new Timer.periodic(oneSec, (Timer t) {
       timeRemaining--;
       notifyListeners();
+      if (timeRemaining == 0 || timeRemaining < 0) t.cancel();
     });
   }
 

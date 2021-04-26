@@ -19,14 +19,17 @@ class _LobbyScreenState extends State<LobbyScreen> {
     setState(() {
       _isLoading = true;
     });
+    if (Provider.of<LobbyTimer>(context, listen: false).timeLeft == 0)
+      Provider.of<LobbyTimer>(context, listen: false).setTimeLeft(
+          Provider.of<Lobbies>(context, listen: false).getLobbyDuration);
     super.initState();
   }
 
   @override
   void didChangeDependencies() async {
-    setState(() {
+    /* setState(() {
       _isLoading = true;
-    });
+    }); */
     bool didVote = false;
     await FirebaseFirestore.instance
         .collection('lobbies')
@@ -153,16 +156,20 @@ class _LobbyScreenState extends State<LobbyScreen> {
                               );
                             } */
                         final usersData = usersLobbyInfo.data;
-                        return Text(
-                          usersData['users'].length.toString() +
-                              '/' +
-                              currentLobby.capacity.toString(),
-                          style: TextStyle(
-                            color: Colors.blue.shade200,
-                            fontFamily: 'Lexend',
-                            fontSize: 20,
-                          ),
-                        );
+                        try {
+                          return Text(
+                            usersData['users'].length.toString() +
+                                '/' +
+                                currentLobby.capacity.toString(),
+                            style: TextStyle(
+                              color: Colors.blue.shade200,
+                              fontFamily: 'Lexend',
+                              fontSize: 20,
+                            ),
+                          );
+                        } catch (error) {
+                          return Text('0');
+                        }
                       })
                 ],
               ),

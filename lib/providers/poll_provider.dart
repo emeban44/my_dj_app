@@ -65,7 +65,9 @@ class Polls with ChangeNotifier {
             'song1': _currentPoll[1].artist + ' - ' + _currentPoll[1].name,
             'song2': _currentPoll[2].artist + ' - ' + _currentPoll[2].name,
             'song3': _currentPoll[3].artist + ' - ' + _currentPoll[3].name,
-          }
+          },
+          'pollVotesCounter': {},
+          'pollVotes': {},
         },
       );
     else if (getCurrentPollSize == 5)
@@ -80,7 +82,9 @@ class Polls with ChangeNotifier {
             'song2': _currentPoll[2].artist + ' - ' + _currentPoll[2].name,
             'song3': _currentPoll[3].artist + ' - ' + _currentPoll[3].name,
             'song4': _currentPoll[4].artist + ' - ' + _currentPoll[4].name,
-          }
+          },
+          'pollVotesCounter': {},
+          'pollVotes': {},
         },
       );
     else if (getCurrentPollSize == 6)
@@ -96,7 +100,9 @@ class Polls with ChangeNotifier {
             'song3': _currentPoll[3].artist + ' - ' + _currentPoll[3].name,
             'song4': _currentPoll[4].artist + ' - ' + _currentPoll[4].name,
             'song5': _currentPoll[5].artist + ' - ' + _currentPoll[5].name,
-          }
+          },
+          'pollVotesCounter': {},
+          'pollVotes': {},
         },
       );
   }

@@ -24,8 +24,8 @@ class _UserScreenState extends State<UserScreen> {
       _isLoading = true;
     });
     Provider.of<Lobbies>(context, listen: false).fetchAndSetUserLobby();
-    Provider.of<LobbyTimer>(context, listen: false).setTimeLeft(
-        Provider.of<Lobbies>(context, listen: false).getLobbyDuration);
+    /* Provider.of<LobbyTimer>(context, listen: false).setTimeLeft(
+        Provider.of<Lobbies>(context, listen: false).getLobbyDuration); */
     setState(() {
       _isLoading = false;
     });
