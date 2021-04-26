@@ -28,24 +28,29 @@ class Polls with ChangeNotifier {
 
   Future<void> registerVote(
       int songIndex, String lobbyId, String userId) async {
-    /*  print(songIndex.toString() + lobbyCode + userId);
-       final adminId = await FirebaseFirestore.instance
-        .collection('lobbyCodes')
-        .doc(lobbyCode)
-        .get();
-    final lobbyId = adminId['lobbyCodeAsAdminId']; */
-    await FirebaseFirestore.instance.collection('lobbies').doc(lobbyId).update({
-      'pollVotes': {
-        'song$songIndex': {
-          '$userId': '$userId',
+    bool didVote = false;
+    await FirebaseFirestore.instance
+        .collection('lobbies')
+        .doc(lobbyId)
+        .get()
+        .then((doc) {
+      doc.data()['pollVotesCounter'].forEach((key, value) {
+        if (key == userId) {
+          print('yes');
+          didVote = true;
+          return;
         }
-      }
+      });
     });
-    await FirebaseFirestore.instance.collection('lobbies').doc(lobbyId).update({
-      'pollVotesCounter': {
-        '$userId': '$songIndex',
-      }
-    });
+    if (didVote) return;
+    await FirebaseFirestore.instance
+        .collection('lobbies')
+        .doc(lobbyId)
+        .update({'pollVotes.song$songIndex.$userId': '$userId'});
+    await FirebaseFirestore.instance
+        .collection('lobbies')
+        .doc(lobbyId)
+        .update({'pollVotesCounter.$userId': '$songIndex'});
   }
 
   Future<void> createPoll() async {

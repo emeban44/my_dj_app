@@ -54,6 +54,8 @@ class _LobbyScreenState extends State<LobbyScreen> {
 
   bool _isLoading = false;
 
+  bool _didVote = false;
+
   bool _tryVote = false;
 
   @override
@@ -173,7 +175,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
                   .doc(lobbyId)
                   .snapshots(),
               builder: (ctx, AsyncSnapshot<DocumentSnapshot> pollSnapshot) {
-                if (_isLoading) return CircularProgressIndicator.adaptive();
+                if (_isLoading) return CircularProgressIndicator();
                 /*      if (pollSnapshot.connectionState == ConnectionState.waiting) {
                       return Center(
                         child: CircularProgressIndicator(),
@@ -242,20 +244,22 @@ class _LobbyScreenState extends State<LobbyScreen> {
                                                 ),
                                     ),
                                     child: InkWell(
-                                      onTap: () {
-                                        setState(() {
-                                          for (int y = 0;
-                                              y < _selection.length;
-                                              y++) {
-                                            if (i == y)
-                                              continue;
-                                            else
-                                              _selection[y] = false;
-                                          }
-                                          _selection[i] = !_selection[i];
-                                        });
-                                        //   print(_selection);
-                                      },
+                                      onTap: _didVote
+                                          ? null
+                                          : () {
+                                              setState(() {
+                                                for (int y = 0;
+                                                    y < _selection.length;
+                                                    y++) {
+                                                  if (i == y)
+                                                    continue;
+                                                  else
+                                                    _selection[y] = false;
+                                                }
+                                                _selection[i] = !_selection[i];
+                                              });
+                                              //   print(_selection);
+                                            },
                                       child: Container(
                                         height: 70,
                                         child: Center(
@@ -285,8 +289,10 @@ class _LobbyScreenState extends State<LobbyScreen> {
                                             ),
                                             trailing: _isLoading
                                                 ? null
-                                                : VotePercentageStream(
-                                                    lobbyId, i),
+                                                : _didVote
+                                                    ? VotePercentageStream(
+                                                        lobbyId, i)
+                                                    : null,
                                           ),
                                         ),
                                       ),
@@ -312,26 +318,33 @@ class _LobbyScreenState extends State<LobbyScreen> {
                       ),
                     )
                   : ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          _tryVote = true;
-                        });
-                        int songIndex;
-                        for (int i = 0; i < _selection.length; i++) {
-                          if (_selection[i]) songIndex = i;
-                        }
-                        if (songIndex == null) return;
-                        Provider.of<Polls>(context, listen: false)
-                            .registerVote(
-                                songIndex, lobbyId, SharedPrefs().userId)
-                            .then((_) {
-                          setState(() {
-                            _tryVote = false;
-                          });
-                        });
-                      },
+                      onPressed: _didVote
+                          ? null
+                          : () {
+                              setState(() {
+                                _tryVote = true;
+                              });
+                              int songIndex;
+                              for (int i = 0; i < _selection.length; i++) {
+                                if (_selection[i]) songIndex = i;
+                              }
+                              if (songIndex == null) return;
+                              Provider.of<Polls>(context, listen: false)
+                                  .registerVote(
+                                      songIndex, lobbyId, SharedPrefs().userId)
+                                  .then((_) {
+                                //          SharedPrefs().toggleVotingStatus(true);
+                                setState(() {
+                                  _didVote = true;
+                                  for (int i = 0; i < _selection.length; i++) {
+                                    _selection[i] = false;
+                                  }
+                                  _tryVote = false;
+                                });
+                              });
+                            },
                       child: Text(
-                        'VOTE',
+                        _didVote ? 'YOU VOTED' : 'VOTE',
                         style: TextStyle(fontFamily: 'Lexend', fontSize: 18),
                       ),
                       style: ElevatedButton.styleFrom(primary: Colors.black54)),

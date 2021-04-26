@@ -30,7 +30,12 @@ class VotePercentageStream extends StatelessWidget {
           return Text('0%'); */
         if (songTotalVotes == null) songTotalVotes = 0;
         double songPercentage = songTotalVotes / pollTotalVotes * 100;
-        return Text(songPercentage.toStringAsFixed(0) + '%');
+        return Text(
+          songPercentage.toStringAsFixed(0) + '%',
+          style: TextStyle(
+              //color:
+              ),
+        );
       },
     );
   }
