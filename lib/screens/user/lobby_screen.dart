@@ -27,12 +27,21 @@ class _LobbyScreenState extends State<LobbyScreen> {
     setState(() {
       _isLoading = true;
     });
+    bool didVote = false;
     await FirebaseFirestore.instance
         .collection('lobbies')
         .doc(Provider.of<Users>(context, listen: false).getLobbyId)
         .get()
-        .then((value) {
+        .then((doc) {
+      doc.data()['pollVotesCounter'].forEach((key, value) {
+        if (key == SharedPrefs().userId) {
+          //   print('yes');
+          didVote = true;
+          return;
+        }
+      });
       setState(() {
+        if (didVote) _didVote = true;
         _isLoading = false;
       });
     });

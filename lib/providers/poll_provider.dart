@@ -28,7 +28,7 @@ class Polls with ChangeNotifier {
 
   Future<void> registerVote(
       int songIndex, String lobbyId, String userId) async {
-    bool didVote = false;
+    /* bool didVote = false;
     await FirebaseFirestore.instance
         .collection('lobbies')
         .doc(lobbyId)
@@ -42,7 +42,7 @@ class Polls with ChangeNotifier {
         }
       });
     });
-    if (didVote) return;
+    if (didVote) return; */
     await FirebaseFirestore.instance
         .collection('lobbies')
         .doc(lobbyId)
