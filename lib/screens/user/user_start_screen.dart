@@ -12,8 +12,7 @@ class UserStartScreen extends StatefulWidget {
 
 class _UserStartScreenState extends State<UserStartScreen> {
   final _codeController = TextEditingController();
-  bool _isLoading = false;
-
+  var _isLoading = false;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -42,79 +41,78 @@ class _UserStartScreenState extends State<UserStartScreen> {
               ),
               backgroundColor: Colors.transparent,
             ),
-            body: _isLoading
-                ? Center(
-                    child: CircularProgressIndicator.adaptive(),
-                  )
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(
+                  child: Column(
                     children: [
-                      Center(
-                        child: Column(
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                gradient: LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: [
-                                    Colors.blue.shade200,
-                                    Colors.pink.shade200,
-                                  ],
-                                ),
-                              ),
-                              height: 50,
-                              width: 180,
-                              child: Container(
-                                padding: const EdgeInsets.only(left: 11),
-                                child: TextFormField(
-                                  controller: _codeController,
-                                  style: TextStyle(
-                                    fontFamily: 'Lexend',
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  decoration: InputDecoration(
-                                    labelStyle: TextStyle(fontFamily: 'PTSans'),
-                                    hintText: 'Enter the lobby code',
-                                    hintStyle: TextStyle(
-                                      fontFamily: 'Lexend',
-                                      //         fontWeight: FontWeight.bold,
-                                    ),
-                                    border: InputBorder.none,
-                                  ),
-                                ),
-                              ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.blue.shade200,
+                              Colors.pink.shade200,
+                            ],
+                          ),
+                        ),
+                        height: 50,
+                        width: 180,
+                        child: Container(
+                          padding: const EdgeInsets.only(left: 11),
+                          child: TextFormField(
+                            controller: _codeController,
+                            style: TextStyle(
+                              fontFamily: 'Lexend',
+                              fontWeight: FontWeight.bold,
                             ),
-                            ElevatedButton.icon(
-                                style: ElevatedButton.styleFrom(
-                                    primary: Colors.deepPurple),
-                                onPressed: () async {
-                                  FocusScope.of(context).unfocus();
-                                  if (_codeController.text.isEmpty) return;
-                                  setState(() {
-                                    _isLoading = true;
-                                  });
-                                  try {
-                                    Provider.of<Users>(context, listen: false)
-                                        .addUserToLobby(_codeController.text,
-                                            SharedPrefs().userId, context);
-                                  } catch (error) {
-                                    print(error.message);
-                                    throw error;
-                                  }
-                                  setState(() {
-                                    _isLoading = false;
-                                  });
-                                },
-                                icon: Icon(Icons.people_alt),
-                                label: Text('JOIN LOBBY')),
-                          ],
+                            decoration: InputDecoration(
+                              labelStyle: TextStyle(fontFamily: 'PTSans'),
+                              hintText: 'Enter the lobby code',
+                              hintStyle: TextStyle(
+                                fontFamily: 'Lexend',
+                                //         fontWeight: FontWeight.bold,
+                              ),
+                              border: InputBorder.none,
+                            ),
+                          ),
                         ),
                       ),
+                      ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                              primary: Colors.deepPurple),
+                          onPressed: () {
+                            FocusScope.of(context).unfocus();
+                            if (_codeController.text.isEmpty) return;
+                            setState(() {
+                              _isLoading = true;
+                            });
+                            print(_isLoading);
+                            try {
+                              Provider.of<Users>(context, listen: false)
+                                  .addUserToLobby(_codeController.text,
+                                      SharedPrefs().userId, context);
+                            } catch (error) {
+                              print(error.message);
+                              throw error;
+                            }
+                            setState(() {
+                              _isLoading = false;
+                            });
+                          },
+                          icon: Icon(Icons.people_alt),
+                          label:
+                              _isLoading ? Text('Wait') : Text('JOIN LOBBY')),
+                      if (_isLoading) Text('Loading...')
                     ],
-                  )),
+                  ),
+                ),
+              ],
+            )),
       ),
     );
   }

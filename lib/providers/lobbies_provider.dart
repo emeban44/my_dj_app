@@ -27,6 +27,7 @@ class Lobbies with ChangeNotifier {
         'users': {},
         'pollVotes': {},
         'pollVotesCounter': {},
+        'suggestions': {},
       });
     } catch (error) {
       print(error.message);
@@ -62,7 +63,7 @@ class Lobbies with ChangeNotifier {
         .collection('lobbyCodes')
         .doc(_lobby.lobbyCode)
         .get();
-    print(adminId['lobbyCodeAsAdminId']);
+    // print(adminId['lobbyCodeAsAdminId']);
     try {
       final lobbyFrom = await FirebaseFirestore.instance
           .collection('lobbies')
@@ -100,6 +101,10 @@ class Lobbies with ChangeNotifier {
 
   int get getLobbySongsPerPoll {
     return _lobby.songsPerPoll;
+  }
+
+  String get getLobbyCode {
+    return _lobby.lobbyCode;
   }
 
   void setLobbyCode(String code) {
