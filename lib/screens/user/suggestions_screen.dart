@@ -1,15 +1,37 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:my_dj_app/models/sharedPrefs.dart';
 import 'package:my_dj_app/providers/lobbies_provider.dart';
 import 'package:my_dj_app/providers/users_provider.dart';
+import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 
 class SuggestionsScreen extends StatelessWidget {
   final _suggestionController = TextEditingController();
+  String lobbyCode;
+
+  Future<void> suggestSong(String suggestion) async {
+    final usernameDoc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(SharedPrefs().userId)
+        .get();
+    final String username = usernameDoc['username'];
+    await FirebaseFirestore.instance
+        .collection('lobbies')
+        .doc(lobbyCode)
+        .collection('suggestions')
+        .add({
+      'username': username,
+      'suggestion': suggestion,
+      'createdAt': Timestamp.now(),
+    });
+    _suggestionController.clear();
+  }
 
   @override
   Widget build(BuildContext context) {
     final lobbyId = Provider.of<Users>(context).getLobbyId;
+    lobbyCode = lobbyId;
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -19,11 +41,12 @@ class SuggestionsScreen extends StatelessWidget {
           children: [
             Expanded(
               child: StreamBuilder(
-                //   initialData: Text('No suggestions yet'),
+                // initialData: Text('No suggestions yet'),
                 stream: FirebaseFirestore.instance
                     .collection('lobbies')
                     .doc(lobbyId)
                     .collection('suggestions')
+                    .orderBy('createdAt', descending: true)
                     .snapshots(),
                 builder: (context, suggestionsSnapshot) {
                   if (!suggestionsSnapshot.hasData)
@@ -49,6 +72,7 @@ class SuggestionsScreen extends StatelessWidget {
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 20,
+                                fontWeight: FontWeight.bold,
                                 fontFamily: 'Lexend',
                               ),
                             ),
@@ -65,11 +89,11 @@ class SuggestionsScreen extends StatelessWidget {
                               ),
                             ),
                             trailing: Container(
-                              height: 80,
+                              //    height: 200,
                               child: Column(
                                 children: [
                                   Flexible(
-                                    flex: 3,
+                                    flex: 4,
                                     child: Container(
                                         height: 80,
                                         width: 48,
@@ -83,12 +107,13 @@ class SuggestionsScreen extends StatelessWidget {
                                         )),
                                   ),
                                   Flexible(
-                                    flex: 1,
+                                    flex: 2,
                                     child: Text(
-                                      '1',
+                                      '0',
                                       style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 15,
+                                        fontSize: 17,
+                                        fontFamily: 'Lexend',
                                       ),
                                     ),
                                   ),
@@ -112,6 +137,14 @@ class SuggestionsScreen extends StatelessWidget {
                     bottomLeft: Radius.circular(5),
                     bottomRight: Radius.circular(5),
                   ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black,
+                      offset: (Offset.zero),
+                      blurRadius: 1.0,
+                      spreadRadius: 3.0,
+                    )
+                  ],
                   gradient: LinearGradient(colors: [
                     Colors.blue.shade200,
                     Colors.pink.shade100,
@@ -142,7 +175,8 @@ class SuggestionsScreen extends StatelessWidget {
                       child: IconButton(
                         icon: Icon(Icons.send_rounded),
                         onPressed: () {
-                          print(_suggestionController.text);
+                          FocusScope.of(context).unfocus();
+                          suggestSong(_suggestionController.text);
                         },
                       ))
                 ],
