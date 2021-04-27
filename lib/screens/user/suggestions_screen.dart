@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class UserProfileScreen extends StatefulWidget {
+class SuggestionsScreen extends StatefulWidget {
   @override
-  _UserProfileScreenState createState() => _UserProfileScreenState();
+  _SuggestionsScreenState createState() => _SuggestionsScreenState();
 }
 
-class _UserProfileScreenState extends State<UserProfileScreen> {
+class _SuggestionsScreenState extends State<SuggestionsScreen> {
   @override
   Widget build(BuildContext context) {
     return Center(

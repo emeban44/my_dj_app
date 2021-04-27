@@ -22,7 +22,6 @@ class Users with ChangeNotifier {
           .doc(enteredCode)
           .get();
       lobbyId = adminId['lobbyCodeAsAdminId'];
-      print(adminId['lobbyCodeAsAdminId']);
     } catch (error) {
       print(error.message);
       ScaffoldMessenger.of(context).showSnackBar(
@@ -52,7 +51,13 @@ class Users with ChangeNotifier {
           .update({
         'users.$userId': userName['username'],
       });
+      final fetchedDuration = await FirebaseFirestore.instance
+          .collection('lobbies')
+          .doc(lobbyId)
+          .get();
       Provider.of<Lobbies>(context, listen: false).setLobbyCode(enteredCode);
+      Provider.of<Lobbies>(context, listen: false)
+          .setLobbyDuration(fetchedDuration['lobbyDuration']);
       notifyListeners();
       Navigator.of(context).pushNamed(UserScreen.routeName);
     } catch (error) {

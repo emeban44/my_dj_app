@@ -4,7 +4,7 @@ import 'package:my_dj_app/providers/timer_provider.dart';
 import 'package:my_dj_app/widgets/app_drawer.dart';
 import 'package:provider/provider.dart';
 import 'user/lobby_screen.dart';
-import '../screens/user/user_profile_screen.dart';
+import 'user/suggestions_screen.dart';
 
 class UserScreen extends StatefulWidget {
   static const routeName = '/user-screen';
@@ -24,8 +24,9 @@ class _UserScreenState extends State<UserScreen> {
       _isLoading = true;
     });
     Provider.of<Lobbies>(context, listen: false).fetchAndSetUserLobby();
-    /* Provider.of<LobbyTimer>(context, listen: false).setTimeLeft(
-        Provider.of<Lobbies>(context, listen: false).getLobbyDuration); */
+    print(Provider.of<Lobbies>(context, listen: false).getLobbyDuration);
+    Provider.of<LobbyTimer>(context, listen: false).setTimeLeft(
+        Provider.of<Lobbies>(context, listen: false).getLobbyDuration);
     setState(() {
       _isLoading = false;
     });
@@ -34,7 +35,7 @@ class _UserScreenState extends State<UserScreen> {
 
   final List<Widget> _pages = [
     LobbyScreen(),
-    UserProfileScreen(),
+    SuggestionsScreen(),
   ];
 
   final List<String> _titles = [

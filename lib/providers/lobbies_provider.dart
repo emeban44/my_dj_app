@@ -105,4 +105,8 @@ class Lobbies with ChangeNotifier {
   void setLobbyCode(String code) {
     _lobby.lobbyCode = code;
   }
+
+  void setLobbyDuration(int duration) {
+    _lobby.duration = duration;
+  }
 }
