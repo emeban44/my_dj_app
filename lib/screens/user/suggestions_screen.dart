@@ -25,6 +25,7 @@ class SuggestionsScreen extends StatelessWidget {
       'username': username,
       'suggestion': suggestion,
       'createdAt': Timestamp.now(),
+      'likesCounter': {},
     });
     _suggestionController.clear();
   }
@@ -89,7 +90,11 @@ class SuggestionsScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            trailing: LikeCounter(),
+                            trailing: LikeCounter(
+                              i,
+                              lobbyCode,
+                              suggestions[i].id,
+                            ),
                           ),
                         ),
                       );

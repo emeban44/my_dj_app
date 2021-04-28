@@ -1,12 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:my_dj_app/models/sharedPrefs.dart';
 
 class LikeCounter extends StatefulWidget {
+  final index;
+  final lobbyCode;
+  final docId;
+  LikeCounter(this.index, this.lobbyCode, this.docId);
   @override
   _LikeCounterState createState() => _LikeCounterState();
 }
 
 class _LikeCounterState extends State<LikeCounter> {
   bool _liked = false;
+  final String userId = SharedPrefs().userId;
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +26,44 @@ class _LikeCounterState extends State<LikeCounter> {
             child: InkWell(
               borderRadius: BorderRadius.circular(100),
               splashColor: Colors.blue,
-              onTap: () {
-                setState(() {
-                  _liked = !_liked;
-                });
+              onTap: () async {
+                if (!_liked) {
+                  setState(() {
+                    _liked = !_liked;
+                  });
+                  try {
+                    await FirebaseFirestore.instance
+                        .collection('lobbies')
+                        .doc(widget.lobbyCode)
+                        .collection('suggestions')
+                        .doc(widget.docId)
+                        .update({
+                      'likesCounter.$userId': '$userId',
+                    });
+                  } catch (error) {
+                    setState(() {
+                      _liked = !_liked;
+                    });
+                  }
+                } else {
+                  setState(() {
+                    _liked = !_liked;
+                  });
+                  try {
+                    await FirebaseFirestore.instance
+                        .collection('lobbies')
+                        .doc(widget.lobbyCode)
+                        .collection('suggestions')
+                        .doc(widget.docId)
+                        .update({
+                      'likesCounter.$userId': FieldValue.delete(),
+                    });
+                  } catch (error) {
+                    setState(() {
+                      _liked = !_liked;
+                    });
+                  }
+                }
               },
               child: Container(
                 height: 80,
@@ -41,13 +82,31 @@ class _LikeCounterState extends State<LikeCounter> {
           ),
           Flexible(
             flex: 2,
-            child: Text(
-              '0',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 17,
-                fontFamily: 'Lexend',
-              ),
+            child: StreamBuilder(
+              //    initialData: Text('0'),
+              stream: FirebaseFirestore.instance
+                  .collection('lobbies')
+                  .doc(widget.lobbyCode)
+                  .collection('suggestions')
+                  .doc(widget.docId)
+                  .snapshots(),
+              builder: (context, AsyncSnapshot<dynamic> likesSnapshots) {
+                try {
+                  final likesCounter = likesSnapshots.data;
+                  //  print(likesCounter['likesCounter'].length.toString());
+                  return Text(
+                    likesCounter['likesCounter'].length.toString(),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 17,
+                      fontFamily: 'Lexend',
+                    ),
+                  );
+                } catch (error) {
+                  //  print(error.message);
+                  return Text('0');
+                }
+              },
             ),
           ),
         ],
