@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:my_dj_app/models/sharedPrefs.dart';
 import 'package:my_dj_app/providers/lobbies_provider.dart';
 import 'package:my_dj_app/providers/users_provider.dart';
+import 'package:my_dj_app/widgets/user/like_counter.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 
@@ -50,7 +51,7 @@ class SuggestionsScreen extends StatelessWidget {
                     .snapshots(),
                 builder: (context, suggestionsSnapshot) {
                   if (!suggestionsSnapshot.hasData)
-                    return CircularProgressIndicator();
+                    return Center(child: CircularProgressIndicator());
                   final suggestions = suggestionsSnapshot.data.docs;
                   return ListView.builder(
                     itemBuilder: (context, i) {
@@ -88,38 +89,7 @@ class SuggestionsScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            trailing: Container(
-                              //    height: 200,
-                              child: Column(
-                                children: [
-                                  Flexible(
-                                    flex: 4,
-                                    child: Container(
-                                        height: 80,
-                                        width: 48,
-                                        decoration: BoxDecoration(
-                                            color: Colors.pink.shade600,
-                                            borderRadius:
-                                                BorderRadius.circular(100)),
-                                        child: Icon(
-                                          Icons.thumb_up_sharp,
-                                          color: Colors.grey.shade200,
-                                        )),
-                                  ),
-                                  Flexible(
-                                    flex: 2,
-                                    child: Text(
-                                      '0',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 17,
-                                        fontFamily: 'Lexend',
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            trailing: LikeCounter(),
                           ),
                         ),
                       );
