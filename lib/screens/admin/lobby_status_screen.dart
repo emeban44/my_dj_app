@@ -40,8 +40,8 @@ class _LobbyStatusScreenState extends State<LobbyStatusScreen> {
                 child: Column(
                   children: [
                     Container(
-                      height: 75,
-                      width: 200,
+                      height: 100,
+                      width: 255,
                       child: ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
                           elevation: 10,
@@ -52,17 +52,29 @@ class _LobbyStatusScreenState extends State<LobbyStatusScreen> {
                               .pushNamed(CreateLobbyScreen.routeName);
                         },
                         icon: Icon(Icons.library_add),
-                        label: Text('CREATE A LOBBY'),
+                        label: Text(
+                          'CREATE A LOBBY',
+                          style: TextStyle(fontSize: 21),
+                        ),
                       ),
                     ),
-                    ElevatedButton.icon(
+                    Container(
+                      height: 70,
+                      width: 220,
+                      margin: const EdgeInsets.only(top: 7),
+                      child: ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(primary: Colors.green),
                         onPressed: () {
                           Provider.of<Lobbies>(context, listen: false)
                               .fetchAndSetPreviousLobby();
                         },
                         icon: Icon(Icons.restore_sharp),
-                        label: Text('RESTORE PREVIOUS')),
+                        label: Text(
+                          'RESTORE PREVIOUS',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),

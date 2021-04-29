@@ -96,6 +96,7 @@ class _SongsFutureBuilderState extends State<SongsFutureBuilder> {
             shrinkWrap: true,
             itemBuilder: (ctx, i) {
               return Container(
+                height: 70,
                 decoration: BoxDecoration(
                   color: Colors.black26,
                   border: Border.all(
@@ -105,95 +106,97 @@ class _SongsFutureBuilderState extends State<SongsFutureBuilder> {
                   shape: BoxShape.rectangle,
                   borderRadius: BorderRadius.circular(3),
                 ),
-                child: InkWell(
-                  onLongPress: () {
-                    _showMyDialog(
-                      songsData.getSongsByGenre(widget.genre)[i].name,
-                      songsData.getSongsByGenre(widget.genre)[i].artist,
-                    );
-                    /*        Provider.of<Songs>(context, listen: false).deleteSong(
-                      songsData.getSongsByGenre(widget.genre)[i].name,
-                      songsData.getSongsByGenre(widget.genre)[i].artist, 
-                    ) */
-                  },
-                  child: ListTile(
-                    key: ValueKey(
-                      songsData.getSongsByGenre(widget.genre)[i].artist +
-                          ' - ' +
-                          songsData.getSongsByGenre(widget.genre)[i].name,
-                    ),
-                    leading: CircleAvatar(
-                      backgroundColor: Colors.black26,
-                      child: Icon(
-                        Icons.music_note,
-                        color: Colors.pink,
+                child: Center(
+                  child: InkWell(
+                    onLongPress: () {
+                      _showMyDialog(
+                        songsData.getSongsByGenre(widget.genre)[i].name,
+                        songsData.getSongsByGenre(widget.genre)[i].artist,
+                      );
+                      /*        Provider.of<Songs>(context, listen: false).deleteSong(
+                        songsData.getSongsByGenre(widget.genre)[i].name,
+                        songsData.getSongsByGenre(widget.genre)[i].artist, 
+                      ) */
+                    },
+                    child: ListTile(
+                      key: ValueKey(
+                        songsData.getSongsByGenre(widget.genre)[i].artist +
+                            ' - ' +
+                            songsData.getSongsByGenre(widget.genre)[i].name,
                       ),
-                    ),
-                    title: Text(
-                      songsData.getSongsByGenre(widget.genre)[i].artist +
-                          ' - ' +
-                          songsData.getSongsByGenre(widget.genre)[i].name,
-                      style: TextStyle(
-                        color: Colors.grey.shade300,
-                        fontSize: 14,
-                        fontFamily: 'Lexend',
-                      ),
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.add_circle_outline,
-                              color: Colors.pink),
-                          onPressed: () {
-                            if (Provider.of<Lobbies>(context, listen: false)
-                                    .getLobbySongsPerPoll ==
-                                0) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    'Create a lobby first!',
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  backgroundColor: Colors.red,
-                                  duration: Duration(seconds: 1),
-                                ),
-                              );
-                            } else if (Provider.of<Lobbies>(context,
-                                        listen: false)
-                                    .getLobbySongsPerPoll ==
-                                Provider.of<Polls>(context, listen: false)
-                                    .getCurrentPollSize) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    'Poll size is full!',
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  backgroundColor: Colors.red,
-                                  duration: Duration(seconds: 1),
-                                ),
-                              );
-                            } else {
-                              Provider.of<Polls>(context, listen: false)
-                                  .addToPoll(songsData
-                                      .getSongsByGenre(widget.genre)[i]);
-                              ScaffoldMessenger.of(context)
-                                  .hideCurrentSnackBar();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    'Song added to poll!',
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  backgroundColor: Colors.green,
-                                  duration: Duration(seconds: 1),
-                                ),
-                              );
-                            }
-                          },
+                      leading: CircleAvatar(
+                        backgroundColor: Colors.black26,
+                        child: Icon(
+                          Icons.music_note,
+                          color: Colors.pink,
                         ),
-                      ],
+                      ),
+                      title: Text(
+                        songsData.getSongsByGenre(widget.genre)[i].artist +
+                            ' - ' +
+                            songsData.getSongsByGenre(widget.genre)[i].name,
+                        style: TextStyle(
+                          color: Colors.grey.shade300,
+                          fontSize: 18,
+                          fontFamily: 'Lexend',
+                        ),
+                      ),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: Icon(Icons.add_circle_outline,
+                                color: Colors.pink),
+                            onPressed: () {
+                              if (Provider.of<Lobbies>(context, listen: false)
+                                      .getLobbySongsPerPoll ==
+                                  0) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'Create a lobby first!',
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    backgroundColor: Colors.red,
+                                    duration: Duration(seconds: 1),
+                                  ),
+                                );
+                              } else if (Provider.of<Lobbies>(context,
+                                          listen: false)
+                                      .getLobbySongsPerPoll ==
+                                  Provider.of<Polls>(context, listen: false)
+                                      .getCurrentPollSize) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'Poll size is full!',
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    backgroundColor: Colors.red,
+                                    duration: Duration(seconds: 1),
+                                  ),
+                                );
+                              } else {
+                                Provider.of<Polls>(context, listen: false)
+                                    .addToPoll(songsData
+                                        .getSongsByGenre(widget.genre)[i]);
+                                ScaffoldMessenger.of(context)
+                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'Song added to poll!',
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    backgroundColor: Colors.green,
+                                    duration: Duration(seconds: 1),
+                                  ),
+                                );
+                              }
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

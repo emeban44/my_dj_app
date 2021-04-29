@@ -18,11 +18,11 @@ class _PollCreationScreenState extends State<PollCreationScreen> {
         Provider.of<Polls>(context).getCurrentPollSize.roundToDouble();
     return Container(
       margin: EdgeInsets.only(
-        top: 50,
-        left: 20,
-        right: 20,
+        top: 80,
+        left: 12,
+        right: 12,
       ),
-      height: pollSize == 0 ? 150 : pollSize * 58 + 90,
+      height: pollSize == 0 ? 150 : pollSize * 72 + 90,
       child: Column(
         children: [
           Container(
@@ -33,7 +33,7 @@ class _PollCreationScreenState extends State<PollCreationScreen> {
               'Songs for the next poll:',
               style: TextStyle(
                 color: Colors.grey.shade200,
-                fontSize: 18,
+                fontSize: 23,
               ),
             ),
           ),
@@ -73,7 +73,7 @@ class _PollCreationScreenState extends State<PollCreationScreen> {
                             itemCount: pollData.getCurrentPollSongs.length,
                             itemBuilder: (ctx, i) {
                               return Container(
-                                height: 58,
+                                height: 70,
                                 decoration: BoxDecoration(
                                   border: i ==
                                           (pollData.getCurrentPollSongs.length -
@@ -86,37 +86,40 @@ class _PollCreationScreenState extends State<PollCreationScreen> {
                                           ),
                                         ),
                                 ),
-                                child: ListTile(
-                                  leading: CircleAvatar(
-                                    child: Icon(
-                                      Icons.music_note_rounded,
-                                      color: Colors.pink
-                                          .shade100, //Colors.pink.shade400,
+                                child: Center(
+                                  child: ListTile(
+                                    leading: CircleAvatar(
+                                      child: Icon(
+                                        Icons.music_note_rounded,
+                                        color: Colors.pink
+                                            .shade100, //Colors.pink.shade400,
+                                      ),
+                                      backgroundColor: Colors.blueGrey.shade700,
                                     ),
-                                    backgroundColor: Colors.blueGrey.shade700,
-                                  ),
-                                  title: Text(
-                                    pollData.getCurrentPollSongs[i].artist +
-                                        ' - ' +
-                                        pollData.getCurrentPollSongs[i].name,
-                                    style: TextStyle(
-                                      fontFamily: 'Lexend',
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
+                                    title: Text(
+                                      pollData.getCurrentPollSongs[i].artist +
+                                          ' - ' +
+                                          pollData.getCurrentPollSongs[i].name,
+                                      style: TextStyle(
+                                        fontFamily: 'Lexend',
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 17,
+                                      ),
                                     ),
-                                  ),
-                                  trailing: IconButton(
-                                    icon: Icon(
-                                      Icons.remove_circle,
-                                      color: Colors.red,
+                                    trailing: IconButton(
+                                      icon: Icon(
+                                        Icons.remove_circle,
+                                        color: Colors.red,
+                                      ),
+                                      onPressed: () {
+                                        Provider.of<Polls>(
+                                          context,
+                                          listen: false,
+                                        ).removeFromPoll(
+                                            pollData.getCurrentPollSongs[i]);
+                                      },
                                     ),
-                                    onPressed: () {
-                                      Provider.of<Polls>(
-                                        context,
-                                        listen: false,
-                                      ).removeFromPoll(
-                                          pollData.getCurrentPollSongs[i]);
-                                    },
                                   ),
                                 ),
                               );
@@ -130,6 +133,7 @@ class _PollCreationScreenState extends State<PollCreationScreen> {
               top: 5,
             ),
             width: 150,
+            //   height: 100,
             child: ElevatedButton(
               onPressed: () {
                 final int songsPerPoll =
@@ -181,10 +185,10 @@ class _PollCreationScreenState extends State<PollCreationScreen> {
                 }
               },
               child: isLoading
-                  ? CircularProgressIndicator.adaptive(
-                      strokeWidth: 1.0,
+                  ? CircularProgressIndicator(
+                      strokeWidth: 5,
                     )
-                  : Text('Create Poll'),
+                  : Text('CREATE POLL'),
               style: ElevatedButton.styleFrom(
                 primary: Colors.black54,
               ),

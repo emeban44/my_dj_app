@@ -107,6 +107,7 @@ class _SongsSearchBuilderState extends State<SongsSearchBuilder> {
                 shrinkWrap: true,
                 itemBuilder: (ctx, i) {
                   return Container(
+                    height: 70,
                     decoration: BoxDecoration(
                       color: Colors.black26,
                       border: Border.all(
@@ -116,107 +117,110 @@ class _SongsSearchBuilderState extends State<SongsSearchBuilder> {
                       shape: BoxShape.rectangle,
                       borderRadius: BorderRadius.circular(3),
                     ),
-                    child: InkWell(
-                      onLongPress: () {
-                        _showMyDialog(
-                          songsData
-                              .getSongsBySearch(widget.searchInput)[i]
-                              .name,
-                          songsData
-                              .getSongsBySearch(widget.searchInput)[i]
-                              .artist,
-                        );
-                        /*        Provider.of<Songs>(context, listen: false).deleteSong(
-                      songsData.getSongsByGenre(widget.genre)[i].name,
-                      songsData.getSongsByGenre(widget.genre)[i].artist, 
-                    ) */
-                      },
-                      child: ListTile(
-                        key: ValueKey(
-                          songsData
-                                  .getSongsBySearch(widget.searchInput)[i]
-                                  .artist +
-                              ' - ' +
-                              songsData
-                                  .getSongsBySearch(widget.searchInput)[i]
-                                  .name,
-                        ),
-                        leading: CircleAvatar(
-                          backgroundColor: Colors.black26,
-                          child: Icon(
-                            Icons.music_note,
-                            color: Colors.pink,
+                    child: Center(
+                      child: InkWell(
+                        onLongPress: () {
+                          _showMyDialog(
+                            songsData
+                                .getSongsBySearch(widget.searchInput)[i]
+                                .name,
+                            songsData
+                                .getSongsBySearch(widget.searchInput)[i]
+                                .artist,
+                          );
+                          /*        Provider.of<Songs>(context, listen: false).deleteSong(
+                        songsData.getSongsByGenre(widget.genre)[i].name,
+                        songsData.getSongsByGenre(widget.genre)[i].artist, 
+                      ) */
+                        },
+                        child: ListTile(
+                          key: ValueKey(
+                            songsData
+                                    .getSongsBySearch(widget.searchInput)[i]
+                                    .artist +
+                                ' - ' +
+                                songsData
+                                    .getSongsBySearch(widget.searchInput)[i]
+                                    .name,
                           ),
-                        ),
-                        title: Text(
-                          songsData
-                                  .getSongsBySearch(widget.searchInput)[i]
-                                  .artist +
-                              ' - ' +
-                              songsData
-                                  .getSongsBySearch(widget.searchInput)[i]
-                                  .name,
-                          style: TextStyle(
-                            color: Colors.grey.shade300,
-                            fontSize: 14,
-                            fontFamily: 'Lexend',
-                          ),
-                        ),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.add_circle_outline,
-                                  color: Colors.pink),
-                              onPressed: () {
-                                if (Provider.of<Lobbies>(context, listen: false)
-                                        .getLobbySongsPerPoll ==
-                                    0) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        'Create a lobby first!',
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      backgroundColor: Colors.red,
-                                      duration: Duration(seconds: 1),
-                                    ),
-                                  );
-                                } else if (Provider.of<Lobbies>(context,
-                                            listen: false)
-                                        .getLobbySongsPerPoll ==
-                                    Provider.of<Polls>(context, listen: false)
-                                        .getCurrentPollSize) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        'Poll size is full!',
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      backgroundColor: Colors.red,
-                                      duration: Duration(seconds: 1),
-                                    ),
-                                  );
-                                } else {
-                                  Provider.of<Polls>(context, listen: false)
-                                      .addToPoll(songsData.getSongsBySearch(
-                                          widget.searchInput)[i]);
-                                  ScaffoldMessenger.of(context)
-                                      .hideCurrentSnackBar();
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        'Song added to poll!',
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      backgroundColor: Colors.green,
-                                      duration: Duration(milliseconds: 1),
-                                    ),
-                                  );
-                                }
-                              },
+                          leading: CircleAvatar(
+                            backgroundColor: Colors.black26,
+                            child: Icon(
+                              Icons.music_note,
+                              color: Colors.pink,
                             ),
-                          ],
+                          ),
+                          title: Text(
+                            songsData
+                                    .getSongsBySearch(widget.searchInput)[i]
+                                    .artist +
+                                ' - ' +
+                                songsData
+                                    .getSongsBySearch(widget.searchInput)[i]
+                                    .name,
+                            style: TextStyle(
+                              color: Colors.grey.shade300,
+                              fontSize: 18,
+                              fontFamily: 'Lexend',
+                            ),
+                          ),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.add_circle_outline,
+                                    color: Colors.pink),
+                                onPressed: () {
+                                  if (Provider.of<Lobbies>(context,
+                                              listen: false)
+                                          .getLobbySongsPerPoll ==
+                                      0) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Create a lobby first!',
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        backgroundColor: Colors.red,
+                                        duration: Duration(seconds: 1),
+                                      ),
+                                    );
+                                  } else if (Provider.of<Lobbies>(context,
+                                              listen: false)
+                                          .getLobbySongsPerPoll ==
+                                      Provider.of<Polls>(context, listen: false)
+                                          .getCurrentPollSize) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Poll size is full!',
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        backgroundColor: Colors.red,
+                                        duration: Duration(seconds: 1),
+                                      ),
+                                    );
+                                  } else {
+                                    Provider.of<Polls>(context, listen: false)
+                                        .addToPoll(songsData.getSongsBySearch(
+                                            widget.searchInput)[i]);
+                                    ScaffoldMessenger.of(context)
+                                        .hideCurrentSnackBar();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Song added to poll!',
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        backgroundColor: Colors.green,
+                                        duration: Duration(milliseconds: 1),
+                                      ),
+                                    );
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

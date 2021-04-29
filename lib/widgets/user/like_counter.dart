@@ -16,6 +16,22 @@ class _LikeCounterState extends State<LikeCounter> {
   final String userId = SharedPrefs().userId;
 
   @override
+  void didChangeDependencies() async {
+    final suggestion = await FirebaseFirestore.instance
+        .collection('lobbies')
+        .doc(widget.lobbyCode)
+        .collection('suggestions')
+        .doc(widget.docId)
+        .get();
+    if (suggestion.data()['likesCounter'].containsKey(userId)) {
+      setState(() {
+        _liked = true;
+      });
+    }
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       //    height: 200,
