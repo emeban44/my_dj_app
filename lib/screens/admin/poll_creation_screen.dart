@@ -21,8 +21,9 @@ class _PollCreationScreenState extends State<PollCreationScreen> {
         top: 80,
         left: 12,
         right: 12,
+        bottom: 5,
       ),
-      height: pollSize == 0 ? 150 : pollSize * 72 + 90,
+      height: pollSize == 0 ? 200 : pollSize * 71 + 100,
       child: Column(
         children: [
           Container(
@@ -104,7 +105,7 @@ class _PollCreationScreenState extends State<PollCreationScreen> {
                                         fontFamily: 'Lexend',
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 17,
+                                        fontSize: 18,
                                       ),
                                     ),
                                     trailing: IconButton(
@@ -130,10 +131,10 @@ class _PollCreationScreenState extends State<PollCreationScreen> {
           ),
           Container(
             margin: EdgeInsets.only(
-              top: 5,
+              top: 10,
             ),
-            width: 150,
-            //   height: 100,
+            width: 160,
+            height: 50,
             child: ElevatedButton(
               onPressed: () {
                 final int songsPerPoll =
@@ -188,7 +189,10 @@ class _PollCreationScreenState extends State<PollCreationScreen> {
                   ? CircularProgressIndicator(
                       strokeWidth: 5,
                     )
-                  : Text('CREATE POLL'),
+                  : Text(
+                      'CREATE POLL',
+                      style: TextStyle(fontSize: 16),
+                    ),
               style: ElevatedButton.styleFrom(
                 primary: Colors.black54,
               ),

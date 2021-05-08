@@ -94,6 +94,7 @@ class _AuthFormState extends State<AuthForm> {
                       TextFormField(
                         key: ValueKey('email'),
                         controller: _emailController,
+                        autocorrect: false,
                         validator: (value) {
                           if (value.isEmpty ||
                               !value.contains('.com') ||
@@ -113,6 +114,7 @@ class _AuthFormState extends State<AuthForm> {
                       ),
                       if (!_isLogin)
                         TextFormField(
+                          autocorrect: false,
                           style: TextStyle(fontFamily: 'Lexend'),
                           validator: (value) {
                             if (value.length < 4 || value.isEmpty)
@@ -130,6 +132,7 @@ class _AuthFormState extends State<AuthForm> {
                       TextFormField(
                         key: ValueKey('password'),
                         obscureText: true,
+                        autocorrect: false,
                         controller: _passController,
                         decoration: InputDecoration(
                           labelText: 'Password',
@@ -146,6 +149,7 @@ class _AuthFormState extends State<AuthForm> {
                       ),
                       if (_isLogin && _isAdmin)
                         TextFormField(
+                          autocorrect: false,
                           style: TextStyle(fontFamily: 'Lexend'),
                           decoration: InputDecoration(
                             labelText: 'Admin Code',
@@ -158,6 +162,7 @@ class _AuthFormState extends State<AuthForm> {
                         ),
                       if (!_isLogin)
                         TextFormField(
+                          autocorrect: false,
                           key: ValueKey('confirm'),
                           obscureText: true,
                           decoration: InputDecoration(

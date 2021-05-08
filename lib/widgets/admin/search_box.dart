@@ -26,6 +26,7 @@ class SearchBox extends StatelessWidget {
           Flexible(
             flex: 4,
             child: TextFormField(
+              autocorrect: false,
               controller: _controller,
               onFieldSubmitted: (value) {
                 search();

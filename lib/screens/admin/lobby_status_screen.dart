@@ -40,7 +40,7 @@ class _LobbyStatusScreenState extends State<LobbyStatusScreen> {
                 child: Column(
                   children: [
                     Container(
-                      height: 100,
+                      height: 90,
                       width: 255,
                       child: ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
@@ -59,7 +59,7 @@ class _LobbyStatusScreenState extends State<LobbyStatusScreen> {
                       ),
                     ),
                     Container(
-                      height: 70,
+                      height: 60,
                       width: 220,
                       margin: const EdgeInsets.only(top: 7),
                       child: ElevatedButton.icon(

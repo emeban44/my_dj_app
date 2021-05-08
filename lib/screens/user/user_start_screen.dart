@@ -32,7 +32,7 @@ class _UserStartScreenState extends State<UserStartScreen> {
           ),
         ),
         child: Scaffold(
-            drawer: AppDrawer(),
+            drawer: AppDrawer('User', context),
             backgroundColor: Colors.transparent,
             appBar: AppBar(
               title: Text(
@@ -60,24 +60,28 @@ class _UserStartScreenState extends State<UserStartScreen> {
                             ],
                           ),
                         ),
-                        height: 50,
-                        width: 180,
+                        height: 60,
+                        width: 250,
                         child: Container(
-                          padding: const EdgeInsets.only(left: 11),
-                          child: TextFormField(
-                            controller: _codeController,
-                            style: TextStyle(
-                              fontFamily: 'Lexend',
-                              fontWeight: FontWeight.bold,
-                            ),
-                            decoration: InputDecoration(
-                              labelStyle: TextStyle(fontFamily: 'PTSans'),
-                              hintText: 'Enter the lobby code',
-                              hintStyle: TextStyle(
+                          // padding: const EdgeInsets.only(left: 11),
+                          child: Center(
+                            child: TextFormField(
+                              textAlign: TextAlign.center,
+                              controller: _codeController,
+                              style: TextStyle(
                                 fontFamily: 'Lexend',
-                                //         fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 21,
                               ),
-                              border: InputBorder.none,
+                              decoration: InputDecoration(
+                                labelStyle: TextStyle(fontFamily: 'PTSans'),
+                                hintText: 'Enter the lobby code...',
+                                hintStyle: TextStyle(
+                                  fontFamily: 'Lexend',
+                                  //         fontWeight: FontWeight.bold,
+                                ),
+                                border: InputBorder.none,
+                              ),
                             ),
                           ),
                         ),
@@ -103,6 +107,7 @@ class _UserStartScreenState extends State<UserStartScreen> {
                             setState(() {
                               _isLoading = false;
                             });
+                            _codeController.clear();
                           },
                           icon: Icon(Icons.people_alt),
                           label:

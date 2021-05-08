@@ -68,7 +68,7 @@ class _UserScreenState extends State<UserScreen> {
         ),
       ),
       child: Scaffold(
-        drawer: AppDrawer(),
+        drawer: AppDrawer('LobbyEntered', context),
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           title: Text(

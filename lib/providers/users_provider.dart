@@ -65,4 +65,22 @@ class Users with ChangeNotifier {
       throw error;
     }
   }
+
+  Future<void> removeUserFromLobby(String userId, String lobbyCode,
+      BuildContext context, BuildContext drawer) async {
+    print(userId);
+    print(lobbyCode);
+    Navigator.of(drawer).pop();
+    final adminId = await FirebaseFirestore.instance
+        .collection('lobbyCodes')
+        .doc(lobbyCode)
+        .get();
+    await FirebaseFirestore.instance
+        .collection('lobbies')
+        .doc(adminId['lobbyCodeAsAdminId'])
+        .update({
+      'users.$userId': FieldValue.delete(),
+    });
+    Navigator.of(context).popUntil(ModalRoute.withName('/'));
+  }
 }

@@ -82,7 +82,7 @@ class _AdminScreenState extends State<AdminScreen> {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        drawer: AppDrawer(),
+        drawer: AppDrawer('Admin', context),
         appBar: AppBar(
           actions: [
             if (_selectedPageIndex == 2)

@@ -175,7 +175,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
               ),
             ),
             Container(
-              margin: const EdgeInsets.only(top: 50),
+              margin: const EdgeInsets.only(top: 30),
               child: Text(
                 'Current poll:',
                 style: TextStyle(

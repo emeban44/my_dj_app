@@ -26,6 +26,7 @@ class SongTextInput extends StatelessWidget {
         ),
       ),
       child: TextFormField(
+        autocorrect: false,
         style: TextStyle(
           fontFamily: 'Lexend',
           fontWeight: FontWeight.bold,
