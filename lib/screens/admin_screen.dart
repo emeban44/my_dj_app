@@ -3,6 +3,7 @@ import 'package:my_dj_app/models/sharedPrefs.dart';
 import 'package:my_dj_app/providers/songs_provider.dart';
 import 'package:my_dj_app/screens/admin/add_song_screen.dart';
 import 'package:my_dj_app/screens/admin/poll_creation_screen.dart';
+import 'package:my_dj_app/screens/user/suggestions_screen.dart';
 import 'package:my_dj_app/widgets/app_drawer.dart';
 import 'package:provider/provider.dart';
 import '../screens/admin/songs_screen.dart';
@@ -17,6 +18,7 @@ class _AdminScreenState extends State<AdminScreen> {
   final List<Widget> _pages = [
     //  DashboardScreen(),
     LobbyStatusScreen(),
+    //SuggestionsScreen(true),
     PollCreationScreen(),
     SongsScreen(),
   ];
@@ -24,6 +26,7 @@ class _AdminScreenState extends State<AdminScreen> {
   final List<String> _titles = [
     //  'Dashboard',
     'Lobby Status',
+    // 'Next Song Suggestions',
     'Poll Creation',
     'Songs Library',
   ];
@@ -118,6 +121,7 @@ class _AdminScreenState extends State<AdminScreen> {
               )
             : _pages[_selectedPageIndex],
         bottomNavigationBar: BottomNavigationBar(
+          showUnselectedLabels: true,
           onTap: _selectPage,
           backgroundColor: Color.fromRGBO(10, 5, 27, 0.9),
           unselectedItemColor: Colors.white,

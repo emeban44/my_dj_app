@@ -14,10 +14,10 @@ class VotePercentageStream extends StatelessWidget {
           .doc(lobbyId)
           .snapshots(),
       builder: (context, AsyncSnapshot<DocumentSnapshot> pollVoting) {
-        if (isAdmin) {
+        /*   if (isAdmin) {
           if (pollVoting.connectionState == ConnectionState.waiting)
             return CircularProgressIndicator();
-        }
+        }*/
         var pollData = pollVoting.data;
         int songTotalVotes = 0;
         int pollTotalVotes = 0;
@@ -36,6 +36,7 @@ class VotePercentageStream extends StatelessWidget {
         if (songTotalVotes == null) songTotalVotes = 0;
         if (isAdmin) {
           if (songTotalVotes == 0) return Text('0%');
+          if (pollTotalVotes == 0) return Text('0%');
         }
         double songPercentage = songTotalVotes / pollTotalVotes * 100;
         return Text(

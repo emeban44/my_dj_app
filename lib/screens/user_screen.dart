@@ -35,7 +35,7 @@ class _UserScreenState extends State<UserScreen> {
 
   final List<Widget> _pages = [
     LobbyScreen(),
-    SuggestionsScreen(),
+    SuggestionsScreen(false),
   ];
 
   final List<String> _titles = [

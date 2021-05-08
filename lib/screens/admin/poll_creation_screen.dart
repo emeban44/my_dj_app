@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_dj_app/models/sharedPrefs.dart';
 import 'package:my_dj_app/providers/lobbies_provider.dart';
 import 'package:my_dj_app/providers/poll_provider.dart';
 import 'package:my_dj_app/providers/timer_provider.dart';
@@ -175,7 +176,7 @@ class _PollCreationScreenState extends State<PollCreationScreen> {
                     setState(() {
                       isLoading = false;
                     });
-                    Provider.of<LobbyTimer>(context, listen: false).setTimeLeft(
+                    SharedPrefs().setLobbyDuration(
                         Provider.of<Lobbies>(context, listen: false)
                             .getLobbyDuration);
                     Provider.of<LobbyTimer>(context, listen: false)

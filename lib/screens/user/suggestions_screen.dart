@@ -4,10 +4,12 @@ import 'package:my_dj_app/models/sharedPrefs.dart';
 import 'package:my_dj_app/providers/lobbies_provider.dart';
 import 'package:my_dj_app/providers/users_provider.dart';
 import 'package:my_dj_app/widgets/user/like_counter.dart';
-import 'package:path/path.dart';
+
 import 'package:provider/provider.dart';
 
 class SuggestionsScreen extends StatelessWidget {
+  final bool isAdmin;
+  SuggestionsScreen(this.isAdmin);
   final _suggestionController = TextEditingController();
   String lobbyCode;
 
@@ -46,7 +48,7 @@ class SuggestionsScreen extends StatelessWidget {
                 // initialData: Text('No suggestions yet'),
                 stream: FirebaseFirestore.instance
                     .collection('lobbies')
-                    .doc(lobbyId)
+                    .doc(isAdmin ? SharedPrefs().userId : lobbyId)
                     .collection('suggestions')
                     .orderBy('createdAt', descending: true)
                     .snapshots(),
@@ -79,7 +81,7 @@ class SuggestionsScreen extends StatelessWidget {
                               ),
                             ),
                             subtitle: Padding(
-                              padding: const EdgeInsets.only(left: 2.0, top: 5),
+                              padding: const EdgeInsets.only(left: 0.5, top: 5),
                               child: Text(
                                 'Suggested by: ' +
                                     suggestions[i].data()['username'],
@@ -94,6 +96,7 @@ class SuggestionsScreen extends StatelessWidget {
                               i,
                               lobbyCode,
                               suggestions[i].id,
+                              isAdmin,
                             ),
                           ),
                         ),
@@ -104,59 +107,60 @@ class SuggestionsScreen extends StatelessWidget {
                 },
               ),
             ),
-            Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(8),
-                    topRight: Radius.circular(8),
-                    bottomLeft: Radius.circular(5),
-                    bottomRight: Radius.circular(5),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black,
-                      offset: (Offset.zero),
-                      blurRadius: 1.0,
-                      spreadRadius: 3.0,
-                    )
-                  ],
-                  gradient: LinearGradient(colors: [
-                    Colors.blue.shade200,
-                    Colors.pink.shade100,
-                  ])),
-              padding:
-                  EdgeInsets.only(left: 20, bottom: 15, right: 15, top: 10),
-              child: Row(
-                children: [
-                  Flexible(
-                    flex: 10,
-                    child: TextFormField(
-                      controller: _suggestionController,
-                      autocorrect: false,
-                      enableSuggestions: false,
-                      //      keyboardType: TextInputType.name,
-                      textCapitalization: TextCapitalization.words,
-                      style: TextStyle(
-                        fontFamily: 'Lexend',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 19,
-                      ),
-                      decoration:
-                          InputDecoration(hintText: 'Suggest a song...'),
+            if (!isAdmin)
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      topRight: Radius.circular(8),
+                      bottomLeft: Radius.circular(5),
+                      bottomRight: Radius.circular(5),
                     ),
-                  ),
-                  Flexible(
-                      flex: 1,
-                      child: IconButton(
-                        icon: Icon(Icons.send_rounded),
-                        onPressed: () {
-                          FocusScope.of(context).unfocus();
-                          suggestSong(_suggestionController.text);
-                        },
-                      ))
-                ],
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black,
+                        offset: (Offset.zero),
+                        blurRadius: 1.0,
+                        spreadRadius: 3.0,
+                      )
+                    ],
+                    gradient: LinearGradient(colors: [
+                      Colors.blue.shade200,
+                      Colors.pink.shade100,
+                    ])),
+                padding:
+                    EdgeInsets.only(left: 20, bottom: 15, right: 15, top: 10),
+                child: Row(
+                  children: [
+                    Flexible(
+                      flex: 10,
+                      child: TextFormField(
+                        controller: _suggestionController,
+                        autocorrect: false,
+                        enableSuggestions: false,
+                        //      keyboardType: TextInputType.name,
+                        textCapitalization: TextCapitalization.words,
+                        style: TextStyle(
+                          fontFamily: 'Lexend',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 19,
+                        ),
+                        decoration:
+                            InputDecoration(hintText: 'Suggest a song...'),
+                      ),
+                    ),
+                    Flexible(
+                        flex: 1,
+                        child: IconButton(
+                          icon: Icon(Icons.send_rounded),
+                          onPressed: () {
+                            FocusScope.of(context).unfocus();
+                            suggestSong(_suggestionController.text);
+                          },
+                        ))
+                  ],
+                ),
               ),
-            ),
           ],
         ),
       ),

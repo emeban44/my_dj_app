@@ -33,7 +33,12 @@ class LobbyTimer with ChangeNotifier {
         'lobbyTimer': SharedPrefs().lobbyDuration,
       });
       //   notifyListeners();
-      if (timeRemaining == 0 || timeRemaining < 0) t.cancel();
+      if (newTime - 1 == 0 || newTime < 0) {
+        t.cancel();
+        FirebaseFirestore.instance.collection('lobbies').doc(userId).update({
+          'lobbyTimer': 0,
+        });
+      }
     });
   }
 

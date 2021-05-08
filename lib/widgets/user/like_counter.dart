@@ -6,7 +6,8 @@ class LikeCounter extends StatefulWidget {
   final index;
   final lobbyCode;
   final docId;
-  LikeCounter(this.index, this.lobbyCode, this.docId);
+  final isAdmin;
+  LikeCounter(this.index, this.lobbyCode, this.docId, this.isAdmin);
   @override
   _LikeCounterState createState() => _LikeCounterState();
 }
@@ -19,7 +20,7 @@ class _LikeCounterState extends State<LikeCounter> {
   void didChangeDependencies() async {
     final suggestion = await FirebaseFirestore.instance
         .collection('lobbies')
-        .doc(widget.lobbyCode)
+        .doc(widget.isAdmin ? SharedPrefs().userId : widget.lobbyCode)
         .collection('suggestions')
         .doc(widget.docId)
         .get();
@@ -50,7 +51,9 @@ class _LikeCounterState extends State<LikeCounter> {
                   try {
                     await FirebaseFirestore.instance
                         .collection('lobbies')
-                        .doc(widget.lobbyCode)
+                        .doc(widget.isAdmin
+                            ? SharedPrefs().userId
+                            : widget.lobbyCode)
                         .collection('suggestions')
                         .doc(widget.docId)
                         .update({
@@ -68,7 +71,9 @@ class _LikeCounterState extends State<LikeCounter> {
                   try {
                     await FirebaseFirestore.instance
                         .collection('lobbies')
-                        .doc(widget.lobbyCode)
+                        .doc(widget.isAdmin
+                            ? SharedPrefs().userId
+                            : widget.lobbyCode)
                         .collection('suggestions')
                         .doc(widget.docId)
                         .update({
@@ -102,7 +107,7 @@ class _LikeCounterState extends State<LikeCounter> {
               //    initialData: Text('0'),
               stream: FirebaseFirestore.instance
                   .collection('lobbies')
-                  .doc(widget.lobbyCode)
+                  .doc(widget.isAdmin ? SharedPrefs().userId : widget.lobbyCode)
                   .collection('suggestions')
                   .doc(widget.docId)
                   .snapshots(),

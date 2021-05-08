@@ -33,6 +33,7 @@ class Lobbies with ChangeNotifier {
       print(error.message);
       throw error;
     }
+    SharedPrefs().setLobbyDuration(lobby.duration);
     _lobby = lobby;
     notifyListeners();
   }

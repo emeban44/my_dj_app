@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:my_dj_app/providers/lobbies_provider.dart';
 import 'package:my_dj_app/providers/timer_provider.dart';
 import 'package:my_dj_app/screens/admin/create_lobby_screen.dart';
+import 'package:my_dj_app/screens/admin/admin_suggestions_screen.dart';
 import 'package:my_dj_app/screens/user/user_start_screen.dart';
 import 'package:provider/provider.dart';
 import './screens/admin/add_song_screen.dart';
@@ -53,41 +54,44 @@ class MyApp extends StatelessWidget {
               ),
             ],
             child: MaterialApp(
-                debugShowCheckedModeBanner: false,
-                title: 'MyDJ App',
-                theme: ThemeData(
-                  fontFamily: 'Raleway',
-                  primarySwatch: Colors.deepPurple,
-                  accentColor: Colors.pink.shade100,
-                  canvasColor: Color.fromRGBO(10, 5, 27, 0.9),
-                ),
-                home: appSnapshot.connectionState != ConnectionState.done
-                    ? SplashScreen()
-                    : StreamBuilder(
-                        stream: FirebaseAuth.instance.authStateChanges(),
-                        builder: (ctx, userSnapshot) {
-                          if (userSnapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return SplashScreen();
-                          }
-                          if (userSnapshot.hasData) {
-                            if (sharedPrefs.adminStatus == null)
-                              return UserStartScreen();
-                            else if (sharedPrefs.adminStatus)
-                              return AdminScreen();
-                            else
-                              return UserStartScreen();
-                          }
-                          //       Navigator.of(context).pop();
-                          return AuthScreen();
-                        }),
-                routes: {
-                  SplashScreen.routeName: (ctx) => SplashScreen(),
-                  AddSongScreen.routeName: (ctx) => AddSongScreen(),
-                  CreateLobbyScreen.routeName: (ctx) => CreateLobbyScreen(),
-                  UserScreen.routeName: (ctx) => UserScreen(),
-                  AuthScreen.routeName: (ctx) => AuthScreen(),
-                }),
+              debugShowCheckedModeBanner: false,
+              title: 'MyDJ App',
+              theme: ThemeData(
+                fontFamily: 'Raleway',
+                primarySwatch: Colors.deepPurple,
+                accentColor: Colors.pink.shade100,
+                canvasColor: Color.fromRGBO(10, 5, 27, 0.9),
+              ),
+              home: appSnapshot.connectionState != ConnectionState.done
+                  ? SplashScreen()
+                  : StreamBuilder(
+                      stream: FirebaseAuth.instance.authStateChanges(),
+                      builder: (ctx, userSnapshot) {
+                        if (userSnapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return SplashScreen();
+                        }
+                        if (userSnapshot.hasData) {
+                          if (sharedPrefs.adminStatus == null)
+                            return UserStartScreen();
+                          else if (sharedPrefs.adminStatus)
+                            return AdminScreen();
+                          else
+                            return UserStartScreen();
+                        }
+                        //       Navigator.of(context).pop();
+                        return AuthScreen();
+                      }),
+              routes: {
+                SplashScreen.routeName: (ctx) => SplashScreen(),
+                AddSongScreen.routeName: (ctx) => AddSongScreen(),
+                CreateLobbyScreen.routeName: (ctx) => CreateLobbyScreen(),
+                UserScreen.routeName: (ctx) => UserScreen(),
+                AuthScreen.routeName: (ctx) => AuthScreen(),
+                AdminSuggestionsScreen.routeName: (ctx) =>
+                    AdminSuggestionsScreen(),
+              },
+            ),
           );
         });
   }
