@@ -27,6 +27,7 @@ class Lobbies with ChangeNotifier {
         'users': {},
         'pollVotes': {},
         'pollVotesCounter': {},
+        'lobbyTimer': lobby.duration,
       });
     } catch (error) {
       print(error.message);
@@ -75,6 +76,7 @@ class Lobbies with ChangeNotifier {
         songsPerPoll: lobbyFrom.data()['lobbySongsPerPoll'],
         lobbyCode: lobbyFrom.data()['lobbyCode'],
       );
+      SharedPrefs().setLobbyDuration(lobbyFrom.data()['lobbyTimer']);
       _lobby = tmpLobby;
       notifyListeners();
     } catch (error) {

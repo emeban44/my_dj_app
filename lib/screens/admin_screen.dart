@@ -114,7 +114,7 @@ class _AdminScreenState extends State<AdminScreen> {
         ), //Colors.transparent.withOpacity(0.8)),
         body: isLoading
             ? Center(
-                child: CircularProgressIndicator.adaptive(),
+                child: CircularProgressIndicator(),
               )
             : _pages[_selectedPageIndex],
         bottomNavigationBar: BottomNavigationBar(

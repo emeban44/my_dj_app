@@ -178,7 +178,8 @@ class _PollCreationScreenState extends State<PollCreationScreen> {
                     Provider.of<LobbyTimer>(context, listen: false).setTimeLeft(
                         Provider.of<Lobbies>(context, listen: false)
                             .getLobbyDuration);
-                    Provider.of<LobbyTimer>(context, listen: false).timer();
+                    Provider.of<LobbyTimer>(context, listen: false)
+                        .streamTimer();
                   });
                 } catch (error) {
                   print(error.message);

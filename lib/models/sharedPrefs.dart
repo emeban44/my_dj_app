@@ -62,4 +62,12 @@ class SharedPrefs {
   String get userId {
     return _sharedPrefs.getString('userId');
   }
+
+  void setLobbyDuration(value) {
+    _sharedPrefs.setInt('duration', value);
+  }
+
+  int get lobbyDuration {
+    return _sharedPrefs.getInt('duration');
+  }
 }

@@ -26,7 +26,9 @@ class _LobbyStatusScreenState extends State<LobbyStatusScreen> {
   //
 
   void timer() {
-    Provider.of<LobbyTimer>(context, listen: false).timer();
+    SharedPrefs().setLobbyDuration(
+        Provider.of<Lobbies>(context, listen: false).getLobbyDuration);
+    Provider.of<LobbyTimer>(context, listen: false).streamTimer();
   }
 
   @override
@@ -284,6 +286,31 @@ class _LobbyStatusScreenState extends State<LobbyStatusScreen> {
                           );
                   },
                 ),
+                StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('lobbies')
+                        .doc(SharedPrefs().userId)
+                        .snapshots(),
+                    builder: (context,
+                        AsyncSnapshot<DocumentSnapshot> lobbySnapshot) {
+                      if (lobbySnapshot.connectionState ==
+                          ConnectionState.waiting)
+                        return CircularProgressIndicator();
+                      final lobbyData = lobbySnapshot.data;
+                      return Container(
+                        margin: const EdgeInsets.only(top: 15),
+                        child: Text(
+                          lobbyData.data()['lobbyTimer'].toString() +
+                              ' seconds left',
+                          style: TextStyle(
+                            color: Colors.blue.shade200,
+                            fontFamily: 'Grobold',
+                            fontSize: 20,
+                          ),
+                        ),
+                      );
+                    }),
+                /*
                 Consumer<LobbyTimer>(
                   builder: (context, timeData, child) => Container(
                     margin: const EdgeInsets.only(top: 30),
@@ -292,11 +319,11 @@ class _LobbyStatusScreenState extends State<LobbyStatusScreen> {
                       style: TextStyle(
                         color: Colors.blue.shade200,
                         fontFamily: 'Grobold',
-                        fontSize: 25,
+                        fontSize: 20,
                       ),
                     ),
                   ),
-                ),
+                ),*/
                 //   TextButton(onPressed: () {}, child: Text('VOTE')),
                 ElevatedButton(onPressed: timer, child: Text('click')),
                 /* Text(timeRemaining.toString()),
