@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 class VotePercentageStream extends StatelessWidget {
   final String lobbyId;
   final int index;
-  VotePercentageStream(this.lobbyId, this.index);
+  final bool isAdmin;
+  VotePercentageStream(this.lobbyId, this.index, this.isAdmin);
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -13,6 +14,10 @@ class VotePercentageStream extends StatelessWidget {
           .doc(lobbyId)
           .snapshots(),
       builder: (context, AsyncSnapshot<DocumentSnapshot> pollVoting) {
+        if (isAdmin) {
+          if (pollVoting.connectionState == ConnectionState.waiting)
+            return CircularProgressIndicator();
+        }
         var pollData = pollVoting.data;
         int songTotalVotes = 0;
         int pollTotalVotes = 0;
@@ -29,6 +34,9 @@ class VotePercentageStream extends StatelessWidget {
         /*  if (pollVoting.connectionState == ConnectionState.waiting)
           return Text('0%'); */
         if (songTotalVotes == null) songTotalVotes = 0;
+        if (isAdmin) {
+          if (songTotalVotes == 0) return Text('0%');
+        }
         double songPercentage = songTotalVotes / pollTotalVotes * 100;
         return Text(
           songPercentage.toStringAsFixed(0) + '%',

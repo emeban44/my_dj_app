@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:my_dj_app/models/lobby.dart';
 import 'package:my_dj_app/models/sharedPrefs.dart';
 import 'package:my_dj_app/providers/timer_provider.dart';
+import 'package:my_dj_app/widgets/user/vote_percentage_stream.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_countdown_timer/index.dart';
 
@@ -99,12 +100,12 @@ class _LobbyStatusScreenState extends State<LobbyStatusScreen> {
                         shadows: [
                           Shadow(
                             color: Colors.black,
-                            offset: Offset(3.5, 2.0),
+                            offset: Offset(3.5, 3.5),
                             blurRadius: 1.0,
                           ),
                         ],
                         fontFamily: 'Doctor',
-                        fontSize: 26,
+                        fontSize: 36,
                         foreground: Paint()
                           ..style = PaintingStyle.stroke
                           ..strokeWidth = 3
@@ -120,7 +121,7 @@ class _LobbyStatusScreenState extends State<LobbyStatusScreen> {
                         shadows: [
                           Shadow(
                             color: Colors.black,
-                            offset: Offset(3.5, 2.0),
+                            offset: Offset(3.5, 3.5),
                             blurRadius: 1.0,
                           ),
                         ],
@@ -131,15 +132,49 @@ class _LobbyStatusScreenState extends State<LobbyStatusScreen> {
                     ),
                   ],
                 ),
-                Consumer<LobbyTimer>(
-                    builder: (context, timeData, child) => Text(
-                          timeData.timeLeft.toString() + ' seconds left',
-                          style: TextStyle(
-                            color: Colors.grey.shade200,
-                            fontFamily: 'Grobold',
-                            fontSize: 20,
-                          ),
-                        )),
+                StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection('lobbies')
+                      .doc(SharedPrefs().userId)
+                      .snapshots(),
+                  builder: (ctx, usersLobbyInfo) {
+                    //  if (_isLoading)
+                    //  return CircularProgressIndicator.adaptive();
+                    if (usersLobbyInfo.connectionState ==
+                        ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    final usersData = usersLobbyInfo.data;
+                    try {
+                      return Text(
+                        'Users in lobby:  ' +
+                            usersData['users'].length.toString() +
+                            '/' +
+                            currentLobby.capacity.toString(),
+                        style: TextStyle(
+                          color: Colors.blue.shade200,
+                          fontFamily: 'Lexend',
+                          fontSize: 20,
+                        ),
+                      );
+                    } catch (error) {
+                      return Text('0');
+                    }
+                  },
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 50, bottom: 5),
+                  child: Text(
+                    'Current poll: ',
+                    style: TextStyle(
+                      color: Colors.grey.shade200,
+                      fontSize: 25,
+                      fontFamily: 'Lexend',
+                    ),
+                  ),
+                ),
                 StreamBuilder(
                   stream: FirebaseFirestore.instance
                       .collection('lobbies')
@@ -155,13 +190,26 @@ class _LobbyStatusScreenState extends State<LobbyStatusScreen> {
                     final pollSongs = pollSnapshot.data;
                     return pollSongs['poll'].length == 0
                         ? Container(
+                            height: 70,
                             margin: EdgeInsets.all(30),
-                            child: Text(
-                              'No poll created yet!',
-                              style: TextStyle(
-                                fontSize: 25,
-                                color: Colors.pink,
-                                fontFamily: 'PTSans',
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.blue.shade100,
+                                  Colors.purple.shade100
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: Center(
+                              child: Text(
+                                'No poll created yet!',
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'PTSans',
+                                ),
                               ),
                             ),
                           )
@@ -170,9 +218,10 @@ class _LobbyStatusScreenState extends State<LobbyStatusScreen> {
                               height: double.parse(
                                       pollSongs['poll'].length.toString()) *
                                   71,
-                              margin: EdgeInsets.symmetric(
-                                vertical: 15,
-                                horizontal: 10,
+                              margin: EdgeInsets.only(
+                                top: 5,
+                                left: 10,
+                                right: 10,
                               ),
                               decoration: BoxDecoration(
                                 boxShadow: [
@@ -223,6 +272,10 @@ class _LobbyStatusScreenState extends State<LobbyStatusScreen> {
                                                     fontFamily: 'Lexend',
                                                     fontSize: 18),
                                               ),
+                                              trailing: VotePercentageStream(
+                                                  SharedPrefs().userId,
+                                                  i,
+                                                  true),
                                             ),
                                           ),
                                         ),
@@ -231,7 +284,20 @@ class _LobbyStatusScreenState extends State<LobbyStatusScreen> {
                           );
                   },
                 ),
-                TextButton(onPressed: () {}, child: Text('VOTE')),
+                Consumer<LobbyTimer>(
+                  builder: (context, timeData, child) => Container(
+                    margin: const EdgeInsets.only(top: 30),
+                    child: Text(
+                      timeData.timeLeft.toString() + ' seconds left',
+                      style: TextStyle(
+                        color: Colors.blue.shade200,
+                        fontFamily: 'Grobold',
+                        fontSize: 25,
+                      ),
+                    ),
+                  ),
+                ),
+                //   TextButton(onPressed: () {}, child: Text('VOTE')),
                 ElevatedButton(onPressed: timer, child: Text('click')),
                 /* Text(timeRemaining.toString()),
                 

@@ -142,35 +142,36 @@ class _LobbyScreenState extends State<LobbyScreen> {
                     ),
                   ),
                   StreamBuilder(
-                      stream: FirebaseFirestore.instance
-                          .collection('lobbies')
-                          .doc(lobbyId)
-                          .snapshots(),
-                      builder: (ctx, usersLobbyInfo) {
-                        if (_isLoading)
-                          return CircularProgressIndicator.adaptive();
-                        /*           if (usersLobbyInfo.connectionState ==
+                    stream: FirebaseFirestore.instance
+                        .collection('lobbies')
+                        .doc(lobbyId)
+                        .snapshots(),
+                    builder: (ctx, usersLobbyInfo) {
+                      if (_isLoading)
+                        return CircularProgressIndicator.adaptive();
+                      /*           if (usersLobbyInfo.connectionState ==
                                 ConnectionState.waiting) {
                               return Center(
                                 child: CircularProgressIndicator(),
                               );
                             } */
-                        final usersData = usersLobbyInfo.data;
-                        try {
-                          return Text(
-                            usersData['users'].length.toString() +
-                                '/' +
-                                currentLobby.capacity.toString(),
-                            style: TextStyle(
-                              color: Colors.blue.shade200,
-                              fontFamily: 'Lexend',
-                              fontSize: 20,
-                            ),
-                          );
-                        } catch (error) {
-                          return Text('0');
-                        }
-                      })
+                      final usersData = usersLobbyInfo.data;
+                      try {
+                        return Text(
+                          usersData['users'].length.toString() +
+                              '/' +
+                              currentLobby.capacity.toString(),
+                          style: TextStyle(
+                            color: Colors.blue.shade200,
+                            fontFamily: 'Lexend',
+                            fontSize: 20,
+                          ),
+                        );
+                      } catch (error) {
+                        return Text('0');
+                      }
+                    },
+                  ),
                 ],
               ),
             ),
@@ -200,6 +201,15 @@ class _LobbyScreenState extends State<LobbyScreen> {
                 final pollSongs = pollSnapshot.data;
                 return pollSongs['poll'].length == 0
                     ? Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.blue.shade100,
+                              Colors.purple.shade100
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
                         margin: EdgeInsets.all(30),
                         child: Text(
                           'No poll created yet!',
@@ -207,6 +217,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
                             fontSize: 25,
                             color: Colors.pink,
                             fontFamily: 'PTSans',
+                            // fontWeight: FontWeight.bold,
                           ),
                         ),
                       )
@@ -307,7 +318,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
                                                 ? null
                                                 : _didVote
                                                     ? VotePercentageStream(
-                                                        lobbyId, i)
+                                                        lobbyId, i, false)
                                                     : null,
                                           ),
                                         ),
