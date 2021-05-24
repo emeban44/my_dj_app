@@ -71,6 +71,8 @@ class SuggestionsScreen extends StatelessWidget {
                         ),
                         child: Center(
                           child: ListTile(
+                            key: ValueKey(suggestions[i].data()['suggestion'] +
+                                suggestions[i].data()['username']),
                             title: Text(
                               suggestions[i].data()['suggestion'],
                               style: TextStyle(

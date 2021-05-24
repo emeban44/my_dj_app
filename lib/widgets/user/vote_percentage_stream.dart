@@ -34,9 +34,13 @@ class VotePercentageStream extends StatelessWidget {
         /*  if (pollVoting.connectionState == ConnectionState.waiting)
           return Text('0%'); */
         if (songTotalVotes == null) songTotalVotes = 0;
+        if (pollTotalVotes == null) pollTotalVotes = 0;
         if (isAdmin) {
           if (songTotalVotes == 0) return Text('0%');
           if (pollTotalVotes == 0) return Text('0%');
+        } else {
+          if (songTotalVotes == 0) return Text('0%');
+          if (pollTotalVotes == 0) return Text('Refresh');
         }
         double songPercentage = songTotalVotes / pollTotalVotes * 100;
         return Text(

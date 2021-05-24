@@ -29,6 +29,13 @@
             {
               "client_id": "172177405887-usqe4m45lsk5uf0c04av1se1vmmpr5pp.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "172177405887-5mstptm1jgjsju1ehsvp7ncdso5rc2m7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.myDjApp"
+              }
             }
           ]
         }
