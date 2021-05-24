@@ -182,7 +182,7 @@ class _LobbyStatusScreenState extends State<LobbyStatusScreen> {
                     },
                   ),
                   Container(
-                    margin: const EdgeInsets.only(top: 50, bottom: 5),
+                    margin: const EdgeInsets.only(top: 30, bottom: 5),
                     child: Text(
                       'Current poll: ',
                       style: TextStyle(
@@ -334,7 +334,7 @@ class _LobbyStatusScreenState extends State<LobbyStatusScreen> {
                     margin: const EdgeInsets.only(
                       left: 10,
                       right: 10,
-                      top: 40,
+                      top: 20,
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

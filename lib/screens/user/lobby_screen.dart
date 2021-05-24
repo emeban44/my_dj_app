@@ -14,6 +14,7 @@ class LobbyScreen extends StatefulWidget {
 }
 
 class _LobbyScreenState extends State<LobbyScreen> {
+  bool refreshed = false;
   @override
   void initState() {
     setState(() {
@@ -51,7 +52,11 @@ class _LobbyScreenState extends State<LobbyScreen> {
     super.didChangeDependencies();
   }
 
-  Future<void> refresh() async {
+  Future<void> refresh(bool swiped) async {
+    if (!swiped)
+      setState(() {
+        refreshed = true;
+      });
     bool didVote = false;
     await FirebaseFirestore.instance
         .collection('lobbies')
@@ -67,6 +72,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
       });
       setState(() {
         _didVote = didVote;
+        refreshed = false;
       });
     });
   }
@@ -97,7 +103,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
 
     return SingleChildScrollView(
       child: RefreshIndicator(
-        onRefresh: refresh,
+        onRefresh: () => refresh(true),
         child: Container(
           width: double.infinity,
           padding: EdgeInsets.only(top: 10, bottom: 10),
@@ -339,10 +345,12 @@ class _LobbyScreenState extends State<LobbyScreen> {
                                               ),
                                               trailing: _isLoading
                                                   ? null
-                                                  : _didVote
-                                                      ? VotePercentageStream(
-                                                          lobbyId, i, false)
-                                                      : null,
+                                                  : refreshed
+                                                      ? null
+                                                      : _didVote
+                                                          ? VotePercentageStream(
+                                                              lobbyId, i, false)
+                                                          : null,
                                             ),
                                           ),
                                         ),
@@ -419,7 +427,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
                               .getLobbyDuration -
                           1 ==
                       lobbyData.data()['lobbyTimer']) {
-                    refresh();
+                    refresh(false);
                     print('yes');
                   }
                   if (lobbyData.data()['lobbyTimer'] == 0) {

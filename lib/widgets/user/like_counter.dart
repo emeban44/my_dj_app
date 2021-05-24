@@ -48,7 +48,8 @@ class _LikeCounterState extends State<LikeCounter> {
   Widget build(BuildContext context) {
     return Container(
       //    height: 200,
-      child: _isLoading
+      child:
+          /* _isLoading
           ? /*CircularProgressIndicator(
               strokeWidth: 0.5,
             )*/
@@ -56,104 +57,103 @@ class _LikeCounterState extends State<LikeCounter> {
               'Loading...',
               style: TextStyle(color: Colors.white, fontSize: 10),
             )
-          : Column(
-              children: [
-                Flexible(
-                  flex: 4,
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(100),
-                    splashColor: Colors.blue,
-                    onTap: () async {
-                      if (!_liked) {
-                        setState(() {
-                          _liked = !_liked;
-                        });
-                        try {
-                          await FirebaseFirestore.instance
-                              .collection('lobbies')
-                              .doc(widget.isAdmin
-                                  ? SharedPrefs().userId
-                                  : widget.lobbyCode)
-                              .collection('suggestions')
-                              .doc(widget.docId)
-                              .update({
-                            'likesCounter.$userId': '$userId',
-                          });
-                        } catch (error) {
-                          setState(() {
-                            _liked = !_liked;
-                          });
-                        }
-                      } else {
-                        setState(() {
-                          _liked = !_liked;
-                        });
-                        try {
-                          await FirebaseFirestore.instance
-                              .collection('lobbies')
-                              .doc(widget.isAdmin
-                                  ? SharedPrefs().userId
-                                  : widget.lobbyCode)
-                              .collection('suggestions')
-                              .doc(widget.docId)
-                              .update({
-                            'likesCounter.$userId': FieldValue.delete(),
-                          });
-                        } catch (error) {
-                          setState(() {
-                            _liked = !_liked;
-                          });
-                        }
-                      }
-                    },
-                    child: Container(
-                      height: 80,
-                      width: 48,
-                      decoration: BoxDecoration(
-                          color: Colors.pink.shade600,
-                          borderRadius: BorderRadius.circular(100)),
-                      child: Icon(
-                        Icons.thumb_up_sharp,
-                        color: _liked
-                            ? Colors.deepPurple.shade700
-                            : Colors.grey.shade200,
-                      ),
-                    ),
-                  ),
-                ),
-                Flexible(
-                  flex: 2,
-                  child: StreamBuilder(
-                    //    initialData: Text('0'),
-                    stream: FirebaseFirestore.instance
+          :*/
+          Column(
+        children: [
+          Flexible(
+            flex: 4,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(100),
+              splashColor: Colors.blue,
+              onTap: () async {
+                if (!_liked) {
+                  setState(() {
+                    _liked = !_liked;
+                  });
+                  try {
+                    await FirebaseFirestore.instance
                         .collection('lobbies')
                         .doc(widget.isAdmin
                             ? SharedPrefs().userId
                             : widget.lobbyCode)
                         .collection('suggestions')
                         .doc(widget.docId)
-                        .snapshots(),
-                    builder: (context, AsyncSnapshot<dynamic> likesSnapshots) {
-                      try {
-                        final likesCounter = likesSnapshots.data;
-                        //  print(likesCounter['likesCounter'].length.toString());
-                        return Text(
-                          likesCounter['likesCounter'].length.toString(),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 17,
-                            fontFamily: 'Lexend',
-                          ),
-                        );
-                      } catch (error) {
-                        //  print(error.message);
-                        return Text('0');
-                      }
-                    },
-                  ),
+                        .update({
+                      'likesCounter.$userId': '$userId',
+                    });
+                  } catch (error) {
+                    setState(() {
+                      _liked = !_liked;
+                    });
+                  }
+                } else {
+                  setState(() {
+                    _liked = !_liked;
+                  });
+                  try {
+                    await FirebaseFirestore.instance
+                        .collection('lobbies')
+                        .doc(widget.isAdmin
+                            ? SharedPrefs().userId
+                            : widget.lobbyCode)
+                        .collection('suggestions')
+                        .doc(widget.docId)
+                        .update({
+                      'likesCounter.$userId': FieldValue.delete(),
+                    });
+                  } catch (error) {
+                    setState(() {
+                      _liked = !_liked;
+                    });
+                  }
+                }
+              },
+              child: Container(
+                height: 80,
+                width: 48,
+                decoration: BoxDecoration(
+                    color: Colors.pink.shade600,
+                    borderRadius: BorderRadius.circular(100)),
+                child: Icon(
+                  Icons.thumb_up_sharp,
+                  color: _liked
+                      ? Colors.deepPurple.shade700
+                      : Colors.grey.shade200,
                 ),
-              ],
+              ),
             ),
+          ),
+          Flexible(
+            flex: 2,
+            child: StreamBuilder(
+              //    initialData: Text('0'),
+              stream: FirebaseFirestore.instance
+                  .collection('lobbies')
+                  .doc(widget.isAdmin ? SharedPrefs().userId : widget.lobbyCode)
+                  .collection('suggestions')
+                  .doc(widget.docId)
+                  .snapshots(),
+              builder: (context, AsyncSnapshot<dynamic> likesSnapshots) {
+                try {
+                  final likesCounter = likesSnapshots.data;
+                  //  print(likesCounter['likesCounter'].length.toString());
+                  return Text(
+                    likesCounter['likesCounter'].length.toString(),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 17,
+                      fontFamily: 'Lexend',
+                    ),
+                  );
+                } catch (error) {
+                  //  print(error.message);
+                  return Text('0');
+                }
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
