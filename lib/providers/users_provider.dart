@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:my_dj_app/providers/lobbies_provider.dart';
@@ -17,6 +19,7 @@ class Users with ChangeNotifier {
     BuildContext context,
   ) async {
     try {
+      _showMyDialog('albino', 'boim', context);
       final adminId = await FirebaseFirestore.instance
           .collection('lobbyCodes')
           .doc(enteredCode)
@@ -59,6 +62,7 @@ class Users with ChangeNotifier {
       Provider.of<Lobbies>(context, listen: false)
           .setLobbyDuration(fetchedDuration['lobbyDuration']);
       notifyListeners();
+      // Navigator.of(context).pop();
       Navigator.of(context).pushNamed(UserScreen.routeName);
     } catch (error) {
       print(error.message);
@@ -82,5 +86,39 @@ class Users with ChangeNotifier {
       'users.$userId': FieldValue.delete(),
     });
     Navigator.of(context).popUntil(ModalRoute.withName('/'));
+  }
+
+  Future<void> _showMyDialog(
+      String name, String artist, BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Center(
+            child: Text('Joining lobby...',
+                style: TextStyle(
+                  fontSize: 28,
+                  color: Colors.black87,
+                  fontFamily: 'Raleway',
+                  fontWeight: FontWeight.bold,
+                )),
+          ),
+          content: Container(
+            margin: const EdgeInsets.all(5),
+            child: SizedBox(
+              height: 40,
+              width: 40,
+              child: Center(
+                  child: CircularProgressIndicator(
+                valueColor:
+                    AlwaysStoppedAnimation<Color>(Colors.deepPurple.shade800),
+                strokeWidth: 3.5,
+              )),
+            ),
+          ),
+        );
+      },
+    );
   }
 }

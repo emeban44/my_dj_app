@@ -226,138 +226,148 @@ class _LobbyScreenState extends State<LobbyScreen> {
                           child: CircularProgressIndicator(),
                         );
                       } */
-                  final pollSongs = pollSnapshot.data;
-                  return pollSongs['poll'].length == 0
-                      ? Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Colors.blue.shade100,
-                                Colors.purple.shade100
-                              ],
-                            ),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          margin: EdgeInsets.all(30),
-                          child: Text(
-                            'No poll created yet!',
-                            style: TextStyle(
-                              fontSize: 25,
-                              color: Colors.pink,
-                              fontFamily: 'PTSans',
-                              // fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        )
-                      : Flexible(
-                          child: Container(
-                            height: double.parse(
-                                    pollSongs['poll'].length.toString()) *
-                                71,
-                            /*  height: double.parse(
-                                    (currentLobby.songsPerPoll).toString()) *
-                                71, */
-                            margin: EdgeInsets.only(
-                              top: 15,
-                              left: 20,
-                              right: 20,
-                              bottom: 7,
-                            ),
+                  try {
+                    final pollSongs = pollSnapshot.data;
+                    return pollSongs['poll'].length == 0
+                        ? Container(
                             decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.blueGrey,
-                                  offset: (Offset.zero),
-                                  blurRadius: 5.0,
-                                  spreadRadius: 5.0,
-                                )
-                              ],
-                              borderRadius: BorderRadius.circular(10),
                               gradient: LinearGradient(
                                 colors: [
                                   Colors.blue.shade100,
                                   Colors.purple.shade100
                                 ],
                               ),
+                              borderRadius: BorderRadius.circular(15),
                             ),
-                            child: ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: pollSongs['poll'].length,
-                                itemBuilder: (ctx, i) => Container(
-                                      decoration: BoxDecoration(
-                                        color: _selection[i]
-                                            ? Colors.black87
-                                            : Colors.transparent,
-                                        border:
-                                            i == (pollSongs['poll'].length - 1)
-                                                ? null
-                                                : Border(
-                                                    bottom: BorderSide(
-                                                      color: Colors.black,
-                                                      width: 0.1,
-                                                    ),
-                                                  ),
-                                      ),
-                                      child: InkWell(
-                                        onTap: _didVote
-                                            ? null
-                                            : () {
-                                                setState(() {
-                                                  for (int y = 0;
-                                                      y < _selection.length;
-                                                      y++) {
-                                                    if (i == y)
-                                                      continue;
-                                                    else
-                                                      _selection[y] = false;
-                                                  }
-                                                  _selection[i] =
-                                                      !_selection[i];
-                                                });
-                                                //   print(_selection);
-                                              },
-                                        child: Container(
-                                          height: 70,
-                                          child: Center(
-                                            child: ListTile(
-                                              leading: Container(
-                                                //height: 200,
-                                                child: CircleAvatar(
-                                                  backgroundColor: _selection[i]
-                                                      ? Colors.pink.shade100
-                                                      : Colors.blueGrey,
-                                                  child: Icon(
-                                                    Icons.music_note_rounded,
-                                                    color: _selection[i]
-                                                        ? Colors.blueGrey
-                                                        : Colors.pink.shade100,
+                            margin: EdgeInsets.all(30),
+                            child: Text(
+                              'No poll created yet!',
+                              style: TextStyle(
+                                fontSize: 25,
+                                color: Colors.pink,
+                                fontFamily: 'PTSans',
+                                // fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          )
+                        : Flexible(
+                            child: Container(
+                              height: double.parse(
+                                      pollSongs['poll'].length.toString()) *
+                                  71,
+                              /*  height: double.parse(
+                                    (currentLobby.songsPerPoll).toString()) *
+                                71, */
+                              margin: EdgeInsets.only(
+                                top: 15,
+                                left: 20,
+                                right: 20,
+                                bottom: 7,
+                              ),
+                              decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.blueGrey,
+                                    offset: (Offset.zero),
+                                    blurRadius: 5.0,
+                                    spreadRadius: 5.0,
+                                  )
+                                ],
+                                borderRadius: BorderRadius.circular(10),
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Colors.blue.shade100,
+                                    Colors.purple.shade100
+                                  ],
+                                ),
+                              ),
+                              child: ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: pollSongs['poll'].length,
+                                  itemBuilder: (ctx, i) => Container(
+                                        decoration: BoxDecoration(
+                                          color: _selection[i]
+                                              ? Colors.black87
+                                              : Colors.transparent,
+                                          border: i ==
+                                                  (pollSongs['poll'].length - 1)
+                                              ? null
+                                              : Border(
+                                                  bottom: BorderSide(
+                                                    color: Colors.black,
+                                                    width: 0.1,
                                                   ),
                                                 ),
+                                        ),
+                                        child: InkWell(
+                                          onTap: _didVote
+                                              ? null
+                                              : () {
+                                                  setState(() {
+                                                    for (int y = 0;
+                                                        y < _selection.length;
+                                                        y++) {
+                                                      if (i == y)
+                                                        continue;
+                                                      else
+                                                        _selection[y] = false;
+                                                    }
+                                                    _selection[i] =
+                                                        !_selection[i];
+                                                  });
+                                                  //   print(_selection);
+                                                },
+                                          child: Container(
+                                            height: 70,
+                                            child: Center(
+                                              child: ListTile(
+                                                leading: Container(
+                                                  //height: 200,
+                                                  child: CircleAvatar(
+                                                    backgroundColor:
+                                                        _selection[i]
+                                                            ? Colors
+                                                                .pink.shade100
+                                                            : Colors.blueGrey,
+                                                    child: Icon(
+                                                      Icons.music_note_rounded,
+                                                      color: _selection[i]
+                                                          ? Colors.blueGrey
+                                                          : Colors
+                                                              .pink.shade100,
+                                                    ),
+                                                  ),
+                                                ),
+                                                title: Text(
+                                                  pollSongs['poll']['song$i'],
+                                                  style: TextStyle(
+                                                      fontFamily: 'Lexend',
+                                                      fontSize: 18,
+                                                      color: _selection[i]
+                                                          ? Colors.grey.shade200
+                                                          : Colors.black),
+                                                ),
+                                                trailing: _isLoading
+                                                    ? null
+                                                    : refreshed
+                                                        ? null
+                                                        : _didVote
+                                                            ? VotePercentageStream(
+                                                                lobbyId,
+                                                                i,
+                                                                false)
+                                                            : null,
                                               ),
-                                              title: Text(
-                                                pollSongs['poll']['song$i'],
-                                                style: TextStyle(
-                                                    fontFamily: 'Lexend',
-                                                    fontSize: 18,
-                                                    color: _selection[i]
-                                                        ? Colors.grey.shade200
-                                                        : Colors.black),
-                                              ),
-                                              trailing: _isLoading
-                                                  ? null
-                                                  : refreshed
-                                                      ? null
-                                                      : _didVote
-                                                          ? VotePercentageStream(
-                                                              lobbyId, i, false)
-                                                          : null,
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    )),
-                          ),
-                        );
+                                      )),
+                            ),
+                          );
+                  } catch (error) {
+                    print(error);
+                    return CircularProgressIndicator();
+                  }
                 },
               ),
               Container(
@@ -411,59 +421,50 @@ class _LobbyScreenState extends State<LobbyScreen> {
                             ElevatedButton.styleFrom(primary: Colors.black54)),
               ),
               StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection('lobbies')
-                    .doc(lobbyId)
-                    .snapshots(),
-                builder:
-                    (context, AsyncSnapshot<DocumentSnapshot> lobbySnapshot) {
-                  if (_isLoading) return CircularProgressIndicator();
-                  final lobbyData = lobbySnapshot.data;
-                  print(_didVote);
-                  print(Provider.of<Lobbies>(context, listen: false)
-                      .getLobbyDuration);
-                  print(lobbyData.data()['lobbyTimer']);
-                  if (Provider.of<Lobbies>(context, listen: false)
-                              .getLobbyDuration -
-                          1 ==
-                      lobbyData.data()['lobbyTimer']) {
-                    refresh(false);
-                    print('yes');
-                  }
-                  if (lobbyData.data()['lobbyTimer'] == 0) {
-                    return Text(
-                      'Poll finished, wait for next one.',
-                      style: TextStyle(
-                        color: Colors.blue.shade200,
-                        fontFamily: 'Grobold',
-                        fontSize: 20,
-                      ),
-                    );
-                  }
-                  return Container(
-                    margin: const EdgeInsets.only(top: 15),
-                    child: Text(
-                      lobbyData.data()['lobbyTimer'].toString() +
-                          ' seconds left',
-                      style: TextStyle(
-                        color: Colors.blue.shade200,
-                        fontFamily: 'Grobold',
-                        fontSize: 20,
-                      ),
-                    ),
-                  );
-                },
-              ),
-              /*Consumer<LobbyTimer>(
-                builder: (context, timeData, child) => Text(
-                  timeData.timeLeft.toString() + ' seconds left',
-                  style: TextStyle(
-                    color: Colors.blue.shade100,
-                    fontFamily: 'Grobold',
-                    fontSize: 14,
-                  ),
-                ),
-              ),*/
+                  stream: FirebaseFirestore.instance
+                      .collection('lobbies')
+                      .doc(lobbyId)
+                      .snapshots(),
+                  builder:
+                      (context, AsyncSnapshot<DocumentSnapshot> lobbySnapshot) {
+                    if (_isLoading) return CircularProgressIndicator();
+                    try {
+                      final lobbyData = lobbySnapshot.data;
+                      if (Provider.of<Lobbies>(context, listen: false)
+                                  .getLobbyDuration -
+                              1 ==
+                          lobbyData.data()['lobbyTimer']) {
+                        refresh(false);
+                        print('yes');
+                      }
+                      if (lobbyData.data()['lobbyTimer'] == 0) {
+                        return Text(
+                          'Poll finished, wait for next one.',
+                          style: TextStyle(
+                            color: Colors.blue.shade200,
+                            fontFamily: 'Grobold',
+                            fontSize: 20,
+                          ),
+                        );
+                      }
+
+                      return Container(
+                        margin: const EdgeInsets.only(top: 15),
+                        child: Text(
+                          lobbyData.data()['lobbyTimer'].toString() +
+                              ' seconds left',
+                          style: TextStyle(
+                            color: Colors.blue.shade200,
+                            fontFamily: 'Grobold',
+                            fontSize: 20,
+                          ),
+                        ),
+                      );
+                    } catch (error) {
+                      print(error);
+                      return CircularProgressIndicator();
+                    }
+                  }),
             ],
           ),
         ),

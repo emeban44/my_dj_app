@@ -27,6 +27,7 @@ class LobbyTextInput extends StatelessWidget {
       ),
       child: TextFormField(
         autocorrect: false,
+        textCapitalization: TextCapitalization.words,
         keyboardType: (inputHint == 'Lobby Capacity')
             ? TextInputType.number
             : TextInputType.name,
