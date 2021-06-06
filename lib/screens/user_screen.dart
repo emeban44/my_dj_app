@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_dj_app/providers/lobbies_provider.dart';
 import 'package:my_dj_app/providers/timer_provider.dart';
+import 'package:my_dj_app/screens/user/poll_winners_screen.dart';
 import 'package:my_dj_app/widgets/app_drawer.dart';
 import 'package:provider/provider.dart';
 import 'user/lobby_screen.dart';
@@ -36,11 +37,13 @@ class _UserScreenState extends State<UserScreen> {
   final List<Widget> _pages = [
     LobbyScreen(),
     SuggestionsScreen(false),
+    PollWinnersScreen(),
   ];
 
   final List<String> _titles = [
     'Lobby Status',
     'Next Songs Suggestions',
+    'Poll Winners'
   ];
 
   bool _isLoading = false;
@@ -111,6 +114,12 @@ class _UserScreenState extends State<UserScreen> {
                   margin: EdgeInsets.only(bottom: 2),
                 ),
                 label: 'SUGGESTIONS'),
+            BottomNavigationBarItem(
+                icon: Container(
+                  child: Icon(Icons.music_note_rounded),
+                  margin: EdgeInsets.only(bottom: 2),
+                ),
+                label: 'WINNERS'),
           ],
         ),
       ),
