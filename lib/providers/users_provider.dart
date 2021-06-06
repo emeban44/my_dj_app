@@ -95,11 +95,12 @@ class Users with ChangeNotifier {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: Colors.blueGrey.shade100,
           title: Center(
-            child: Text('Joining lobby...',
+            child: Text('Joining...',
                 style: TextStyle(
                   fontSize: 28,
-                  color: Colors.black87,
+                  color: Colors.black54,
                   fontFamily: 'Raleway',
                   fontWeight: FontWeight.bold,
                 )),
