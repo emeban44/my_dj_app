@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:my_dj_app/providers/lobbies_provider.dart';
 import 'package:my_dj_app/providers/timer_provider.dart';
+import 'package:my_dj_app/screens/admin/admin_poll_winners_screen.dart';
 import 'package:my_dj_app/screens/admin/create_lobby_screen.dart';
 import 'package:my_dj_app/screens/admin/admin_suggestions_screen.dart';
+import 'package:my_dj_app/screens/user/poll_winners_screen.dart';
 import 'package:my_dj_app/screens/user/user_start_screen.dart';
 import 'package:provider/provider.dart';
 import './screens/admin/add_song_screen.dart';
@@ -90,6 +92,8 @@ class MyApp extends StatelessWidget {
                 AuthScreen.routeName: (ctx) => AuthScreen(),
                 AdminSuggestionsScreen.routeName: (ctx) =>
                     AdminSuggestionsScreen(),
+                AdminPollWinnersScreen.routeName: (ctx) =>
+                    AdminPollWinnersScreen(),
               },
             ),
           );

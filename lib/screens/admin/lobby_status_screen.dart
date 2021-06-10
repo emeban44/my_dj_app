@@ -7,6 +7,7 @@ import 'package:my_dj_app/models/lobby.dart';
 import 'package:my_dj_app/models/sharedPrefs.dart';
 import 'package:my_dj_app/providers/timer_provider.dart';
 import 'package:my_dj_app/screens/admin/admin_suggestions_screen.dart';
+import 'package:my_dj_app/screens/user/poll_winners_screen.dart';
 import 'package:my_dj_app/widgets/user/vote_percentage_stream.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_countdown_timer/index.dart';
@@ -14,6 +15,8 @@ import 'package:flutter_countdown_timer/index.dart';
 import 'package:my_dj_app/providers/songs_provider.dart';
 import 'package:my_dj_app/providers/lobbies_provider.dart';
 import 'package:my_dj_app/screens/admin/create_lobby_screen.dart';
+
+import 'admin_poll_winners_screen.dart';
 
 class LobbyStatusScreen extends StatefulWidget {
   @override
@@ -357,7 +360,10 @@ class _LobbyStatusScreenState extends State<LobbyStatusScreen> {
                         Flexible(
                           child: Container(
                             child: ElevatedButton.icon(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.of(context).pushNamed(
+                                    AdminPollWinnersScreen.routeName);
+                              },
                               icon: Icon(Icons.music_note),
                               label: Text('POLL WINNERS'),
                               style: ElevatedButton.styleFrom(
@@ -368,8 +374,14 @@ class _LobbyStatusScreenState extends State<LobbyStatusScreen> {
                         ),
                       ],
                     ),
-                  )
-                  //          ElevatedButton(onPressed: timer, child: Text('click')),
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        Provider.of<LobbyTimer>(context, listen: false)
+                            .calculateWinner();
+                      },
+                      child: Text('Calculate'))
+                  //          BUTTON ABOVE USED FOR DEBUGGING ONLY
                 ],
               ),
             ),

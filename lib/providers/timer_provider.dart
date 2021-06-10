@@ -24,11 +24,6 @@ class LobbyTimer with ChangeNotifier {
     new Timer.periodic(oneSec, (Timer t) async {
       int newTime = SharedPrefs().lobbyDuration;
       SharedPrefs().setLobbyDuration(newTime - 1);
-      /*final lobbyData = await FirebaseFirestore.instance
-          .collection('lobbies')
-          .doc(userId)
-          .get();*/
-      //  print(newTime);
       FirebaseFirestore.instance.collection('lobbies').doc(userId).update({
         'lobbyTimer': SharedPrefs().lobbyDuration,
       });
@@ -38,8 +33,45 @@ class LobbyTimer with ChangeNotifier {
         FirebaseFirestore.instance.collection('lobbies').doc(userId).update({
           'lobbyTimer': 0,
         });
+        calculateWinner();
       }
     });
+  }
+
+  Future<void> calculateWinner() async {
+    final lobbyData = await FirebaseFirestore.instance
+        .collection('lobbies')
+        .doc(SharedPrefs().userId)
+        .get();
+    int lobbySongsPerPoll = Lobbies().getLobbySongsPerPoll;
+    int winnerIndex = 0;
+    List<int> songVotes = [];
+    for (int i = 0; i < lobbySongsPerPoll; i++) songVotes.add(0);
+    for (int i = 0; i < lobbySongsPerPoll; i++) {
+      try {
+        print(lobbyData.data()['pollVotes']['song$i'].length);
+        songVotes[i] = lobbyData.data()['pollVotes']['song$i'].length;
+      } catch (error) {
+        print('error no vote found');
+        songVotes[i] = 0;
+      }
+      if (i == 0)
+        continue;
+      else {
+        if (songVotes[i] >= songVotes[i - 1]) winnerIndex = i;
+      }
+    }
+    print(winnerIndex);
+    print(lobbyData.data()['poll']['song$winnerIndex']);
+    await FirebaseFirestore.instance
+        .collection('lobbies')
+        .doc(SharedPrefs().userId)
+        .collection('winners')
+        .add({
+      'winner': lobbyData.data()['poll']['song$winnerIndex'],
+      'timeWon': DateTime.now().toIso8601String(),
+    });
+    //   lobbyData.data()[]
   }
 
   int get timeLeft {
