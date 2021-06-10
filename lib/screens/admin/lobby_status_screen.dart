@@ -375,12 +375,12 @@ class _LobbyStatusScreenState extends State<LobbyStatusScreen> {
                       ],
                     ),
                   ),
-                  ElevatedButton(
-                      onPressed: () {
-                        Provider.of<LobbyTimer>(context, listen: false)
-                            .calculateWinner();
-                      },
-                      child: Text('Calculate'))
+                  // ElevatedButton(
+                  //     onPressed: () {
+                  //       Provider.of<LobbyTimer>(context, listen: false)
+                  //           .calculateWinner();
+                  //     },
+                  //     child: Text('Calculate'))
                   //          BUTTON ABOVE USED FOR DEBUGGING ONLY
                 ],
               ),

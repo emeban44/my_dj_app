@@ -28,7 +28,7 @@ class AdminPollWinnersScreen extends StatelessWidget {
           ),
           // backgroundColor: Colors.transparent,
         ),
-        body: PollWinnersScreen(),
+        body: PollWinnersScreen(true),
       ),
     );
   }

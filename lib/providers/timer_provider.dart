@@ -51,6 +51,7 @@ class LobbyTimer with ChangeNotifier {
       try {
         print(lobbyData.data()['pollVotes']['song$i'].length);
         songVotes[i] = lobbyData.data()['pollVotes']['song$i'].length;
+        print(lobbyData.data()['poll']['song$i']);
       } catch (error) {
         print('error no vote found');
         songVotes[i] = 0;
@@ -58,7 +59,7 @@ class LobbyTimer with ChangeNotifier {
       if (i == 0)
         continue;
       else {
-        if (songVotes[i] >= songVotes[i - 1]) winnerIndex = i;
+        if (songVotes[i] >= songVotes[winnerIndex]) winnerIndex = i;
       }
     }
     print(winnerIndex);
