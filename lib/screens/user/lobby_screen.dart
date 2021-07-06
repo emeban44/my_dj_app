@@ -230,6 +230,8 @@ class _LobbyScreenState extends State<LobbyScreen> {
                     final pollSongs = pollSnapshot.data;
                     return pollSongs['poll'].length == 0
                         ? Container(
+                            height: 70,
+                            margin: EdgeInsets.all(30),
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 colors: [
@@ -239,14 +241,15 @@ class _LobbyScreenState extends State<LobbyScreen> {
                               ),
                               borderRadius: BorderRadius.circular(15),
                             ),
-                            margin: EdgeInsets.all(30),
-                            child: Text(
-                              'No poll created yet!',
-                              style: TextStyle(
-                                fontSize: 25,
-                                color: Colors.pink,
-                                fontFamily: 'PTSans',
-                                // fontWeight: FontWeight.bold,
+                            child: Center(
+                              child: Text(
+                                'No poll created yet!',
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'PTSans',
+                                ),
                               ),
                             ),
                           )
