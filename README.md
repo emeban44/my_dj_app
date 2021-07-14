@@ -6,6 +6,6 @@ Many parts of our everyday lives have been digitized, but there is one part that
 
 ## IMPLEMENTATION
 
-![Screenshot](UserLobbyPage).png
+![Screenshot](UserLobbyPage.png)
 
 
