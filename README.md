@@ -1,7 +1,6 @@
 # MyDJ App
 
-The full Documentation for this application is 32 pages long. 
-You can find it in the repository as "Documentation.pdf".
+32 pages Documentation can be found in the repository.
 
 The Video Demonstration can be found on this link: https://www.youtube.com/watch?v=mOkoiI_u_wU
 
